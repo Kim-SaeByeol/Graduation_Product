@@ -1,4 +1,4 @@
-package kopo.poly.util;
+package kopo.poly.utill;
 
 import org.springframework.lang.Nullable;
 
@@ -11,11 +11,13 @@ import java.util.Map;
 public class NetworkUtil {
     /**
      * Geocoding  API에 GET 방식으로 요청을 보내는 메서드
-     * @param apiUrl API의 URL
+     *
+     * @param apiUrl         API의 URL
      * @param requestHeaders 요청 헤더
+     * @param param
      * @return API 응답 결과
      */
-    public static String get(String apiUrl, @Nullable Map<String, String> requestHeaders) {
+    public static String get(String apiUrl, @Nullable Map<String, String> requestHeaders, String param) {
         HttpURLConnection con = connection(apiUrl);
 
         try {

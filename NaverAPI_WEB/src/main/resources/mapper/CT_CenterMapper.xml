@@ -1,36 +1,56 @@
--- resources/mapper/ICenterMapper.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kopo.poly.mapper.ICenterMapper">
+<mapper namespace="kopo.poly.mapper.ICT_CenterMapper">
 
-    <!-- 센터의 전체 리스트 조회 -->
-    <select id="getCenterList" resultType="CenterDTO">
+    <!-- 센터 리스트 조회 쿼리 -->
+    <select id="getCT_CenterList" resultType="CenterDTO">
         SELECT
-        ROWNUM AS seq,
-        center.*
+            (@row_number:=@row_number + 1) AS seq,
+            CT_Center.region,
+            CT_Center.center_name,
+            CT_Center.address,
+            CT_Center.phone,
+            CT_Center.xAddress,
+            CT_Center.yAddress
         FROM
-        center
-        WHERE
-        region = #{selectedRegion}
+            CT_Center,
+            (SELECT @row_number:=0) AS t
         ORDER BY
-        address;
+            CT_Center.region, CT_Center.address;
     </select>
 
-    <!-- 센터 정보 추가 -->
-    <insert id="insertCenterInfo" parameterType="kopo.poly.dto.CenterDTO">
-        INSERT INTO center (region, center_name, address, contact)
-        VALUES (#{region}, #{centerName}, #{address}, #{contact});
+
+    <!-- 센터 정보 등록 쿼리 -->
+    <insert id="insertCT_CenterInfo" parameterType="CenterDTO">
+        INSERT INTO CT_Center
+        (
+            seq, region, centerName, address, phone, xAddress, yAddress
+        )
+        VALUES
+            (
+                    (SELECT NVL(MAX(A.seq),0)+1 FROM CT_Center A),
+                    #{region}, #{centerName}, #{address}, #{phone}, #{xAddress}, #{yAddress}
+            )
     </insert>
 
-    <!-- 센터 리스트의 정보 수정 -->
-    <update id="updateCenterList" parameterType="kopo.poly.dto.CenterDTO">
-        UPDATE center
-        SET region = #{region}, center_name = #{centerName}, address = #{address}, contact = #{contact}
-        WHERE seq = #{seq};
+    <!-- 센터 정보 수정 쿼리 -->
+    <update id="updateCT_CenterInfo" parameterType="CenterDTO">
+        UPDATE CT_Center SET
+                             region = #{region},
+                             centerName = #{centerName},
+                             address = #{address},
+                             phone = #{phone},
+                             xAddress = #{xAddress},
+                             yAddress = #{yAddress}
+        WHERE
+            seq = #{seq}
     </update>
 
-    <!-- 센터 리스트의 정보 삭제 -->
-    <delete id="deleteCenterList" parameterType="kopo.poly.dto.CenterDTO">
-        DELETE FROM center WHERE seq = #{seq};
+    <!-- 센터 정보 삭제 쿼리 -->
+    <delete id="deleteCT_CenterInfo" parameterType="CenterDTO">
+        DELETE FROM CT_Center
+        WHERE seq = #{seq}
     </delete>
 
 </mapper>

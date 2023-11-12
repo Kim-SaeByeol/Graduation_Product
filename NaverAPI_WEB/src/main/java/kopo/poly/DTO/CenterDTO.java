@@ -7,6 +7,5 @@ public class CenterDTO {
     private String centerName;   // 센터명
     private String address;     // 주소
     private String phone;     // 담당 연락처
-    private String xAddress;    // x 좌표
-    private String yAddress;    // y 좌표
+
 }
