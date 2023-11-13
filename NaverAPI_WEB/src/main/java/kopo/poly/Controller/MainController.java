@@ -4,31 +4,25 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping(value = "/main")
 @Controller
 public class MainController {
 
-    @GetMapping(value = "/Main")
+    @GetMapping(value = "/main")
     public String main() {
         log.info(this.getClass().getName() + ".main Start");
-        try {
-            // main 메서드 로직
-            return "Main/main";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
-        } catch (Exception e) {
-            log.error("Error in main method", e);
-            throw e; // 예외 다시 던지기 (에러 페이지로 이동)
-        } finally {
-            log.info(this.getClass().getName() + ".main End");
-        }
+        // main 메서드 로직
+        return "main/main";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
     }
 
-
-
-    @GetMapping(value = "/centermain")
-    public String centermain() {
-        log.info(this.getClass().getName() + ".centermain Start");
-        return "centermain";
+    @GetMapping(value = "/center")
+    public String center() {
+        log.info(this.getClass().getName() + ".main Start");
+        // main 메서드 로직
+        return "main/center";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
     }
 }

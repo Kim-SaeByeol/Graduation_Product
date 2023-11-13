@@ -19,7 +19,7 @@ public class CT_CenterService implements ICenterService {
     private final ICenterMapper centerMapper;
 
     @Override
-    public List<CenterDTO> getCenterList(String selectedRegion) throws Exception {
+    public List<CenterDTO> getCenterList() throws Exception {
         log.info(this.getClass().getName() + ".getCenterList start!");
         return centerMapper.getCenterList();
     }
@@ -28,22 +28,22 @@ public class CT_CenterService implements ICenterService {
     @Override
     public void insertCenterInfo(CenterDTO pDTO) {
         log.info(this.getClass().getName() + ".InsertCenterInfo start!");
-
-        try {
-            centerMapper.insertCenterInfo(pDTO);
-        } catch (Exception e) {
-            log.error("Error occurred while inserting center info", e);
-            throw new RuntimeException(e);
-        }
+        centerMapper.insertCenterInfo(pDTO);
     }
 
     @Override
-    public void updateCenterList(CenterDTO centerDTO) {
+    public void updateCenterList(CenterDTO pDTO) {
 
+        log.info(this.getClass().getName() + ".updateCenterList start!");
+
+        centerMapper.updateCenterList(pDTO);
     }
 
     @Override
-    public void deleteCenterList(CenterDTO centerDTO) {
+    public void deleteCenterList(CenterDTO pDTO) {
 
+        log.info(this.getClass().getName() + ".deleteNoticeInfo start!");
+
+        centerMapper.deleteCenterList(pDTO);
     }
 }

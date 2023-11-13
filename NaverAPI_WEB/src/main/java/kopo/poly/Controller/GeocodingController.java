@@ -2,7 +2,7 @@ package kopo.poly.Controller;
 
 import kopo.poly.DTO.GeocodingDTO;
 import kopo.poly.Service.IGeocodingService;
-import kopo.poly.utill.CmmUtil;
+import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
