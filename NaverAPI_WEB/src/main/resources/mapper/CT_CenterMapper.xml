@@ -50,7 +50,6 @@
             delete_yn = 0
     </select>
 
-
     <!-- 센터 정보 등록 쿼리 -->
     <insert id="insertCT_CenterInfo" parameterType="CenterDTO">
         INSERT INTO CT_Center
@@ -59,10 +58,11 @@
         )
         VALUES
             (
-                    (SELECT NVL(MAX(A.seq),0)+1 FROM CT_Center A),
+                    (SELECT COALESCE(MAX(A.seq),0)+1 FROM CT_Center A),
                     #{region}, #{centerName}, #{address}, #{phone}, #{xAddress}, #{yAddress}
             )
     </insert>
+
 
     <!-- 센터 정보 수정 쿼리 -->
     <update id="updateCT_CenterInfo" parameterType="CenterDTO">
@@ -77,10 +77,16 @@
             seq = #{seq}
     </update>
 
-    <!-- 센터 정보 삭제 쿼리 -->
-    <delete id="deleteCT_CenterInfo" parameterType="CenterDTO">
-        DELETE FROM CT_Center
-        WHERE seq = #{seq}
+<!--    &lt;!&ndash; 센터 정보 삭제 쿼리 &ndash;&gt;-->
+<!--    <delete id="deleteCT_CenterInfo" parameterType="CenterDTO">-->
+<!--        DELETE FROM CT_Center-->
+<!--        WHERE seq = #{seq}-->
+<!--    </delete>-->
+
+    <!-- 센터 테이블의 모든 데이터를 삭제하는 쿼리 -->
+    <delete id="deleteAllCT_Center" parameterType="java.lang.Void">
+        DELETE FROM CT_Center WHERE 1=1
     </delete>
+
 
 </mapper>

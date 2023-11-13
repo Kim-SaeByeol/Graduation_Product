@@ -29,8 +29,8 @@ public class CT_CenterController {
     @GetMapping(value = "/CT_Center")
     public String CenterList(@ModelAttribute("params") final CenterDTO params, Model model) throws Exception {
        log.info(this.getClass().getName() + ".CenterList Start!");
-        List<CenterDTO> posts = centerService.findAllPost(params);
-        model.addAttribute("posts", posts);
+        List<CenterDTO> rList = centerService.findAllPost(params);
+        model.addAttribute("rList", rList);
        return "center/CT_Center";
     }
 }

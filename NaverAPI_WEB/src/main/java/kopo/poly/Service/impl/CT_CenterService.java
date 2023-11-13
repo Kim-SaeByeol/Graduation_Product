@@ -20,7 +20,7 @@ public class CT_CenterService implements ICenterService {
     private final ICT_CenterMapper centerMapper;
 
     @Override
-    public List<CenterDTO> findAllPost(final CenterDTO params) throws Exception {
+    public List<CenterDTO> findAllPost(CenterDTO params) throws Exception {
         log.info(this.getClass().getName() + ".findAllPost start!");
         return centerMapper.findAll(params);
     }

@@ -18,11 +18,4 @@ public class MainController {
         // main 메서드 로직
         return "main/main";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
     }
-
-    @GetMapping(value = "/center")
-    public String center() {
-        log.info(this.getClass().getName() + ".main Start");
-        // main 메서드 로직
-        return "main/center";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
-    }
 }

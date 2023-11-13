@@ -1,7 +1,6 @@
 package kopo.poly.mapper;
 
 import kopo.poly.DTO.CenterDTO;
-import kopo.poly.DTO.SearchListDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

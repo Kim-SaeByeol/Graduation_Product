@@ -20,8 +20,6 @@ public interface ICT_CenterMapper {
      */
     int count(CenterDTO params);
 
-    List<CenterDTO> getCT_CenterList() throws Exception;
-
     // 센터 정보 등록
     void insertCenterInfo(CenterDTO centerDTO);
 
