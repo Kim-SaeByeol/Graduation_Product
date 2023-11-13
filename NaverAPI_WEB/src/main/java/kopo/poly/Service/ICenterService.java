@@ -5,7 +5,7 @@ import kopo.poly.DTO.CenterDTO;
 import java.util.List;
 
 public interface ICenterService {
-    List<CenterDTO> getCenterList() throws Exception;
+    List<CenterDTO> findAllPost(final CenterDTO params) throws Exception;
 
     void insertCenterInfo(CenterDTO centerDTO);
 

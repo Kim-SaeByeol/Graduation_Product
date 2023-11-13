@@ -3,6 +3,7 @@ package kopo.poly.Service.impl;
 
 import kopo.poly.DTO.CenterDTO;
 import kopo.poly.Service.ICenterService;
+import kopo.poly.mapper.ICT_CenterMapper;
 import kopo.poly.mapper.ICenterMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +17,12 @@ import java.util.List;
 @Service
 public class CT_CenterService implements ICenterService {
 
-    private final ICenterMapper centerMapper;
+    private final ICT_CenterMapper centerMapper;
 
     @Override
-    public List<CenterDTO> getCenterList() throws Exception {
-        log.info(this.getClass().getName() + ".getCenterList start!");
-        return centerMapper.getCenterList();
+    public List<CenterDTO> findAllPost(final CenterDTO params) throws Exception {
+        log.info(this.getClass().getName() + ".findAllPost start!");
+        return centerMapper.findAll(params);
     }
 
     @Transactional
