@@ -48,8 +48,10 @@ public class GeocodingService implements IGeocodingService {
       //호출할 Geocoding API 정보 설정
       String param = "query=" + URLEncoder.encode(address, "UTF-8");
 
-      //GeocodingAPI 호출하기
-        String json = NetworkUtil.get(IGeocodingService.GeocodingApiURL, this.setNaverInfo(), param);
+        log.info("씹" + NetworkUtil.get(IGeocodingService.GeocodingApiURL, param, this.setNaverInfo()));
+
+        //GeocodingAPI 호출하기
+        String json = NetworkUtil.get(IGeocodingService.GeocodingApiURL, param, this.setNaverInfo());
         /**
          * 호출 예시)
          * json =
@@ -67,7 +69,6 @@ public class GeocodingService implements IGeocodingService {
 
         //address 저장
         rDTO.setAddress(address);
-
 
       log.info(this.getClass().getName() + ".Geocoding End!");
 

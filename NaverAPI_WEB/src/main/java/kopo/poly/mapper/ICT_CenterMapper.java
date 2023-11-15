@@ -23,4 +23,9 @@ public interface ICT_CenterMapper {
     //게시판 글 삭제
     void deleteCT_CenterInfo(CenterDTO pDTO) throws Exception;
 
+
+    void insertGeocoding(CenterDTO pDTO) throws Exception;
+
+    void updateGeocoding(CenterDTO pDTO) throws Exception;
+
 }

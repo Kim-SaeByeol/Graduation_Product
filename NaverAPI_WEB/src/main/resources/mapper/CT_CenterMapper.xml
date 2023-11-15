@@ -12,21 +12,24 @@
 
     <!-- 센터 등록 쿼리 -->
     <insert id="insertCT_CenterInfo" parameterType="CenterDTO">
+        <selectKey keyProperty="seq" resultType="int" order="BEFORE">
+            SELECT COALESCE(MAX(seq), 0) + 1 FROM CT_Center
+        </selectKey>
         INSERT INTO CT_Center
         (
-            SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
         )
         VALUES (
-                       (SELECT COALESCE(MAX(seq), 0) + 1 FROM CT_Center),
-                       #{region}, #{centerName}, #{address}, #{phone}               );
-
+        #{seq}, #{region}, #{centerName}, #{address}, #{phone}
         )
     </insert>
 
+
+
     <!-- 위도 경도 등록 쿼리 -->
     <insert id="insertGeocoding" parameterType="GeocodingDTO">
-        INSERT INTO CT_Center (XADDRESS, YADDRESS)
-        VALUES (#{xAddress}, #{yAddress});
+        INSERT INTO CT_Center (X, Y)
+        VALUES (#{x}, #{y});
     </insert>
 
 

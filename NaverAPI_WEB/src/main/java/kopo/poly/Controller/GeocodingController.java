@@ -5,6 +5,7 @@ import kopo.poly.Service.IGeocodingService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +20,7 @@ public class GeocodingController {
 
     private final IGeocodingService geocodingService;
 
+    @PostMapping(value = "geocoding")
     public GeocodingDTO geocoding(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".geocoding Start!");

@@ -3,15 +3,18 @@ package kopo.poly.Controller;
 
 
 import kopo.poly.DTO.CenterDTO;
+import kopo.poly.DTO.GeocodingDTO;
+import kopo.poly.DTO.MsgDTO;
 import kopo.poly.Service.ICenterService;
+import kopo.poly.Service.IGeocodingService;
+import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.Optional;
 public class CT_CenterController {
 
     private final ICenterService centerService;
+    private final IGeocodingService geocodingService;
 
     @GetMapping(value = "CT_Center")
     public String CT_CenterList(HttpSession session, ModelMap model, @RequestParam(defaultValue = "1") int page) throws Exception {
@@ -56,6 +60,51 @@ public class CT_CenterController {
         int startIndex = (page - 1) * noticesPerPage;
         int endIndex = Math.min(startIndex + noticesPerPage, allNotices.size());
         return allNotices.subList(startIndex, endIndex);
+    }
+
+    @GetMapping(value = "CT_centerReg")
+    public String centerReg(HttpServletRequest request, HttpSession session) {
+        return "/center/CT_centerReg";
+    }
+
+
+    @ResponseBody
+    @PostMapping(value = "CT_centerInsert")
+    public MsgDTO CenterInsert(HttpServletRequest request, HttpSession session) {
+        log.info(this.getClass().getName() + ".CenterInsert Start!");
+        String msg = "";
+        MsgDTO dto = null;
+        try {
+            String region = CmmUtil.nvl(request.getParameter("region"));
+            String centerName = CmmUtil.nvl(request.getParameter("centerName"));
+            String address = CmmUtil.nvl(request.getParameter("address"));
+            String phone = CmmUtil.nvl(request.getParameter("phone"));
+            log.info("region : " + region);
+            log.info("centerName : " + centerName);
+            log.info("address : " + address);
+            log.info("phone : " + phone);
+
+            CenterDTO pDTO = new CenterDTO();
+
+            pDTO.setRegion(region);
+            pDTO.setCenterName(centerName);
+            pDTO.setAddress(address);
+            pDTO.setPhone(phone);
+
+            centerService.Geocoding(pDTO);
+            centerService.insertCenterInfo(pDTO);
+
+            msg = "등록되었습니다.";
+        } catch (Exception e) {
+            msg = "실패하였습니다. : " + e.getMessage();
+            log.info(e.toString());
+            e.printStackTrace();
+        } finally {
+            dto = new MsgDTO();
+            dto.setMsg(msg);
+            log.info(this.getClass().getName() + ".CenterInsert End!");
+        }
+        return dto;
     }
 
 }

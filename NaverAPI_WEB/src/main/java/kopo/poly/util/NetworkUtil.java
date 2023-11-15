@@ -17,7 +17,7 @@ public class NetworkUtil {
      * @param param
      * @return API 응답 결과
      */
-    public static String get(String apiUrl, @Nullable Map<String, String> requestHeaders, String param) {
+    public static String get(String apiUrl, String param, @Nullable Map<String, String> requestHeaders ) {
         HttpURLConnection con = connection(apiUrl);
 
         try {
