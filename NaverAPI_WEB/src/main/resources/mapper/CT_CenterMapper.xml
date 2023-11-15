@@ -3,90 +3,64 @@
 
 <mapper namespace="kopo.poly.mapper.ICT_CenterMapper">
 
-<!--    &lt;!&ndash; 센터 리스트 조회 쿼리 &ndash;&gt;-->
-<!--    <select id="getCT_CenterList" resultType="CenterDTO">-->
-<!--        SELECT-->
-<!--            (@row_number:=@row_number + 1) AS seq,-->
-<!--            CT_Center.region,-->
-<!--            CT_Center.center_name,-->
-<!--            CT_Center.address,-->
-<!--            CT_Center.phone,-->
-<!--            CT_Center.xAddress,-->
-<!--            CT_Center.yAddress-->
-<!--        FROM-->
-<!--            CT_Center,-->
-<!--            (SELECT @row_number:=0) AS t-->
-<!--        ORDER BY-->
-<!--            CT_Center.region, CT_Center.address;-->
-<!--    </select>-->
-
-
-    <!-- 게시글 리스트 조회 -->
-    <select id="findAll" parameterType="CenterDTO" resultType="CenterDTO">
-        SELECT
-            (@row_number:=@row_number + 1) AS seq,
-            region,
-            center_name,
-            address,
-            phone,
-            X_ADDRESS as xAddress,
-            Y_ADDRESS as yAddress
-        FROM
-            MysqlTest_DB.CT_Center,
-            (SELECT @row_number:=0) AS t
-        ORDER BY
-            region, address
-            LIMIT #{offset}, #{recordSize};
+    <!-- 센터 리스트 쿼리 -->
+    <select id="getCT_CenterList" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        FROM CT_Center
+        ORDER BY REGION, CENTER_NAME DESC;
     </select>
 
-
-    <!-- 게시글 수 카운팅 -->
-    <select id="count" parameterType="CenterDTO" resultType="int">
-        SELECT
-            COUNT(*)
-        FROM
-            tb_post
-        WHERE
-            delete_yn = 0
-    </select>
-
-    <!-- 센터 정보 등록 쿼리 -->
+    <!-- 센터 등록 쿼리 -->
     <insert id="insertCT_CenterInfo" parameterType="CenterDTO">
         INSERT INTO CT_Center
         (
-            seq, region, centerName, address, phone, xAddress, yAddress
+            SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
         )
-        VALUES
-            (
-                    (SELECT COALESCE(MAX(A.seq),0)+1 FROM CT_Center A),
-                    #{region}, #{centerName}, #{address}, #{phone}, #{xAddress}, #{yAddress}
-            )
+        VALUES (
+                       (SELECT COALESCE(MAX(seq), 0) + 1 FROM CT_Center),
+                       #{region}, #{centerName}, #{address}, #{phone}               );
+
+        )
+    </insert>
+
+    <!-- 위도 경도 등록 쿼리 -->
+    <insert id="insertGeocoding" parameterType="GeocodingDTO">
+        INSERT INTO CT_Center (XADDRESS, YADDRESS)
+        VALUES (#{xAddress}, #{yAddress});
     </insert>
 
 
-    <!-- 센터 정보 수정 쿼리 -->
+    <!-- 센터 상세보기 쿼리 -->
+    <select id="getCT_CenterInfo" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE,   XADDRESS, YADDRESS
+
+        FROM CT_Center
+        WHERE seq = #{seq};
+
+    </select>
+
+    <!-- 센터 수정 쿼리 -->
     <update id="updateCT_CenterInfo" parameterType="CenterDTO">
-        UPDATE CT_Center SET
-                             region = #{region},
-                             centerName = #{centerName},
-                             address = #{address},
-                             phone = #{phone},
-                             xAddress = #{xAddress},
-                             yAddress = #{yAddress}
-        WHERE
-            seq = #{seq}
+        UPDATE CT_Center
+        SET REGION = #{region},
+            CENTER_NAME = #{centerName},
+            ADDRESS = #{address},
+            PHONE = #{phone}
+
+        WHERE seq = #{seq};
     </update>
 
-<!--    &lt;!&ndash; 센터 정보 삭제 쿼리 &ndash;&gt;-->
-<!--    <delete id="deleteCT_CenterInfo" parameterType="CenterDTO">-->
-<!--        DELETE FROM CT_Center-->
-<!--        WHERE seq = #{seq}-->
-<!--    </delete>-->
+    <!-- Address가 수정이 되었다면 위도 경도 수정 쿼리 -->
+    <update id="updateGeocoding" parameterType="GeocodingDTO">
+        UPDATE CT_Center
+        SET XADDRESS = #{xAddress},
+            YADDRESS = #{yAddress}
+        WHERE ADDRESS = #{address};
+    </update>
 
-    <!-- 센터 테이블의 모든 데이터를 삭제하는 쿼리 -->
-    <delete id="deleteAllCT_Center" parameterType="java.lang.Void">
-        DELETE FROM CT_Center WHERE 1=1
+    <!-- 센터 삭제 쿼리 -->
+    <delete id="deleteCT_CenterInfo" parameterType="CenterDTO">
+        DELETE FROM CT_Center
+        WHERE SEQ = #{seq};
     </delete>
-
-
 </mapper>

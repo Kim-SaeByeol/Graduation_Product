@@ -1,24 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8" %>
-<%@ page import="java.util.List" %>
-<%@ page import="kopo.poly.DTO.CenterDTO" %>
-<%@ page import="kopo.poly.util.CmmUtil" %>
-<%
-// CT_CenterController 함수에서 model 객체에 저장된 값 불러오기
-List<CenterDTO> rList = (List<CenterDTO>) request.getAttribute("rList");
-    if (rList == null) {
-    rList = (List<CenterDTO>) request.getAttribute("rList");
-        }
-        %>
 
 
     <!DOCTYPE html>
-        <html xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-        <title>네이버지도 스틱코드</title>
+        <title>치유지원센터 정보보기</title>
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=6589bhpize"></script>
 
         <!--    Google Fonts-->
@@ -37,7 +25,7 @@ List<CenterDTO> rList = (List<CenterDTO>) request.getAttribute("rList");
         <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
 
         <!--Main JavaScript            -->
-        <script src="/static/css/main.css"></script>
+        <script src="/css/main.css"></script>
 
 
         <!-- Bootstrap -->
@@ -67,9 +55,6 @@ List<CenterDTO> rList = (List<CenterDTO>) request.getAttribute("rList");
     </head>
     <body>
     <!-- 데이터 출력을 위한 코드 추가 -->
-    <c:forEach var="center" items="${rList}">
-        <p>${center.centerName}</p>
-    </c:forEach>
     <div id="wrapper" class="main">
         <!-- header -->
         <header id="header">
@@ -211,6 +196,9 @@ List<CenterDTO> rList = (List<CenterDTO>) request.getAttribute("rList");
         </div>
 
         <br>
+        <br> <br>
+        <br> <br>
+        <br> <br>
         <br>
         <div class="container">
             <div class="row">
@@ -292,7 +280,7 @@ List<CenterDTO> rList = (List<CenterDTO>) request.getAttribute("rList");
 
                                 </li>
                                 <li>
-                                    <input type="text" name="key" id="key" value="" class="inpTxt" title="검색어" />
+                                    <input type="text" placeholder="센터 주소를 입력해 주세요." title="wnth"/>
                                 </li>
                                 <li><input type="submit" id="fn_btn_search" class="btn" value="검색" title="검색" /></li>
                             </ul>
@@ -318,24 +306,38 @@ List<CenterDTO> rList = (List<CenterDTO>) request.getAttribute("rList");
                     </div>
                 </div>
                 <div class="divTableBody">
-                    <%
-                    for (CenterDTO dto : rList) {
-                    %>
-                    <div class="divTableRow">
-                        <div class="divTableCell"><%=CmmUtil.nvl(dto.getseq())%></div>
-                        <div class="divTableCell"><%=CmmUtil.nvl(dto.getRegion())%></div>
-                        <div class="divTableCell"><%=CmmUtil.nvl(dto.getCenterName())%></div>
-                        <div class="divTableCell"><%=CmmUtil.nvl(dto.getAddress())%></div>
-                        <div class="divTableCell"><%=CmmUtil.nvl(dto.getPhone())%></div>
-                    </div>
-                    <%
-                    }
-                    %>
 
+                    <div class="divTableRow" th:each="dto, iterStat : ${rList}">
+
+                        <div class="divTableCell" th:text="${dto.seq}"></div>
+                        <div class="divTableCell" th:attr="onclick='doDetail(\'' + ${dto.region} + '\')'" th:text="${dto.region}"></div>
+                        <div class="divTableCell" th:text="${dto.centerName}"></div>
+                        <div class="divTableCell" th:text="${dto.address}"></div>
+                        <div class="divTableCell" th:text="${dto.phone}"></div>
+
+                    </div>
                 </div>
             </div>
+            <nav aria-label="Page navigation example" style="padding: 15px 0 5px 10px; display: table; margin-left: auto; margin-right: auto; text-align: center;">
+                <ul class="pagination pagination-primary" id="pagination">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/center/CT_Center.htmlt?page=1}">&laquo;</a>
+                    </li>
+                    <li class="page-item" th:if="${currentPage > 1}">
+                        <a class="page-link" th:href="@{/center/CT_Center.html(page=${currentPage - 1})}">&lt;</a>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:class="${pageNumber == currentPage ? 'active' : ''}">
+                        <a class="page-link" th:href="@{/center/CT_Center.html(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                    </li>
+                    <li class="page-item" th:if="${currentPage < totalPages}">
+                        <a class="page-link" th:href="@{/center/CT_Center.html(page=${currentPage + 1})}">&gt;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/center/CT_Center.html(page=${totalPages})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-
 
 
         <br>
@@ -362,7 +364,5 @@ List<CenterDTO> rList = (List<CenterDTO>) request.getAttribute("rList");
             <!--End of container-->
         </section>
         <!--End of footer-->
-
-
 </div>
     </body></html>

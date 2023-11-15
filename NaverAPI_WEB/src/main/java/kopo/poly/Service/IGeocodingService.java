@@ -9,4 +9,10 @@ public interface IGeocodingService {
 
     // GeocodingAPI를 호출하여 입력된 주소를 변환하기
     GeocodingDTO Geocoding(GeocodingDTO pDTO) throws Exception;
+
+    //추가
+    String insertGeocodingInfo(GeocodingDTO pDTO);
+
+    //수정
+    String updateGeocoding(GeocodingDTO centerDTO);
 }

@@ -73,4 +73,14 @@ public class GeocodingService implements IGeocodingService {
 
         return rDTO;
     }
+
+    @Override
+    public String insertGeocodingInfo(GeocodingDTO pDTO) {
+        return null;
+    }
+
+    @Override
+    public String updateGeocoding(GeocodingDTO centerDTO) {
+        return null;
+    }
 }
