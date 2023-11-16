@@ -198,20 +198,6 @@
         <br> <br>
         <br> <br>
         <br>
-        <div class="container">
-            <div class="row">
-
-                <div class="col-md-12">
-                    <div class="wel_header">
-                        <h2>지원 센터 바로가기</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr>
-
-
-
         <div class="containermapts">
             <!--컨테이너 왼쪽-->
             <div class="box">
@@ -235,10 +221,10 @@
                         map: map
                     });
                 }
-
                 // API 로딩이 완료되면 initMap 함수 호출
                 naver.maps.onJSContentLoaded = initMap;
             </script>
+
 
 
             <!-- 컨테이너 우측-->
@@ -287,6 +273,20 @@
                 </form>
             </div>
         </div>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="wel_header">
+                        <h2>지원 센터 바로가기</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <hr>
         <hr>
 
 
@@ -304,7 +304,6 @@
                     </div>
                 </div>
                 <div class="divTableBody">
-
                     <div class="divTableRow" th:each="dto, iterStat : ${rList}">
 
                         <div class="divTableCell" th:text="${dto.seq}"></div>

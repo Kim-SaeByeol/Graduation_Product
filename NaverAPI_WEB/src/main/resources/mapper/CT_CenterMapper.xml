@@ -17,10 +17,10 @@
         </selectKey>
         INSERT INTO CT_Center
         (
-        SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
         )
         VALUES (
-        #{seq}, #{region}, #{centerName}, #{address}, #{phone}
+        #{seq}, #{region}, #{centerName}, #{address}, #{phone}, #{x}, #{y}
         )
     </insert>
 

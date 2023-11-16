@@ -3,10 +3,8 @@ package kopo.poly.Controller;
 
 
 import kopo.poly.DTO.CenterDTO;
-import kopo.poly.DTO.GeocodingDTO;
 import kopo.poly.DTO.MsgDTO;
 import kopo.poly.Service.ICenterService;
-import kopo.poly.Service.IGeocodingService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +26,6 @@ import java.util.Optional;
 public class CT_CenterController {
 
     private final ICenterService centerService;
-    private final IGeocodingService geocodingService;
 
     @GetMapping(value = "CT_Center")
     public String CT_CenterList(HttpSession session, ModelMap model, @RequestParam(defaultValue = "1") int page) throws Exception {

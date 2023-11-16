@@ -3,7 +3,6 @@ package kopo.poly.Service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kopo.poly.DTO.CenterDTO;
-import kopo.poly.DTO.GeocodingDTO;
 import kopo.poly.Service.ICenterService;
 import kopo.poly.Service.IGeocodingService;
 import kopo.poly.mapper.ICT_CenterMapper;
@@ -17,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,13 +40,8 @@ public class CT_CenterService implements ICenterService {
         Map<String, String> requestHeader = new HashMap<>();
         requestHeader.put("X-NCP-APIGW-API-KEY-ID", ClientID);
         requestHeader.put("X-NCP-APIGW-API-KEY", ClientSecret);
-
-        log.info("ClientID : " + ClientID);
-        log.info("ClientSecret : " + ClientSecret);
-
         return requestHeader;
     }
-
 
     @Override
     public CenterDTO Geocoding(CenterDTO pDTO) throws Exception {
@@ -54,36 +49,48 @@ public class CT_CenterService implements ICenterService {
         log.info("변환할 address : " + pDTO.getAddress());
         String address = CmmUtil.nvl(pDTO.getAddress());  // 변환할 주소
 
-        //호출할 Geocoding API 정보 설정
+        // 호출할 Geocoding API 정보 설정
         String param = "?query=" + URLEncoder.encode(address, "UTF-8");
 
-        String url = IGeocodingService.GeocodingApiURL + param + this.setNaverInfo();
+        log.info("query : " + param);
+
+        String url = ICenterService.GeocodingApiURL + param;
+
         log.info("url : " + url);
-        log.info("씹" + NetworkUtil.get(IGeocodingService.GeocodingApiURL, param, this.setNaverInfo()));
 
-        //GeocodingAPI 호출하기
-        String json = NetworkUtil.get(IGeocodingService.GeocodingApiURL, param, this.setNaverInfo());
-        /**
-         * 호출 예시)
-         * json =
-         * https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocodem,
-         * X-NCP-APIGW-API-KEY-ID : "ClientID",
-         * X-NCP-APIGW-API-KEY : "ClientSecret",
-         * "query= {변활할 주소}"
-         */
+        // 헤더 정보 설정
+        Map<String, String> headers = setNaverInfo();
 
-        //json 확인
-        log.info("json : "+ json);
+        // GeocodingAPI 호출하기
+        String json = NetworkUtil.get(url, param, headers);
 
-        //Json 구조를 Map 데이터 구조로 변경
-        CenterDTO rDTO = new ObjectMapper().readValue(json, CenterDTO.class);
+        // json 확인
+        log.info("json : " + json);
 
-        log.info(this.getClass().getName() + ".Geocoding End!");
+        // Json 구조를 Map 데이터 구조로 변경
+//        CenterDTO rDTO = new ObjectMapper().readValue(json, CenterDTO.class);
 
-        return rDTO;
+        // 수정된 부분
+        Map<String, Object> rMap = new ObjectMapper().readValue(json, LinkedHashMap.class);
+        List<Map<String, Object>> myList = (List<Map<String, Object>>) rMap.get("addresses");  // 수정된 부분
+
+        if (myList != null && !myList.isEmpty()) {
+            String x = (String) myList.get(0).get("x");
+            String y = (String) myList.get(0).get("y");
+
+            pDTO.setX(x);
+            pDTO.setY(y);
+
+            log.info("x 주소 : " + x);
+            log.info("y 주소 : " + y);
+        } else {
+            log.warn("주소 정보가 없습니다.");
+        }
+
+        return pDTO;
     }
 
-    @Override
+        @Override
     public List<CenterDTO> getCenterList() throws Exception {
         log.info(this.getClass().getName() + ".getCenterList start!");
 
@@ -104,7 +111,6 @@ public class CT_CenterService implements ICenterService {
     public void insertCenterInfo(CenterDTO centerDTO) throws Exception {
         log.info(this.getClass().getName() + ".insertCenterInfo Start!");
         centerMapper.insertCT_CenterInfo(centerDTO);
-        centerMapper.insertGeocoding(centerDTO);
 
         log.info("잘 들어갔는지 봐볼까?");
         log.info("상태메시지 : " + centerDTO.getStatus());
