@@ -27,6 +27,8 @@ public class CT_CenterController {
 
     private final ICenterService centerService;
 
+    
+    // 조회 기능
     @GetMapping(value = "CT_Center")
     public String CT_CenterList(HttpSession session, ModelMap model, @RequestParam(defaultValue = "1") int page) throws Exception {
         log.info(this.getClass().getName() + ".CT_CenterList Start!");
@@ -102,6 +104,53 @@ public class CT_CenterController {
             log.info(this.getClass().getName() + ".CenterInsert End!");
         }
         return dto;
+    }
+
+    
+    // 검색기능
+    @GetMapping("/CT_Search")
+    public String searchCenter(HttpServletRequest request, HttpSession session, ModelMap model,
+                               @RequestParam(value = "is_sido", required = false) String isSido,
+                               @RequestParam(value = "centerAddress", required = false) String centerAddress,
+                               @RequestParam(defaultValue = "1") int page) {
+        log.info(this.getClass().getName() + ".searchCenter Start!");
+
+        try {
+            List<CenterDTO> searchResults;
+
+            if (isSido != null && centerAddress != null) {
+                // 도시와 주소가 함께 입력된 경우
+                searchResults = centerService.searchCenter_all(isSido, centerAddress);
+            } else if (isSido != null) {
+                // 도시만 입력된 경우
+                searchResults = centerService.searchCenter_sido(isSido);
+            } else if (centerAddress != null) {
+                // 주소만 입력된 경우
+                searchResults = centerService.searchCenter_address(centerAddress);
+            } else {
+                // 검색 조건이 없는 경우 전체 리스트 가져오기
+                searchResults = centerService.getCenterList();
+            }
+
+            // 페이징 처리
+            int totalResults = searchResults.size();
+            int resultsPerPage = 5; // 페이지당 표시할 결과 수 (원하는 값으로 수정)
+            int totalPages = (int) Math.ceil((double) totalResults / resultsPerPage);
+
+            // 페이징된 결과 리스트 가져오기
+            List<CenterDTO> pagedList = getPagedList(searchResults, page, resultsPerPage);
+
+            model.addAttribute( "searchResults", pagedList);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("currentPage", page);
+
+        } catch (Exception e) {
+            log.error("검색 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        log.info(this.getClass().getName() + ".searchCenter End!");
+        return "/center/CT_Search";
     }
 
 }

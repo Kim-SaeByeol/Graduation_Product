@@ -139,4 +139,43 @@ public class CT_CenterService implements ICenterService {
         centerMapper.deleteCT_CenterInfo(pDTO);
         log.info(this.getClass().getName() + ".deleteCenterList End!");
     }
+
+
+    /**
+     * 동일한 검색기능을 하나의 코드로 표현하여
+     *  코드의 중복성을 없앰.
+     */
+
+    private List<CenterDTO> searchCenterCommon(String isSido, String centerAddress, String methodName) throws Exception {
+        log.info(this.getClass().getName() + "." + methodName + " Start!");
+
+        try {
+            // MyBatis를 통해 DB에서 검색을 수행하는 로직을 작성
+            // 예를 들어, CenterMapper와 연동하여 해당 정보를 가져올 수 있음
+            return (List<CenterDTO>) centerMapper.getClass().getMethod(methodName, String.class, String.class)
+                    .invoke(centerMapper, isSido, centerAddress);
+        } catch (Exception e) {
+            log.error("검색 중 오류 발생: " + e.getMessage());
+            throw e;
+        } finally {
+            log.info(this.getClass().getName() + "." + methodName + " End!");
+        }
+    }
+
+
+
+    @Override
+    public List<CenterDTO> searchCenter_all(String isSido, String centerAddress) throws Exception {
+        return searchCenterCommon(isSido, centerAddress, "searchCenter_all");
+    }
+
+    @Override
+    public List<CenterDTO> searchCenter_sido(String isSido) throws Exception {
+        return searchCenterCommon(isSido, null, "searchCenter_sido");
+    }
+
+    @Override
+    public List<CenterDTO> searchCenter_address(String centerAddress) throws Exception {
+        return searchCenterCommon(null, centerAddress, "searchCenter_address");
+    }
 }

@@ -7,7 +7,7 @@
     <select id="getCT_CenterList" resultType="CenterDTO">
         SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
         FROM CT_Center
-        ORDER BY REGION, CENTER_NAME DESC;
+        ORDER BY SEQ ASC;
     </select>
 
     <!-- 센터 등록 쿼리 -->
@@ -66,4 +66,32 @@
         DELETE FROM CT_Center
         WHERE SEQ = #{seq};
     </delete>
+
+    <!-- 도시와 주소로 센터 검색 쿼리 -->
+    <select id="searchCenter_all" parameterType="map" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        FROM CT_Center
+        WHERE (REGION = #{isSido} OR #{isSido} IS NULL)
+          AND (ADDRESS LIKE CONCAT('%', #{centerAddress}, '%') OR #{centerAddress} IS NULL)
+        ORDER BY REGION, CENTER_NAME DESC
+    </select>
+
+    <!-- 도시로 센터 검색 쿼리 -->
+    <select id="searchCenter_sido" parameterType="String" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        FROM CT_Center
+        WHERE REGION = #{isSido}
+        ORDER BY REGION, CENTER_NAME DESC
+    </select>
+
+    <!-- 주소로 센터 검색 쿼리 -->
+    <select id="searchCenter_address" parameterType="String" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        FROM CT_Center
+        WHERE ADDRESS LIKE CONCAT('%', #{centerAddress}, '%')
+        ORDER BY REGION, CENTER_NAME DESC
+    </select>
+
+
+
 </mapper>

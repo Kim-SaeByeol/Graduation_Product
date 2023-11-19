@@ -28,4 +28,13 @@ public interface ICenterService {
     //삭제
     void deleteCenterList(CenterDTO pDTO) throws Exception;
 
+    //검색기능 (도시 와 주소를 함께 입력하였을 때)
+    List<CenterDTO> searchCenter_all(String isSido, String centerAddress) throws Exception;
+
+    //검색기능 (도시만 입력하였을 떄)
+    List<CenterDTO> searchCenter_sido(String isSido) throws Exception;
+
+    //검색기능 (주소만 입력하였을 떄)
+    List<CenterDTO> searchCenter_address(String centerAddress) throws Exception;
+
 }
