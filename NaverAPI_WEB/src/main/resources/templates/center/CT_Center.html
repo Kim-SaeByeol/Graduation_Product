@@ -204,6 +204,29 @@
                 <div id="map" style="height:20%;"></div>
             </div>
             <script>
+                $(document).ready(function () {
+                    $('#fn_btn_search').click(function (e) {
+                        e.preventDefault();
+
+                        var selectedSido = $('#is_sido').val();
+
+                        $.ajax({
+                            type: 'GET',
+                            url: '/center/CT_Search',
+                            data: { is_sido: selectedSido },
+                            success: function (response) {
+                                // 서버에서 반환한 응답을 처리할 수 있습니다.
+                                // 여기에 필요한 로직을 추가하세요.
+                                console.log(response);
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                    });
+                });
+
+
                 // 네이버 지도 API 로딩 후 실행될 함수
                 function initMap() {
                     var map = new naver.maps.Map('map', {

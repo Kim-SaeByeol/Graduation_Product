@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Slf4j
@@ -109,11 +107,14 @@ public class CT_CenterController {
     
     // 검색기능
     @GetMapping("/CT_Search")
-    public String searchCenter(HttpServletRequest request, HttpSession session, ModelMap model,
-                               @RequestParam(value = "is_sido", required = false) String isSido,
-                               @RequestParam(value = "centerAddress", required = false) String centerAddress,
-                               @RequestParam(defaultValue = "1") int page) {
+    @ResponseBody
+    public Map<String, Object> searchCenter(HttpServletRequest request, HttpSession session, ModelMap model,
+                                            @RequestParam(value = "is_sido", required = false) String isSido,
+                                            @RequestParam(value = "centerAddress", required = false) String centerAddress,
+                                            @RequestParam(defaultValue = "1") int page) {
         log.info(this.getClass().getName() + ".searchCenter Start!");
+
+        Map<String, Object> response = new HashMap<>();
 
         try {
             List<CenterDTO> searchResults;
@@ -140,17 +141,20 @@ public class CT_CenterController {
             // 페이징된 결과 리스트 가져오기
             List<CenterDTO> pagedList = getPagedList(searchResults, page, resultsPerPage);
 
-            model.addAttribute( "searchResults", pagedList);
-            model.addAttribute("totalPages", totalPages);
-            model.addAttribute("currentPage", page);
+            response.put("searchResults", pagedList);
+            response.put("totalPages", totalPages);
+            response.put("currentPage", page);
+            response.put("success", true);
 
         } catch (Exception e) {
             log.error("검색 중 오류 발생: " + e.getMessage());
-            e.printStackTrace();
+            response.put("success", false);
+            response.put("error", e.getMessage());
         }
 
         log.info(this.getClass().getName() + ".searchCenter End!");
-        return "/center/CT_Search";
+        return response;
     }
+
 
 }
