@@ -160,6 +160,7 @@ public class CT_CenterController {
             response.put("currentPage", page);
             response.put("success", true);
 
+            log.info("searchResults : " + searchResults);
             log.info("pagedList : " + pagedList);
             log.info("totalPages : " + totalPages);
             log.info("page : " + page);

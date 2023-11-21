@@ -355,6 +355,7 @@
 
             // 리스트 아이템 생성
             var listItem = $('<div class="divTableRow">');
+            listItem.append('<div class="divTableCell">' + ( i + 1 + (response.currentPage - 1) * 5) + '</div>');
             listItem.append('<div class="divTableCell" onclick="doDetail(\'' + dto.region + '\')">' + dto.region + '</div>');
             listItem.append('<div class="divTableCell">' + dto.centerName + '</div>');
             listItem.append('<div class="divTableCell">' + dto.address + '</div>');
