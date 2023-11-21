@@ -4,6 +4,7 @@ import kopo.poly.DTO.CenterDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ICT_CenterMapper {
@@ -28,4 +29,18 @@ public interface ICT_CenterMapper {
 
     void updateGeocoding(CenterDTO pDTO) throws Exception;
 
+
+
+    // 검색 기능
+////    List<CenterDTO> searchCenterAll(Map<String, Object> paramMap);
+//
+//    List<CenterDTO> searchCenterBySido(String isSido);
+//
+//    List<CenterDTO> searchCenterByAddress(String centerAddress);
+
+    List<CenterDTO> searchCenter_all(String isSido, String centerAddress);
+
+    List<CenterDTO> searchCenter_sido(String isSido);
+
+    List<CenterDTO> searchCenter_address(String centerAddress);
 }

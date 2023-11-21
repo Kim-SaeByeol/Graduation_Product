@@ -71,8 +71,8 @@
     <select id="searchCenter_all" parameterType="map" resultType="CenterDTO">
         SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
         FROM CT_Center
-        WHERE (REGION = #{isSido} OR #{isSido} IS NULL)
-          AND (ADDRESS LIKE CONCAT('%', #{centerAddress}, '%') OR #{centerAddress} IS NULL)
+        WHERE (REGION = #{isSido})
+          AND (ADDRESS LIKE CONCAT('%', #{centerAddress}, '%'))
         ORDER BY REGION, CENTER_NAME DESC
     </select>
 

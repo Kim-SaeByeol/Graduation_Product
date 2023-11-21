@@ -270,6 +270,7 @@
 
 
     <div class="container">
+        <!-- 검색 결과를 동적으로 표시할 부분 -->
         <div class="divTable minimalistBlack">
             <div class="divTableHeading">
                 <div class="divTableRow">
@@ -281,31 +282,31 @@
                 </div>
             </div>
             <div class="divTableBody">
-                <div class="divTableRow" th:each="dto, iterStat : ${rList}">
-                    <div class="divTableCell" th:text="${dto.seq}"></div>
-                    <div class="divTableCell" th:attr="onclick='doDetail(\'' + ${dto.region} + '\')'" th:text="${dto.region}"></div>
-                    <div class="divTableCell" th:text="${dto.centerName}"></div>
-                    <div class="divTableCell" th:text="${dto.address}"></div>
-                    <div class="divTableCell" th:text="${dto.phone}"></div>
+                <!-- 검색 결과가 동적으로 추가될 부분 -->
+                <div th:each="dto, iterStat : ${searchResults}">
+                    <div class="divTableRow">
+                        <div class="divTableCell" th:text="${dto.seq}"></div>
+                        <div class="divTableCell" th:attr="onclick='doDetail(\'' + ${dto.region} + '\')'" th:text="${dto.region}"></div>
+                        <div class="divTableCell" th:text="${dto.centerName}"></div>
+                        <div class="divTableCell" th:text="${dto.address}"></div>
+                        <div class="divTableCell" th:text="${dto.phone}"></div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- 페이지네이션 부분 -->
         <nav aria-label="Page navigation example" style="padding: 15px 0 5px 10px; display: table; margin-left: auto; margin-right: auto; text-align: center;">
             <ul class="pagination pagination-primary" id="pagination">
-                <li class="page-item">
-                    <a class="page-link" th:href="@{/center/CT_Center?page=1}">&laquo;</a>
-                </li>
+                <!-- 페이지네이션 버튼들 -->
                 <li class="page-item" th:if="${currentPage > 1}">
-                    <a class="page-link" th:href="@{/center/CT_Center(page=${currentPage - 1})}">&lt;</a>
+                    <a class="page-link" th:href="@{/center/CT_Search(page=${currentPage - 1}, is_sido=${selectedSido}, searchText=${searchText})}">&lt;</a>
                 </li>
                 <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:class="${pageNumber == currentPage ? 'active' : ''}">
-                    <a class="page-link" th:href="@{/center/CT_Center(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                    <a class="page-link" th:href="@{/center/CT_Search(page=${pageNumber}, is_sido=${selectedSido}, searchText=${searchText})}" th:text="${pageNumber}"></a>
                 </li>
                 <li class="page-item" th:if="${currentPage < totalPages}">
-                    <a class="page-link" th:href="@{/center/CT_Center(page=${currentPage + 1})}">&gt;</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" th:href="@{/center/CT_Center(page=${totalPages})}">&raquo;</a>
+                    <a class="page-link" th:href="@{/center/CT_Search(page=${currentPage + 1}, is_sido=${selectedSido}, searchText=${searchText})}">&gt;</a>
                 </li>
             </ul>
         </nav>
@@ -340,7 +341,7 @@
 
 <script>
     // Ajax 요청 후 성공 시 호출되는 함수
-    function handleSearchResults(response) {
+    function handleSearchResults(results) {
         // 결과를 보여줄 영역 선택
         var resultsContainer = $('.divTableBody');
 
@@ -348,11 +349,12 @@
         resultsContainer.empty();
 
         // 받은 결과를 순회하면서 리스트 아이템 생성
-        for (var i = 0; i < response.searchResults.length; i++) {
-            var dto = response.searchResults[i];
+        for (var i = 0; i < results.length; i++) {
+            var dto = results[i];
 
             // 리스트 아이템 생성
             var listItem = $('<div class="divTableRow">');
+            listItem.append('<div class="divTableCell">' + dto.seq + '</div>');
             listItem.append('<div class="divTableCell" onclick="doDetail(\'' + dto.region + '\')">' + dto.region + '</div>');
             listItem.append('<div class="divTableCell">' + dto.centerName + '</div>');
             listItem.append('<div class="divTableCell">' + dto.address + '</div>');
@@ -361,15 +363,11 @@
             // 결과를 보여줄 영역에 리스트 아이템 추가
             resultsContainer.append(listItem);
         }
-
-        // 페이징 업데이트
-        for (var i = 1; i <= response.totalPages; i++) {
-            var pageItem = $('<li class="page-item" th:class="${' + (i == response.currentPage ? '\'active\'' : '\'\'') + '}">');
-            pageItem.append('<a class="page-link" th:href="@{/center/CT_Search(page=' + i + ')}" th:text="' + i + '"></a>');
-            paginationContainer.append(pageItem);
     }
 
+    // 페이지 로드 후 실행
     $(document).ready(function () {
+        // 검색 버튼 클릭 이벤트
         $('#fn_btn_search').click(function (e) {
             e.preventDefault();
 
@@ -399,28 +397,13 @@
         });
     });
 
-
     // 네이버 지도 API 로딩 후 실행될 함수
     function initMap() {
-        var map = new naver.maps.Map('map', {
-            center: new naver.maps.LatLng(37.5699, 126.9673), // 잠실 롯데월드를 중심으로 하는 지도
-            zoom: 15
-        });
-
-        var marker = new naver.maps.Marker({
-            position: new naver.maps.LatLng(37.5112, 127.0981),
-            map: map
-        });
-
-        var marker = new naver.maps.Marker({
-            position: new naver.maps.LatLng(37.5699, 126.9673),
-            map: map
-        });
+        // 지도 초기화 부분 (이 부분은 CT_Center 페이지와 동일하게 유지)
     }
     // API 로딩이 완료되면 initMap 함수 호출
     naver.maps.onJSContentLoaded = initMap;
 </script>
-
 
 
 </body></html>

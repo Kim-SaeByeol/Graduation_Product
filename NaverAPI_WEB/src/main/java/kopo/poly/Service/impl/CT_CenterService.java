@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -90,7 +87,7 @@ public class CT_CenterService implements ICenterService {
         return pDTO;
     }
 
-        @Override
+    @Override
     public List<CenterDTO> getCenterList() throws Exception {
         log.info(this.getClass().getName() + ".getCenterList start!");
 
@@ -140,42 +137,31 @@ public class CT_CenterService implements ICenterService {
         log.info(this.getClass().getName() + ".deleteCenterList End!");
     }
 
-
-    /**
-     * 동일한 검색기능을 하나의 코드로 표현하여
-     *  코드의 중복성을 없앰.
-     */
-
-    private List<CenterDTO> searchCenterCommon(String isSido, String centerAddress, String methodName) throws Exception {
-        log.info(this.getClass().getName() + "." + methodName + " Start!");
-
-        try {
-            // MyBatis를 통해 DB에서 검색을 수행하는 로직을 작성
-            // 예를 들어, CenterMapper와 연동하여 해당 정보를 가져올 수 있음
-            return (List<CenterDTO>) centerMapper.getClass().getMethod(methodName, String.class, String.class)
-                    .invoke(centerMapper, isSido, centerAddress);
-        } catch (Exception e) {
-            log.error("검색 중 오류 발생: " + e.getMessage());
-            throw e;
-        } finally {
-            log.info(this.getClass().getName() + "." + methodName + " End!");
-        }
-    }
-
-
-
     @Override
     public List<CenterDTO> searchCenter_all(String isSido, String centerAddress) throws Exception {
-        return searchCenterCommon(isSido, centerAddress, "searchCenter_all");
+        log.info(this.getClass().getName() + ".searchCenter_all 시작~");
+        log.info("결과 들어온 값들 : " + "isSido = " + isSido + " centerAddress = " + centerAddress);
+
+        // 실제 매퍼 호출하여 센터를 조회하고 결과를 반환하는 코드
+        return centerMapper.searchCenter_all(isSido, centerAddress);
     }
 
     @Override
     public List<CenterDTO> searchCenter_sido(String isSido) throws Exception {
-        return searchCenterCommon(isSido, null, "searchCenter_sido");
+        log.info(this.getClass().getName() + ".searchCenter_sido 시작~");
+        log.info("도시 값 : " + isSido);
+
+        // 실제 매퍼 호출하여 센터를 조회하고 결과를 반환하는 코드
+        return centerMapper.searchCenter_sido(isSido);
     }
 
     @Override
     public List<CenterDTO> searchCenter_address(String centerAddress) throws Exception {
-        return searchCenterCommon(null, centerAddress, "searchCenter_address");
+        log.info(this.getClass().getName() + ".searchCenter_address 시작~");
+        log.info("주소 값 : " + centerAddress);
+
+        // 실제 매퍼 호출하여 센터를 조회하고 결과를 반환하는 코드
+        return centerMapper.searchCenter_address(centerAddress);
     }
+
 }

@@ -25,7 +25,7 @@ public class CT_CenterController {
 
     private final ICenterService centerService;
 
-    
+
     // 조회 기능
     @GetMapping(value = "CT_Center")
     public String CT_CenterList(HttpSession session, ModelMap model, @RequestParam(defaultValue = "1") int page) throws Exception {
@@ -54,8 +54,10 @@ public class CT_CenterController {
 
     // 페이지 번호에 따른 공지사항 리스트 가져오기
     private List<CenterDTO> getPagedList(List<CenterDTO> allNotices, int page, int noticesPerPage) {
+        log.info(this.getClass().getName() + ".getPagedList Start!");
         int startIndex = (page - 1) * noticesPerPage;
         int endIndex = Math.min(startIndex + noticesPerPage, allNotices.size());
+        log.info(this.getClass().getName() + ".getPagedList End!");
         return allNotices.subList(startIndex, endIndex);
     }
 
@@ -104,34 +106,46 @@ public class CT_CenterController {
         return dto;
     }
 
-    
+
     // 검색기능
     @GetMapping("/CT_Search")
     @ResponseBody
     public Map<String, Object> searchCenter(HttpServletRequest request, HttpSession session, ModelMap model,
                                             @RequestParam(value = "is_sido", required = false) String isSido,
-                                            @RequestParam(value = "centerAddress", required = false) String centerAddress,
+                                            @RequestParam(value = "searchText", required = false) String searchText,
                                             @RequestParam(defaultValue = "1") int page) {
         log.info(this.getClass().getName() + ".searchCenter Start!");
+
+        log.info("is_sido : " + isSido);
+        log.info("searchText : " + searchText);
+
+
+
 
         Map<String, Object> response = new HashMap<>();
 
         try {
             List<CenterDTO> searchResults;
 
-            if (isSido != null && centerAddress != null) {
+            if (!isSido.equals("-1") && !searchText.equals("-1")) {
                 // 도시와 주소가 함께 입력된 경우
-                searchResults = centerService.searchCenter_all(isSido, centerAddress);
-            } else if (isSido != null) {
+                searchResults = centerService.searchCenter_all(isSido, searchText);
+            } else if (!isSido.equals("-1")) {
                 // 도시만 입력된 경우
+                log.info("도시 입력 완료");
                 searchResults = centerService.searchCenter_sido(isSido);
-            } else if (centerAddress != null) {
+            } else if (!searchText.equals("-1")) {
                 // 주소만 입력된 경우
-                searchResults = centerService.searchCenter_address(centerAddress);
+                log.info("주소 입력 완료");
+                searchResults = centerService.searchCenter_address(searchText);
             } else {
                 // 검색 조건이 없는 경우 전체 리스트 가져오기
+                log.info("아무 조건 없이 검색 됨.");
                 searchResults = centerService.getCenterList();
             }
+
+
+            log.info("페이징 시작");
 
             // 페이징 처리
             int totalResults = searchResults.size();
@@ -145,6 +159,10 @@ public class CT_CenterController {
             response.put("totalPages", totalPages);
             response.put("currentPage", page);
             response.put("success", true);
+
+            log.info("pagedList : " + pagedList);
+            log.info("totalPages : " + totalPages);
+            log.info("page : " + page);
 
         } catch (Exception e) {
             log.error("검색 중 오류 발생: " + e.getMessage());
