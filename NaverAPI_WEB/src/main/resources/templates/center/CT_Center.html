@@ -343,9 +343,11 @@
     function handleSearchResults(response) {
         // 결과를 보여줄 영역 선택
         var resultsContainer = $('.divTableBody');
+        var paginationContainer = $('#pagination');
 
         // 결과를 보여주기 전에 기존 내용 비우기
         resultsContainer.empty();
+        paginationContainer.empty();
 
         // 받은 결과를 순회하면서 리스트 아이템 생성
         for (var i = 0; i < response.searchResults.length; i++) {
@@ -361,13 +363,43 @@
             // 결과를 보여줄 영역에 리스트 아이템 추가
             resultsContainer.append(listItem);
         }
-
         // 페이징 업데이트
         for (var i = 1; i <= response.totalPages; i++) {
-            var pageItem = $('<li class="page-item" th:class="${' + (i == response.currentPage ? '\'active\'' : '\'\'') + '}">');
-            pageItem.append('<a class="page-link" th:href="@{/center/CT_Search(page=' + i + ')}" th:text="' + i + '"></a>');
+            var pageItem = $('<li class="page-item ' + (i == response.currentPage ? 'active' : '') + '">');
+            var pageLink = $('<a class="page-link" href="#" onclick="loadPage(' + i + ')">' + i + '</a>');
+            pageItem.append(pageLink);
             paginationContainer.append(pageItem);
+        }
+
     }
+    // 페이지 로딩 함수
+    function loadPage(page) {
+        var selectedSido = $('#is_sido').val();
+        var searchText = $('#search').val();
+
+        if (selectedSido === "0") {
+            selectedSido = "-1";
+        }
+
+        if (searchText.trim() === '') {
+            searchText = "-1";
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: '/center/CT_Search',
+            data: { is_sido: selectedSido, searchText: searchText, page: page },
+            success: function (response) {
+                // 성공 시 결과를 처리하는 함수 호출
+                handleSearchResults(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+
 
     $(document).ready(function () {
         $('#fn_btn_search').click(function (e) {
