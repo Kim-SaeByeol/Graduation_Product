@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kopo.poly.mapper.IHelp_CenterMapper">
+
+    <!-- 센터 리스트 쿼리 -->
+    <select id="getHelp_CenterList" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        FROM Help_Center
+        ORDER BY SEQ ASC;
+    </select>
+
+    <!-- 센터 등록 쿼리 -->
+    <insert id="insertHelp_CenterInfo" parameterType="CenterDTO">
+        <selectKey keyProperty="seq" resultType="int" order="BEFORE">
+            SELECT COALESCE(MAX(seq), 0) + 1 FROM Help_Center
+        </selectKey>
+        INSERT INTO Help_Center
+        (
+        SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
+        )
+        VALUES (
+        #{seq}, #{region}, #{centerName}, #{address}, #{phone}, #{x}, #{y}
+        )
+    </insert>
+
+
+
+    <!-- 위도 경도 등록 쿼리 -->
+    <insert id="insertGeocoding" parameterType="GeocodingDTO">
+        INSERT INTO Help_Center (X, Y)
+        VALUES (#{x}, #{y});
+    </insert>
+
+
+    <!-- 센터 상세보기 쿼리 -->
+    <select id="getHelp_CenterInfo" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE,   XADDRESS, YADDRESS
+
+        FROM Help_Center
+        WHERE seq = #{seq};
+
+    </select>
+
+    <!-- 센터 수정 쿼리 -->
+    <update id="updateHelp_CenterInfo" parameterType="CenterDTO">
+        UPDATE Help_Center
+        SET REGION = #{region},
+            CENTER_NAME = #{centerName},
+            ADDRESS = #{address},
+            PHONE = #{phone}
+
+        WHERE seq = #{seq};
+    </update>
+
+    <!-- Address가 수정이 되었다면 위도 경도 수정 쿼리 -->
+    <update id="updateGeocoding" parameterType="GeocodingDTO">
+        UPDATE Help_Center
+        SET XADDRESS = #{xAddress},
+            YADDRESS = #{yAddress}
+        WHERE ADDRESS = #{address};
+    </update>
+
+    <!-- 센터 삭제 쿼리 -->
+    <delete id="deleteHelp_CenterInfo" parameterType="CenterDTO">
+        DELETE FROM Help_Center
+        WHERE SEQ = #{seq};
+    </delete>
+
+    <!-- 도시와 주소로 센터 검색 쿼리 -->
+    <select id="searchCenter_all" parameterType="map" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        FROM Help_Center
+        WHERE (REGION = #{isSido})
+          AND (ADDRESS LIKE CONCAT('%', #{centerAddress}, '%'))
+        ORDER BY REGION, CENTER_NAME DESC
+    </select>
+
+    <!-- 도시로 센터 검색 쿼리 -->
+    <select id="searchCenter_sido" parameterType="String" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        FROM Help_Center
+        WHERE REGION = #{isSido}
+        ORDER BY REGION, CENTER_NAME DESC
+    </select>
+
+    <!-- 주소로 센터 검색 쿼리 -->
+    <select id="searchCenter_address" parameterType="String" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        FROM Help_Center
+        WHERE ADDRESS LIKE CONCAT('%', #{centerAddress}, '%')
+        ORDER BY REGION, CENTER_NAME DESC
+    </select>
+
+
+
+</mapper>

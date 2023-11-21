@@ -3,8 +3,7 @@ package kopo.poly.Service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kopo.poly.DTO.CenterDTO;
-import kopo.poly.Service.ICenterService;
-import kopo.poly.Service.IGeocodingService;
+import kopo.poly.Service.ICT_CenterService;
 import kopo.poly.mapper.ICT_CenterMapper;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.NetworkUtil;
@@ -20,7 +19,7 @@ import java.util.*;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class CT_CenterService implements ICenterService {
+public class CT_CenterService implements ICT_CenterService {
 
     private final ICT_CenterMapper centerMapper;
 
@@ -51,7 +50,7 @@ public class CT_CenterService implements ICenterService {
 
         log.info("query : " + param);
 
-        String url = ICenterService.GeocodingApiURL + param;
+        String url = ICT_CenterService.GeocodingApiURL + param;
 
         log.info("url : " + url);
 

@@ -4,7 +4,7 @@ package kopo.poly.Controller;
 
 import kopo.poly.DTO.CenterDTO;
 import kopo.poly.DTO.MsgDTO;
-import kopo.poly.Service.ICenterService;
+import kopo.poly.Service.ICT_CenterService;
 import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import java.util.*;
 @Controller
 public class CT_CenterController {
 
-    private final ICenterService centerService;
+    private final ICT_CenterService centerService;
 
 
     // 조회 기능
@@ -62,9 +62,16 @@ public class CT_CenterController {
     }
 
     @GetMapping(value = "CT_centerReg")
-    public String centerReg(HttpServletRequest request, HttpSession session) {
-        return "/center/CT_centerReg";
+    public String CT_centerReg(HttpServletRequest request, HttpSession session, ModelMap model) {
+        log.info(this.getClass().getName() + ".CT_centerReg에 들어왔음.");
+        /**
+         * centerReg.html 파일에 selectedInsertType에 값을 넣어 보내
+         *  하나의 html 로 3개의 Center들의 Insert 를 담당함.
+         **/
+         model.addAttribute("selectedInsertType", "CT");
+        return "/center/centerReg";
     }
+
 
 
     @ResponseBody
