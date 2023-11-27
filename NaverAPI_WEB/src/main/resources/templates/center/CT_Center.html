@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>치유지원센터 정보보기</title>
+
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=6589bhpize"></script>
 
     <!--    Google Fonts-->
@@ -371,7 +372,7 @@
             pageItem.append(pageLink);
             paginationContainer.append(pageItem);
         }
-
+        initMap(response.searchResults);
     }
     // 페이지 로딩 함수
     function loadPage(page) {
@@ -434,26 +435,29 @@
 
 
     // 네이버 지도 API 로딩 후 실행될 함수
-    function initMap() {
+    var map = null;
+    function initMap(dList) {
         var map = new naver.maps.Map('map', {
-            center: new naver.maps.LatLng(37.5699, 126.9673), // 잠실 롯데월드를 중심으로 하는 지도
+            center: new naver.maps.LatLng(37.5699, 126.9673),
             zoom: 15
         });
 
-        var marker = new naver.maps.Marker({
-            position: new naver.maps.LatLng(37.5112, 127.0981),
-            map: map
-        });
+        for (var i = 0; i < dList.length; i++) {
+            var dto = dList[i];
+            // x와 y를 숫자로 변환
+            var x = parseFloat(dto.x);
+            var y = parseFloat(dto.y);
 
-        var marker = new naver.maps.Marker({
-            position: new naver.maps.LatLng(37.5699, 126.9673),
-            map: map
-        });
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(y, x),
+                map: map
+            });
+        }
     }
     // API 로딩이 완료되면 initMap 함수 호출
     naver.maps.onJSContentLoaded = initMap;
+
+
 </script>
-
-
 
 </body></html>
