@@ -1,6 +1,6 @@
 package kopo.poly.service;
 
-import kopo.poly.dto.GeocodingDTO;
+import kopo.poly.dto.CenterDTO;
 
 public interface IGeocodingService {
 
@@ -8,5 +8,5 @@ public interface IGeocodingService {
 
 
     // GeocodingAPI를 호출하여 입력된 주소를 변환하기
-    GeocodingDTO Geocoding(GeocodingDTO gDTO) throws Exception;
+    CenterDTO Geocoding(CenterDTO pDTO) throws Exception;
 }

@@ -1,7 +1,6 @@
 package kopo.poly.controller;
 
 import kopo.poly.dto.CenterDTO;
-import kopo.poly.dto.GeocodingDTO;
 import kopo.poly.dto.MsgDTO;
 import kopo.poly.service.ICenterService;
 import kopo.poly.service.IGeocodingService;
@@ -67,8 +66,8 @@ public class CenterController {
 
     @GetMapping(value = "centerReg")
     public String centerReg() {
-        log.info(this.getClass().getName() + ".noticeReg Start!");
-        log.info(this.getClass().getName() + ".noticeReg End!");
+        log.info(this.getClass().getName() + ".centerReg Start!");
+        log.info(this.getClass().getName() + ".centerReg End!");
         return "/center/centerReg";
     }
 
@@ -76,6 +75,7 @@ public class CenterController {
     @ResponseBody
     @PostMapping(value = "centerInsert")
     public MsgDTO CenterInsert(HttpServletRequest request, HttpSession session) {
+
         log.info(this.getClass().getName() + ".CenterInsert Start!");
         String msg = "";
         MsgDTO dto = null;
@@ -91,7 +91,6 @@ public class CenterController {
             log.info("phone : " + phone);
 
             CenterDTO pDTO = new CenterDTO();
-            GeocodingDTO gDTO = new GeocodingDTO();
 
 
             pDTO.setRegion(region);
@@ -99,11 +98,18 @@ public class CenterController {
             pDTO.setAddress(address);
             pDTO.setPhone(phone);
 
-            gDTO.setAddress(address);
-
-
             // geocoding 을 실행하는 코드
-            geocodingService.Geocoding(gDTO);
+            geocodingService.Geocoding(pDTO);
+
+            log.info("현재 CenterDTO 에 저장된 값들 ");
+            log.info("region : " + pDTO.getRegion());
+            log.info("centerName : " + pDTO.getCenterName());
+            log.info("address : " + pDTO.getAddress());
+            log.info("phone : " + pDTO.getPhone());
+            log.info("XAddress : " + pDTO.getXAddress());
+            log.info("YAddress : " + pDTO.getYAddress());
+
+
             // 값을 DB에 저장하는 코드
             centerService.insertCenterInfo(pDTO);
 

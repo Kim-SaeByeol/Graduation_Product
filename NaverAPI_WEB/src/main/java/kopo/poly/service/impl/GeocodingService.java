@@ -1,8 +1,7 @@
 package kopo.poly.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kopo.poly.dto.GeocodingDTO;
-import kopo.poly.mapper.ICenterMapper;
+import kopo.poly.dto.CenterDTO;
 import kopo.poly.service.ICT_CenterService;
 import kopo.poly.service.IGeocodingService;
 import kopo.poly.util.CmmUtil;
@@ -23,9 +22,6 @@ import java.util.Map;
 @Service
 public class GeocodingService implements IGeocodingService {
 
-    private final ICenterMapper ICenterMapper;
-
-
     /**
      * Naver API 사용을 위한 접속 정보 설정
      */
@@ -43,13 +39,13 @@ public class GeocodingService implements IGeocodingService {
     }
 
     @Override
-    public GeocodingDTO Geocoding(GeocodingDTO gDTO) throws Exception {
+    public CenterDTO Geocoding(CenterDTO pDTO) throws Exception {
         log.info(this.getClass().getName() + ".Geocoding Start!");
 
-        log.info("변환할 address : " + gDTO.getAddress());
-        String address = CmmUtil.nvl(gDTO.getAddress());  // 변환할 주소
+        log.info("변환할 address : " + pDTO.getAddress());
+        String address = CmmUtil.nvl(pDTO.getAddress());  // 변환할 주소
 
-        gDTO.setAddress(address);
+        pDTO.setAddress(address);
 
         // 호출할 Geocoding API 정보 설정
         String param = "?query=" + URLEncoder.encode(address, "UTF-8");
@@ -80,18 +76,25 @@ public class GeocodingService implements IGeocodingService {
             String x = (String) myList.get(0).get("x");
             String y = (String) myList.get(0).get("y");
 
-            gDTO.setXAddress(x);
-            gDTO.setYAddress(y);
+            // x 값 처리
+            double xValue = Double.parseDouble(x);
+            x = String.format("%.5f", xValue); // 소수점 다섯 자리까지 유지
+
+            // y 값 처리
+            double yValue = Double.parseDouble(y);
+            y = String.format("%.5f", yValue); // 소수점 다섯 자리까지 유지
+
+            pDTO.setXAddress(x);
+            pDTO.setYAddress(y);
 
             log.info("값이 잘 들어갔는지 볼까?");
-            log.info("x 주소 : " + gDTO.getXAddress());
-            log.info("y 주소 : " + gDTO.getYAddress());
-            log.info("address : " + gDTO.getAddress());
+            log.info("x 주소 : " + pDTO.getXAddress());
+            log.info("y 주소 : " + pDTO.getYAddress());
+            log.info("address : " + pDTO.getAddress());
         } else {
             log.warn("주소 정보가 없습니다.");
         }
-        return gDTO;
+
+        return pDTO;
     }
-
-
 }

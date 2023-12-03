@@ -20,7 +20,7 @@
         SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
         )
         VALUES (
-        #{seq}, #{region}, #{centerName}, #{address}, #{phone}, #{x}, #{y}
+        #{seq}, #{region}, #{centerName}, #{address}, #{phone}, #{xAddress}, #{yAddress}
         )
     </insert>
 
@@ -72,17 +72,5 @@
         ORDER BY REGION, CENTER_NAME DESC
     </select>
 
-    <!-- 위도 경도 등록 쿼리 -->
-    <insert id="insertGeocoding" parameterType="GeocodingDTO">
-        INSERT INTO Center (X, Y)
-        VALUES (#{xAddress}, #{yAddress});
-    </insert>
 
-    <!-- Address가 수정이 되었다면 위도 경도 수정 쿼리 -->
-    <update id="updateGeocoding" parameterType="GeocodingDTO">
-        UPDATE Center
-        SET XADDRESS = #{xAddress},
-            YADDRESS = #{yAddress}
-        WHERE ADDRESS = #{address};
-    </update>
 </mapper>

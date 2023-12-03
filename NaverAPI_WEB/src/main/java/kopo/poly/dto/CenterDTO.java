@@ -15,9 +15,13 @@ public class CenterDTO {
     private String address;     // 주소
     private String phone;      // 담당 연락처
 
+    //
     private String work;    //주요 업무
     private String explan;  //설명
 
+    //Geocoding
+    private String xAddress;    // x 좌표
+    private String yAddress;    // y 좌표
 
     private String status;           // 상태메시지
     private String errorMessage;    //오류 메시지
