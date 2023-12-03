@@ -292,19 +292,19 @@
         <nav aria-label="Page navigation example" style="padding: 15px 0 5px 10px; display: table; margin-left: auto; margin-right: auto; text-align: center;">
             <ul class="pagination pagination-primary" id="pagination">
                 <li class="page-item">
-                    <a class="page-link" th:href="@{/center/CT_Center?page=1}">&laquo;</a>
+                    <a class="page-link" th:href="@{/center/center?page=1}">&laquo;</a>
                 </li>
                 <li class="page-item" th:if="${currentPage > 1}">
-                    <a class="page-link" th:href="@{/center/CT_Center(page=${currentPage - 1})}">&lt;</a>
+                    <a class="page-link" th:href="@{/center/center(page=${currentPage - 1})}">&lt;</a>
                 </li>
                 <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:class="${pageNumber == currentPage ? 'active' : ''}">
-                    <a class="page-link" th:href="@{/center/CT_Center(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                    <a class="page-link" th:href="@{/center/center(page=${pageNumber})}" th:text="${pageNumber}"></a>
                 </li>
                 <li class="page-item" th:if="${currentPage < totalPages}">
-                    <a class="page-link" th:href="@{/center/CT_Center(page=${currentPage + 1})}">&gt;</a>
+                    <a class="page-link" th:href="@{/center/cCenter(page=${currentPage + 1})}">&gt;</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" th:href="@{/center/CT_Center(page=${totalPages})}">&raquo;</a>
+                    <a class="page-link" th:href="@{/center/cCenter(page=${totalPages})}">&raquo;</a>
                 </li>
             </ul>
         </nav>

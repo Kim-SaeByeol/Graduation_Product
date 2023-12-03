@@ -1,29 +1,24 @@
-package kopo.poly.Service;
+package kopo.poly.service;
 
-import kopo.poly.DTO.CenterDTO;
+import kopo.poly.dto.CenterDTO;
 
 import java.util.List;
 
-public interface IHelp_CenterService {
+public interface ICenterService {
 
-    //GeocodingAPI 호출링크 (주소 -> 위도, 경도 변환 )
-    String GeocodingApiURL = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode";
-
-
-    // GeocodingAPI를 호출하여 입력된 주소를 변환하기
-    CenterDTO Geocoding(CenterDTO pDTO) throws Exception;
-
-    //조회
+    //전체 조회
     List<CenterDTO> getCenterList() throws Exception;
 
-
-    //추가
+    //센터 추기등록
     void insertCenterInfo(CenterDTO pDTO) throws Exception;
 
-    //수정
+    //센터 상제 정보보기
+    CenterDTO getCenterInfo(CenterDTO pDTO) throws Exception;
+
+    //센터 정보 수정
     void updateCenterList(CenterDTO centerDTO) throws Exception;
 
-    //삭제
+    //센터 정보 삭제
     void deleteCenterList(CenterDTO pDTO) throws Exception;
 
     //검색기능 (도시 와 주소를 함께 입력하였을 때)

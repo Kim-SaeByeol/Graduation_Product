@@ -1,7 +1,7 @@
-package kopo.poly.Service.impl;
+package kopo.poly.service.impl;
 
-import kopo.poly.DTO.UserInfoDTO;
-import kopo.poly.Service.IUserInfoService;
+import kopo.poly.dto.UserInfoDTO;
+import kopo.poly.service.IUserInfoService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

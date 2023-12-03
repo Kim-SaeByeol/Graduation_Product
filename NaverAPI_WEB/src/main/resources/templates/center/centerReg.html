@@ -6,44 +6,6 @@
   <!-- jQuery -->
   <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
 
-  <script type="text/javascript">
-    function determineSelectedCenterInsert() {
-
-
-      // HTML이 로드된 후에 동작하도록 설정
-      $(document).ready(function () {
-        determineSelectedCenterInsert();
-      });
-
-      var selectedInsertType;
-
-      // Ajax 요청을 통해 서버로부터 값을 받아옴
-      $.ajax({
-        type: 'GET',
-        url: '/getSelectedInsertType', // 실제로는 해당 URL을 서버에서 제공해야 함
-        success: function (response) {
-          selectedInsertType = response.selectedInsertType;
-
-          // 받아온 값을 기반으로 동적으로 action을 설정
-          setFormAction(selectedInsertType);
-        },
-        error: function (error) {
-          console.error(error);
-        }
-      });
-    }
-
-    function setFormAction(selectedInsertType) {
-      if (selectedInsertType === "CT") {
-        $('#centerInsertForm').attr('action', '/center/CT_centerInsert');
-      } else if (selectedInsertType === "Cure") {
-        $('#centerInsertForm').attr('action', '/center/Cure_centerInsert');
-      } else if (selectedInsertType === "Help") {
-        $('#centerInsertForm').attr('action', '/center/Help_centerInsert');
-      }
-    }
-
-  </script>
 </head>
 <body>
 

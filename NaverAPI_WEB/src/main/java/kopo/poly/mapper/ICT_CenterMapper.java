@@ -1,10 +1,9 @@
 package kopo.poly.mapper;
 
-import kopo.poly.DTO.CenterDTO;
+import kopo.poly.dto.CenterDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface ICT_CenterMapper {

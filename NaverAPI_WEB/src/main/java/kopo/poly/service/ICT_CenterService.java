@@ -1,6 +1,6 @@
-package kopo.poly.Service;
+package kopo.poly.service;
 
-import kopo.poly.DTO.CenterDTO;
+import kopo.poly.dto.CenterDTO;
 
 import java.util.List;
 

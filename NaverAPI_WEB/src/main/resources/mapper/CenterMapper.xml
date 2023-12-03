@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="kopo.poly.mapper.ICure_CenterMapper">
+<mapper namespace="kopo.poly.mapper.ICenterMapper">
 
     <!-- 센터 리스트 쿼리 -->
-    <select id="getCure_CenterList" resultType="CenterDTO">
-        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
-        FROM Cure_Center
+    <select id="getCenterList" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
+        FROM Center
         ORDER BY SEQ ASC;
     </select>
 
     <!-- 센터 등록 쿼리 -->
-    <insert id="insertCure_CenterInfo" parameterType="CenterDTO">
+    <insert id="insertCenterInfo" parameterType="CenterDTO">
         <selectKey keyProperty="seq" resultType="int" order="BEFORE">
-            SELECT COALESCE(MAX(seq), 0) + 1 FROM Cure_Center
+            SELECT COALESCE(MAX(seq), 0) + 1 FROM Center
         </selectKey>
-        INSERT INTO Cure_Center
+        INSERT INTO Center
         (
         SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
         )
@@ -24,53 +24,33 @@
         )
     </insert>
 
-
-
-    <!-- 위도 경도 등록 쿼리 -->
-    <insert id="insertGeocoding" parameterType="GeocodingDTO">
-        INSERT INTO Cure_Center (X, Y)
-        VALUES (#{x}, #{y});
-    </insert>
-
-
     <!-- 센터 상세보기 쿼리 -->
-    <select id="getCure_CenterInfo" resultType="CenterDTO">
-        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE,   XADDRESS, YADDRESS
-
-        FROM Cure_Center
+    <select id="getCenterInfo" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        FROM Center
         WHERE seq = #{seq};
-
     </select>
 
     <!-- 센터 수정 쿼리 -->
-    <update id="updateCure_CenterInfo" parameterType="CenterDTO">
-        UPDATE Cure_Center
+    <update id="updateCenterInfo" parameterType="CenterDTO">
+        UPDATE Center
         SET REGION = #{region},
             CENTER_NAME = #{centerName},
             ADDRESS = #{address},
             PHONE = #{phone}
-
         WHERE seq = #{seq};
     </update>
 
-    <!-- Address가 수정이 되었다면 위도 경도 수정 쿼리 -->
-    <update id="updateGeocoding" parameterType="GeocodingDTO">
-        UPDATE Cure_Center
-        SET XADDRESS = #{xAddress},
-            YADDRESS = #{yAddress}
-        WHERE ADDRESS = #{address};
-    </update>
-
     <!-- 센터 삭제 쿼리 -->
-    <delete id="deleteCure_CenterInfo" parameterType="CenterDTO">
-        DELETE FROM Cure_Center
+    <delete id="deleteCenterInfo" parameterType="CenterDTO">
+        DELETE FROM Center
         WHERE SEQ = #{seq};
     </delete>
 
     <!-- 도시와 주소로 센터 검색 쿼리 -->
     <select id="searchCenter_all" parameterType="map" resultType="CenterDTO">
-        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
-        FROM Cure_Center
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
+        FROM Center
         WHERE (REGION = #{isSido})
           AND (ADDRESS LIKE CONCAT('%', #{centerAddress}, '%'))
         ORDER BY REGION, CENTER_NAME DESC
@@ -78,20 +58,31 @@
 
     <!-- 도시로 센터 검색 쿼리 -->
     <select id="searchCenter_sido" parameterType="String" resultType="CenterDTO">
-        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
-        FROM Cure_Center
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
+        FROM Center
         WHERE REGION = #{isSido}
         ORDER BY REGION, CENTER_NAME DESC
     </select>
 
     <!-- 주소로 센터 검색 쿼리 -->
     <select id="searchCenter_address" parameterType="String" resultType="CenterDTO">
-        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
-        FROM Cure_Center
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
+        FROM Center
         WHERE ADDRESS LIKE CONCAT('%', #{centerAddress}, '%')
         ORDER BY REGION, CENTER_NAME DESC
     </select>
 
+    <!-- 위도 경도 등록 쿼리 -->
+    <insert id="insertGeocoding" parameterType="GeocodingDTO">
+        INSERT INTO Center (X, Y)
+        VALUES (#{xAddress}, #{yAddress});
+    </insert>
 
-
+    <!-- Address가 수정이 되었다면 위도 경도 수정 쿼리 -->
+    <update id="updateGeocoding" parameterType="GeocodingDTO">
+        UPDATE Center
+        SET XADDRESS = #{xAddress},
+            YADDRESS = #{yAddress}
+        WHERE ADDRESS = #{address};
+    </update>
 </mapper>

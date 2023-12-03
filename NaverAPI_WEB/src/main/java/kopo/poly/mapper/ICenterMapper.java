@@ -1,25 +1,26 @@
 package kopo.poly.mapper;
 
-import kopo.poly.DTO.CenterDTO;
+import kopo.poly.dto.CenterDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface IHelp_CenterMapper {
-
+public interface ICenterMapper {
     //센터 리스트
-    List<CenterDTO> getHelp_CenterList() throws Exception;
+    List<CenterDTO> getCenterList() throws Exception;
 
     //센터 정보 등록
-    void insertHelp_CenterInfo(CenterDTO pDTO) throws Exception;
+    void insertCenterInfo(CenterDTO pDTO) throws Exception;
 
+    //센터 상세 보기
+    CenterDTO getCenterInfo(CenterDTO pDTO) throws Exception;
 
     //센터 정보 수정
-    void updateHelp_CenterInfo(CenterDTO pDTO) throws Exception;
+    void updateCenterInfo(CenterDTO pDTO) throws Exception;
 
     //센터 정보 삭제
-    void deleteHelp_CenterInfo(CenterDTO pDTO) throws Exception;
+    void deleteCenterInfo(CenterDTO pDTO) throws Exception;
 
 
     // 검색 기능
@@ -29,5 +30,7 @@ public interface IHelp_CenterMapper {
 
     List<CenterDTO> searchCenter_address(String centerAddress);
 
-    // 여기까지
+
+
+
 }
