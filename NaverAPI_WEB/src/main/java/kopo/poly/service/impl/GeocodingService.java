@@ -83,12 +83,12 @@ public class GeocodingService implements IGeocodingService {
             double yValue = Double.parseDouble(y);
             y = String.format("%.5f", yValue); // 소수점 다섯 자리까지 유지
 
-            pDTO.setXAddress(x);
-            pDTO.setYAddress(y);
+            pDTO.setX(x);
+            pDTO.setY(y);
 
             log.info("값이 잘 들어갔는지 볼까?");
-            log.info("x 주소 : " + pDTO.getXAddress());
-            log.info("y 주소 : " + pDTO.getYAddress());
+            log.info("x 주소 : " + pDTO.getX());
+            log.info("y 주소 : " + pDTO.getY());
             log.info("address : " + pDTO.getAddress());
         } else {
             log.warn("주소 정보가 없습니다.");

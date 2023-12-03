@@ -20,8 +20,8 @@ public class CenterDTO {
     private String explan;  //설명
 
     //Geocoding
-    private String xAddress;    // x 좌표
-    private String yAddress;    // y 좌표
+    private String x;    // x 좌표
+    private String y;    // y 좌표
 
     private String status;           // 상태메시지
     private String errorMessage;    //오류 메시지

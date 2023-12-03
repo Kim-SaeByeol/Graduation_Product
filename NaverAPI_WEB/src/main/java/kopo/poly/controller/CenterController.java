@@ -49,6 +49,7 @@ public class CenterController {
         model.addAttribute("rList", pagedList);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
+        model.addAttribute("dList", rList);
 
 
         log.info(this.getClass().getName() + ".CenterList End!");
@@ -105,8 +106,8 @@ public class CenterController {
             log.info("centerName : " + pDTO.getCenterName());
             log.info("address : " + pDTO.getAddress());
             log.info("phone : " + pDTO.getPhone());
-            log.info("XAddress : " + pDTO.getXAddress());
-            log.info("YAddress : " + pDTO.getYAddress());
+            log.info("XAddress : " + pDTO.getX());
+            log.info("YAddress : " + pDTO.getY());
 
 
             // 값을 DB에 저장하는 코드
@@ -132,8 +133,6 @@ public class CenterController {
                                             @RequestParam(value = "searchText", required = false) String searchText,
                                             @RequestParam(defaultValue = "1") int page) {
         log.info(this.getClass().getName() + ".searchCenter Start!");
-        log.info("is_sido : " + isSido);
-        log.info("searchText : " + searchText);
 
         Map<String, Object> response = new HashMap<>();
 

@@ -41,7 +41,7 @@
         SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
         )
         VALUES (
-        #{seq}, #{region}, #{centerName}, #{address}, #{phone}, #{xAddress}, #{yAddress}
+        #{seq}, #{region}, #{centerName}, #{address}, #{phone}, #{x}, #{y}
         )
     </insert>
 
