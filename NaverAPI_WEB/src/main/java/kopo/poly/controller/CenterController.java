@@ -28,7 +28,9 @@ public class CenterController {
     @GetMapping(value = "center")
     public String CenterList(HttpSession session, ModelMap model, @RequestParam(defaultValue = "1") int page) throws Exception {
         log.info(this.getClass().getName() + ".CenterList Start!");
-        
+
+
+
 //
 //        //수정해야할 부분
 //        session.setAttribute("SESSION_USER_ID", "USER01");
@@ -38,9 +40,13 @@ public class CenterController {
         List<CenterDTO> rList = Optional.ofNullable(centerService.getCenterList())
                 .orElseGet(ArrayList::new);
 
+        Map<String, Object> response = new HashMap<>();
+        response.put("searchResults", rList);
+
+
         // 페이징 처리
         int totalCenter = rList.size();
-        int CenterPerPage = 5; // 페이지당 표시할 공지사항 수 (원하는 값으로 수정)
+        int CenterPerPage = 10; // 페이지당 표시할 공지사항 수 (원하는 값으로 수정)
         int totalPages = (int) Math.ceil((double) totalCenter / CenterPerPage);
 
         // 페이징된 공지사항 리스트 가져오기
@@ -157,7 +163,7 @@ public class CenterController {
 
             // 페이징 처리
             int totalResults = searchResults.size();
-            int resultsPerPage = 5; // 페이지당 표시할 결과 수 (원하는 값으로 수정)
+            int resultsPerPage = 10; // 페이지당 표시할 결과 수 (원하는 값으로 수정)
             int totalPages = (int) Math.ceil((double) totalResults / resultsPerPage);
 
             // 페이징된 결과 리스트 가져오기
