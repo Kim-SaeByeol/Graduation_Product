@@ -5,9 +5,30 @@
 
     <!-- 센터 리스트 쿼리 -->
     <select id="getCenterList" resultType="CenterDTO">
-        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
+        SELECT
+            SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y,
+            CASE
+                WHEN REGION = '서울' THEN 1
+                WHEN REGION = '경기' THEN 2
+                WHEN REGION = '부산' THEN 3
+                WHEN REGION = '인천' THEN 4
+                WHEN REGION = '세종' THEN 5
+                WHEN REGION = '강원' THEN 6
+                WHEN REGION = '대구' THEN 7
+                WHEN REGION = '대전' THEN 8
+                WHEN REGION = '광주' THEN 9
+                WHEN REGION = '울산' THEN 10
+                WHEN REGION = '충북' THEN 11
+                WHEN REGION = '충남' THEN 12
+                WHEN REGION = '전북' THEN 13
+                WHEN REGION = '전남' THEN 14
+                WHEN REGION = '경북' THEN 15
+                WHEN REGION = '경남' THEN 16
+                WHEN REGION = '제주' THEN 17
+                ELSE 0  -- 예외 처리, 다른 지역 이외의 경우
+                END AS region_number
         FROM Center
-        ORDER BY SEQ ASC;
+        ORDER BY region_number ASC;
     </select>
 
     <!-- 센터 등록 쿼리 -->

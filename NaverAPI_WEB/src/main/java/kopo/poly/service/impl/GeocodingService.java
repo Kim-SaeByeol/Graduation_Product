@@ -2,7 +2,6 @@ package kopo.poly.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kopo.poly.dto.CenterDTO;
-import kopo.poly.service.ICT_CenterService;
 import kopo.poly.service.IGeocodingService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.NetworkUtil;
@@ -52,7 +51,7 @@ public class GeocodingService implements IGeocodingService {
 
         log.info("query : " + param);
 
-        String url = ICT_CenterService.GeocodingApiURL + param;
+        String url = IGeocodingService.GeocodingApiURL + param;
 
         log.info("url : " + url);
 

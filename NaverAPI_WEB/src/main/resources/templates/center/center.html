@@ -354,7 +354,6 @@
 
             // 리스트 아이템 생성
             var listItem = $('<div class="divTableRow">');
-            listItem.append('<div class="divTableCell">' + ( i + 1 + (response.currentPage - 1) * 5) + '</div>');
             listItem.append('<div class="divTableCell" onclick="doDetail(\'' + dto.region + '\')">' + dto.region + '</div>');
             listItem.append('<div class="divTableCell">' + dto.centerName + '</div>');
             listItem.append('<div class="divTableCell">' + dto.address + '</div>');
@@ -387,7 +386,7 @@
 
         $.ajax({
             type: 'GET',
-            url: '/center/CT_Search',
+            url: '/center/Search',
             data: { is_sido: selectedSido, searchText: searchText, page: page },
             success: function (response) {
                 // 성공 시 결과를 처리하는 함수 호출
@@ -418,7 +417,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '/center/CT_Search',
+                url: '/center/Search',
                 data: { is_sido: selectedSido, searchText: searchText },
                 success: function (response) {
                     // 성공 시 결과를 처리하는 함수 호출
