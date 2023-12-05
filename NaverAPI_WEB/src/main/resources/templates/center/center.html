@@ -1,64 +1,37 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/basic">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <title>치유지원센터 정보보기</title>
+    <title>지원센터 정보보기</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=6589bhpize"></script>
 
-    <!--    Google Fonts-->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/js/menu.js"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
 
-    <!--Fontawesom-->
-    <link rel="stylesheet" href="/css/font-awesome.min.css">
-
-    <!--Animated CSS-->
-    <link rel="stylesheet" type="text/css" href="/css/animate.min.css">
-
-    <!--    main CSS-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/fullpage.css">
+    <link rel="stylesheet" href="/css/boardnav.css">
+    <link rel="stylesheet" href="/css/re.css">
+    <link rel="stylesheet" href="/css/etc.css">
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/ui_content.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
-
-    <!-- jQuery -->
-    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
-
-    <!--Main JavaScript            -->
-    <script src="/css/main.css"></script>
-
-
-    <!-- Bootstrap -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <!--Bootstrap Carousel-->
-    <link type="text/css" rel="stylesheet" href="/css/carousel.css" />
-
-    <link rel="stylesheet" href="/css/isotope/style.css">
-
-    <!--Main Stylesheet-->
-    <link href="/css/style.css" rel="stylesheet">
-    <!--Responsive Framework-->
-    <link href="/css/responsive.css" rel="stylesheet">
-
-    <script type="text/javascript" src="/nav/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="/nav/menu.js"></script>
-    <script type="text/javascript" src="/nav/common.js"></script>
-    <link rel="stylesheet" href="/css/nav/ui_content.css">
-    <link rel="stylesheet" href="/css/nav/common.css" />
-    <link rel="stylesheet" href="/css/nav/carousel.css">
-    <link rel="stylesheet" href="/css/nav/responsive.css">
-    <link rel="stylesheet" href="/css/nav/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/nav/style.css">
-    <link rel="stylesheet" href="/css/nav/font-awesome.min.css">
-
 
 </head>
 <body>
-<!-- 데이터 출력을 위한 코드 추가 -->
-<div id="wrapper" class="main">
-    <!-- header -->
-    <header id="header">
+<div id="wrapper">
+    <!-- 내비게이션 바 -->
+    <header id="header" class>
         <div class="head_box">
-            <h1 class="logo"><img src="/img/logo.png"></h1>
+            <h1 class="logo"><a href="/main/main">마음을 나누는 교실</a></h1>
             <button type="button" class="btnMenu"><span>메뉴</span></button>
             <!-- gnb -->
             <nav id="gnb">
@@ -78,11 +51,9 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#"><span>지역센터</span></a>
+                        <a href="/center/center"><span>지역 상담센터</span></a>
                         <ul>
-                            <li><a href="#">지역 상담센터</a></li>
-                            <li><a href="#">경기 보호지원센터</a></li>
-                            <li><a href="#">교원 치유지원센터</a></li>
+                            <li><a href="/center/center">지역 상담센터</a></li>
                         </ul>
                     </li>
                     <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
@@ -90,8 +61,8 @@
                         <a href="#"><span>온라인 상담</span></a>
                         <ul>
                             <li><a href="#">이용방법</a></li>
-                            <li><a href="#">예약</a></li>
-                            <li><a href="#">참가하기</a></li>
+                            <li><a href="/online/reservation">예약</a></li>
+
                         </ul>
                     </li>
                     <li>
@@ -104,17 +75,21 @@
                 </ul>
             </nav>
             <!-- //gnb -->
-            <div class="topGlob">
+            <div class="topGlob" th:if="${session.SS_USER_NAME == null}">
                 <ul>
                     <li><a href="/user/userRegForm">회원가입</a></li>
                     <li><a href="/user/login">로그인</a></li>
                 </ul>
             </div>
+            <div class="topGlob" th:if="${session.SS_USER_NAME != null}">
+                <p th:text="'안녕하세요, ' + ${session.SS_USER_NAME} + '님!'"></p>
+                <a href="/user/logout">로그아웃</a>
+            </div>
 
             <nav id="mGnb">
                 <button type="button" class="btnClose"><span>닫기</span></button>
                 <div class="mbTop">
-                    <div class="mlogo"><a href="#"><img src="/img/logo.png"></a></div>
+                    <div class="mlogo"><a href="/main/main"><img src="/img/logo.png"></a></div>
                     <ul>
                         <li><a href="/user/userRegForm">회원가입</a></li>
                         <li><a href="/user/login">로그인</a></li>
@@ -140,9 +115,9 @@
                         </ul>
                     </li>
                     <li class="has-sub">
-                        <a href="#">지역센터</a>
+                        <a href="/center/center">지역센터</a>
                         <ul>
-                            <li><a href="#">지역 상담센터</a>
+                            <li><a href="/center/center">지역 상담센터</a>
                             </li>
                             <li><a href="#">경기 보호지원센터</a>
                             </li>
@@ -155,9 +130,9 @@
                         <ul>
                             <li><a href="#">이용방법 </a>
                             </li>
-                            <li><a href="#">예약</a>
+                            <li><a href="/online/reservation">예약</a>
                             </li>
-                            <li><a href="#">참가하기</a>
+
                             </li>
                         </ul>
                     </li>
@@ -166,7 +141,7 @@
                         <ul>
                             <li><a href="#">문의 남기기</a>
                             </li>
-                            <li><a href="#">참가하기</a>
+
                             </li>
                         </ul>
                     </li>
@@ -175,169 +150,214 @@
             <div class="fix_bg"></div>
         </div>
     </header>
+    <!-- // 내비게이션 바 -->
+    <div id="subContainer">
+        <div class="subSkin bg"></div>
 
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="wel_header">
-                    <ul class="nav navbar-nav navbar-right main_menu">
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-                        <li><a class="dropdown-item" id="CTcenter">지역센터</a></li>
-                        <li><a class="dropdown-item" id="CT_center">지역 상담센터</a></li>
-                        <li><a class="dropdown-item" id="HelpCenter">경기교권 보호 지원센터</a></li>
-                        <li><a class="dropdown-item" id="cureCenter">교원치유지원센터</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br>
-    <br> <br>
-    <br> <br>
-    <br> <br>
-    <br>
-    <div class="containermapts">
-        <!--컨테이너 왼쪽-->
-        <div class="box">
-            <div id="map" style="height:20%;"></div>
-        </div>
-
-        <!-- 컨테이너 우측-->
-        <div class="box">
-
-            <form name="fn_mapBoardSearchForm" id="fn_mapBoardSearchForm" method="get" action="/CT_Search">
-                <fieldset>
-                    <legend>상세검색</legend>
-                    <div class="searchBox">
-                        <input type='hidden' name='mId' value='40' />
+        <nav id="lnb">
+            <div class="area_subVisual">
+                <div class="inner">
+                    <div class="lnb pc">
+                        <div class="home">
+                            <a href="/main/main"><img src="/img/icon_home.png" alt="홈"></a>
+                        </div>
                         <ul>
-                            <!-- 단일 -->
                             <li>
-                                <select name="is_sido" id="is_sido" title="시도">
-                                    <option value="0">시도 선택</option>
-                                    <option value="서울">서울</option>
-                                    <option value="경기">경기</option>
-                                    <option value="부산">부산</option>
-                                    <option value="인천">인천</option>
-                                    <option value="세종">세종</option>
-                                    <option value="강원">강원</option>
-                                    <option value="대구">대구</option>
-                                    <option value="대전">대전</option>
-                                    <option value="광주">광주</option>
-                                    <option value="울산">울산</option>
-                                    <option value="충북">충북</option>
-                                    <option value="충남">충남</option>
-                                    <option value="전북">전북</option>
-                                    <option value="전남">전남</option>
-                                    <option value="경북">경북</option>
-                                    <option value="경남">경남</option>
-                                    <option value="제주">제주</option>
-                                </select>
-                            </li>
-                            <!-- 옵션 -->
-                            <li class="search_keyField full">
-
+                                <a href="/user/userRegForm" title="회원가입">회원가입</a>
                             </li>
                             <li>
-                                <input type="text" placeholder="센터 주소를 입력해 주세요." id="search" title="wnth"/>
+                                <a href="/user/login" title="로그인">로그인</a>
                             </li>
-                            <li><input type="submit" id="fn_btn_search" class="btn" value="검색" title="검색" /></li>
+                            <li>
+                                <a href="/user/logout" title="로그아웃">로그아웃</a>
+                            </li>
+                            <li>
+                                <a href="/user/searchUserId" title="아이디찾기">아이디찾기</a>
+                            </li>
+                            <li>
+                                <a href="/user/searchPassword" title="비밀번호찾기">비밀번호찾기</a>
+                            </li>
                         </ul>
                     </div>
-                </fieldset>
-            </form>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
+                    <div class="lnb mobile">
+                        <div class="home">
+                            <a href="/main/main"><img src="/img/icon_home.png" alt="홈"></a>
+                        </div>
+                        <div class="large">
+                            <a href="/notice/noticeList" style="color: #ffffff" title="공지사항">공지사항</a>
+                        </div>
 
-            <div class="col-md-12">
-                <div class="wel_header">
-                    <h2>지원 센터 바로가기</h2>
+                        <div class="small">
+                            <span data-mobile-tit=""><a href="/user/logout" title="로그아웃" style="color: #ffffff">로그아웃</a></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-
-
-    <hr>
-    <hr>
-
-
-
-
-    <div class="container">
-        <div class="divTable minimalistBlack">
-            <div class="divTableHeading">
-                <div class="divTableRow">
-                    <div class="divTableHead">지역</div>
-                    <div class="divTableHead">센터명</div>
-                    <div class="divTableHead">주소</div>
-                    <div class="divTableHead">연락처</div>
-                </div>
-            </div>
-            <div class="divTableBody">
-                <div class="divTableRow" th:each="dto, iterStat : ${rList}">
-                    <div class="divTableCell" th:attr="onclick='doDetail(\'' + ${dto.region} + '\')'" th:text="${dto.region}"></div>
-                    <div class="divTableCell" th:text="${dto.centerName}"></div>
-                    <div class="divTableCell" th:text="${dto.address}"></div>
-                    <div class="divTableCell" th:text="${dto.phone}"></div>
-                </div>
-            </div>
-        </div>
-        <nav aria-label="Page navigation example" style="padding: 15px 0 5px 10px; display: table; margin-left: auto; margin-right: auto; text-align: center;">
-            <ul class="pagination pagination-primary" id="pagination">
-                <li class="page-item">
-                    <a class="page-link" th:href="@{/center/center?page=1}">&laquo;</a>
-                </li>
-                <li class="page-item" th:if="${currentPage > 1}">
-                    <a class="page-link" th:href="@{/center/center(page=${currentPage - 1})}">&lt;</a>
-                </li>
-                <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:class="${pageNumber == currentPage ? 'active' : ''}">
-                    <a class="page-link" th:href="@{/center/center(page=${pageNumber})}" th:text="${pageNumber}"></a>
-                </li>
-                <li class="page-item" th:if="${currentPage < totalPages}">
-                    <a class="page-link" th:href="@{/center/cCenter(page=${currentPage + 1})}">&gt;</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" th:href="@{/center/cCenter(page=${totalPages})}">&raquo;</a>
-                </li>
-            </ul>
         </nav>
-    </div>
+
+        <br>
+        <br> <br>
+        <br> <br>
+        <br> <br>
+        <br>
+        <div class="containermapts">
+            <!--컨테이너 왼쪽-->
+            <div class="box" style="width: 500px;">
+                <div id="map" style="height:20%;"></div>
+            </div>
+
+            <!-- 컨테이너 우측-->
+            <div class="box">
+                <form name="fn_mapBoardSearchForm" id="fn_mapBoardSearchForm" method="get" action="/Search">
+                    <fieldset>
+                        <legend>상세검색</legend>
+                        <div class="searchBox">
+                            <input type='hidden' name='mId' value='40' />
+                            <ul>
+                                <!-- 단일 -->
+                                <li>
+                                    <select name="is_sido" id="is_sido" title="시도">
+                                        <option value="0">시도 선택</option>
+                                        <option value="서울">서울</option>
+                                        <option value="경기">경기</option>
+                                        <option value="부산">부산</option>
+                                        <option value="인천">인천</option>
+                                        <option value="세종">세종</option>
+                                        <option value="강원">강원</option>
+                                        <option value="대구">대구</option>
+                                        <option value="대전">대전</option>
+                                        <option value="광주">광주</option>
+                                        <option value="울산">울산</option>
+                                        <option value="충북">충북</option>
+                                        <option value="충남">충남</option>
+                                        <option value="전북">전북</option>
+                                        <option value="전남">전남</option>
+                                        <option value="경북">경북</option>
+                                        <option value="경남">경남</option>
+                                        <option value="제주">제주</option>
+                                    </select>
+                                </li>
+                                <!-- 옵션 -->
+                                <li class="search_keyField full">
+
+                                </li>
+                                <li>
+                                    <input type="text" placeholder="센터 주소를 입력해 주세요." id="search" title="wnth"/>
+                                </li>
+                                <li><input type="submit" id="fn_btn_search" class="btn" value="검색" title="검색" /></li>
+                            </ul>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
 
 
-    <br>
 
 
-
-    <!--Start of footer-->
-    <section id="footer">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-6">
-                    <div class="copyright">
-                        <p>@ 2016 - Design By <span><a href="">&#9798;</a></span></p>
-                    </div>
+        <div id="content">
+            <h2 class="title" style="text-align: center;">지원센터 정보</h2>
+            <div id="cms_board_article">
+                <table class="listTypeA">
+                    <caption>지원센터 리스트</caption>
+                    <colgroup>
+                        <col width="30px" class="mbNone">
+                        <col width="120px">
+                        <col width="60px">
+                        <col width="60px" class="mbNone">
+                        <col width="30px" class="mbNone">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th scope="col" class="mbNone" style="background-color: #90d9d5">지역</th>
+                        <th scope="col" style="background-color: #90d9d5">센터명</th>
+                        <th scope="col" style="background-color: #90d9d5">주소</th>
+                        <th scope="col" class="end mbNone" style="background-color: #90d9d5">연락처</th>
+                        <!-- 마지막 th에 class="end" -->
+                    </tr>
+                    </thead>
+                    <tbody class="alignC">
+                    <tr th:each="dto, iterStat : ${rList}">
+                        <td class="mbNone" th:attr="onclick='doDetail(\'' + ${dto.region} + '\')'"
+                            th:text="${dto.region}"></td>
+                        <td class="subject" style="align-content: center" th:attr="onclick='doDetail(\'' + ${dto.region} + '\')'"
+                            th:text="${dto.centerName}"></td>
+                        <td th:text="${dto.address}"></td>
+                        <td class="mbNone" th:text="${dto.phone}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="topGlob" th:if="${session.SS_USER_NAME == 'admin'}">
+                    <span class="btnBc" style="float: right"><a href="/notice/noticeReg" title="글쓰기"
+                                                                class="fn_btn_list">글쓰기</a></span>
                 </div>
-                <div class="col-md-6">
-                    <div class="designer">
-                        <p>A Design By <a href="#">XpeedStudio</a></p>
-                    </div>
+                <div class="topGlob" th:if="${session.SS_USER_NAME != 'admin'}">
                 </div>
             </div>
-            <!--End of row-->
         </div>
-        <!--End of container-->
-    </section>
-    <!--End of footer-->
+    </div>
 </div>
+<nav aria-label="Page navigation example" style="text-align: center;">
+    <ul class="pagination pagination-primary" id="pagination">
+        <li class="page-item">
+            <a class="page-link" th:href="@{/center/center?page=1}">&laquo;</a>
+        </li>
+        <li class="page-item" th:if="${currentPage > 1}">
+            <a class="page-link" th:href="@{/center/center(page=${currentPage - 1})}">&lt;</a>
+        </li>
+        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:class="${pageNumber == currentPage ? 'active' : ''}">
+            <a class="page-link" th:href="@{/center/center(page=${pageNumber})}" th:text="${pageNumber}"></a>
+        </li>
+        <li class="page-item" th:if="${currentPage < totalPages}">
+            <a class="page-link" th:href="@{/center/center(page=${currentPage + 1})}">&gt;</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" th:href="@{/center/center(page=${totalPages})}">&raquo;</a>
+        </li>
+    </ul>
+</nav>
+</nav>
+<section id="footer">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-6">
+                <div class="copyright">
+                    <p>마음을 나누는 교실<span><a href="">&#9798;</a></span></p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="designer">
+                </div>
+            </div>
+        </div>
+        <!--End of row-->
+    </div>
+    <!--End of container-->
+</section>
+</body>
+
 
 <script>
+
+    $(document).ready(function () {
+        // API 로딩이 완료되면 initMap 함수 호출
+        naver.maps.onJSContentLoaded = initMap;
+
+        $.ajax({
+            url: '/center/center', // 해당 URL로 요청을 보냅니다. 컨트롤러의 매핑 경로에 맞게 수정해주세요.
+            type: 'GET',
+            success: function (data) {
+                var rList = data.searchResults; // 서버에서 받아온 데이터 중 rList를 가져옵니다.
+                initMap(data.searchResults);
+            },
+            error: function () {
+                console.error('Failed to fetch data.');
+            }
+        });
+    });
+
+
+
     // Ajax 요청 후 성공 시 호출되는 함수
     function handleSearchResults(response) {
         // 결과를 보여줄 영역 선택
@@ -451,10 +471,7 @@
             });
         }
     }
-    // API 로딩이 완료되면 initMap 함수 호출
-    naver.maps.onJSContentLoaded = initMap;
-
-
 </script>
 
-</body></html>
+
+</html>

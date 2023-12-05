@@ -29,20 +29,12 @@ public class CenterController {
     public String CenterList(HttpSession session, ModelMap model, @RequestParam(defaultValue = "1") int page) throws Exception {
         log.info(this.getClass().getName() + ".CenterList Start!");
 
-
-
-//
-//        //수정해야할 부분
-//        session.setAttribute("SESSION_USER_ID", "USER01");
-//        //
-
+        session.getAttribute("SS_USER_ID");
 
         List<CenterDTO> rList = Optional.ofNullable(centerService.getCenterList())
                 .orElseGet(ArrayList::new);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("searchResults", rList);
-
+        List<CenterDTO> gList = new ArrayList<>();
 
         // 페이징 처리
         int totalCenter = rList.size();
@@ -61,6 +53,14 @@ public class CenterController {
         log.info(this.getClass().getName() + ".CenterList End!");
         return "/center/center";
     }
+
+    public List<CenterDTO> centerStart() throws Exception {
+        List<CenterDTO> rList = Optional.ofNullable(centerService.getCenterList())
+                .orElseGet(ArrayList::new);
+        return rList;
+    }
+
+
 
     // 페이지 번호에 따른 공지사항 리스트 가져오기
     private List<CenterDTO> getPagedList(List<CenterDTO> allNotices, int page, int noticesPerPage) {
@@ -132,6 +132,10 @@ public class CenterController {
         return dto;
     }
 
+
+
+
+
     @GetMapping("/Search")
     @ResponseBody
     public Map<String, Object> searchCenter(HttpServletRequest request, HttpSession session, ModelMap model,
@@ -186,16 +190,16 @@ public class CenterController {
 
 
 
-//
-//
-//    // 센터 정보 상세보기 폼
-//    // 수정 필요
-//    @GetMapping(value = "centerInfo")
-//    public String centerInfo(HttpServletRequest request, ModelMap model) throws Exception {
-//        log.info(this.getClass().getName() + ".centerInfo Start!");
-//        log.info(this.getClass().getName() + ".centerInfo End!");
-//        return "/center/centerInfo";
-//    }
+
+
+    // 센터 정보 상세보기 폼
+    // 수정 필요
+    @GetMapping(value = "centerInfo")
+    public String centerInfo(HttpServletRequest request, ModelMap model) throws Exception {
+        log.info(this.getClass().getName() + ".centerInfo Start!");
+        log.info(this.getClass().getName() + ".centerInfo End!");
+        return "center/centerInfo";
+    }
 //
 //    // 센터 정보 수정하기 폼
 //    // 수정 필요
