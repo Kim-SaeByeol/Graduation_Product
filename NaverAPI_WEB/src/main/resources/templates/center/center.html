@@ -361,7 +361,7 @@
     // Ajax 요청 후 성공 시 호출되는 함수
     function handleSearchResults(response) {
         // 결과를 보여줄 영역 선택
-        var resultsContainer = $('.divTableBody');
+        var resultsContainer = $('.alignC');
         var paginationContainer = $('#pagination');
 
         // 결과를 보여주기 전에 기존 내용 비우기
@@ -373,11 +373,11 @@
             var dto = response.searchResults[i];
 
             // 리스트 아이템 생성
-            var listItem = $('<div class="divTableRow">');
-            listItem.append('<div class="divTableCell" onclick="doDetail(\'' + dto.region + '\')">' + dto.region + '</div>');
-            listItem.append('<div class="divTableCell">' + dto.centerName + '</div>');
-            listItem.append('<div class="divTableCell">' + dto.address + '</div>');
-            listItem.append('<div class="divTableCell">' + dto.phone + '</div>');
+            var listItem = $('<tr>');
+            listItem.append('<td class="mbNone" onclick="doDetail(\'' + dto.region + '\')">' + dto.region + '</td>');
+            listItem.append('<td class="subject" style="align-content: center" onclick="doDetail(\'' + dto.region + '\')">' + dto.centerName + '</td>');
+            listItem.append('<td>' + dto.address + '</td>');
+            listItem.append('<td class="mbNone">' + dto.phone + '</td>');
 
             // 결과를 보여줄 영역에 리스트 아이템 추가
             resultsContainer.append(listItem);
