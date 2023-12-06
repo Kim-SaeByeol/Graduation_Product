@@ -38,16 +38,19 @@
         </selectKey>
         INSERT INTO Center
         (
-        SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
+        SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, CENTER_TYPE,
+        DIRECTIONS, BUSINESS, OTHER, X, Y, MAPURL
         )
         VALUES (
-        #{seq}, #{region}, #{centerName}, #{address}, #{phone}, #{x}, #{y}
+        #{seq}, #{region}, #{centerName}, #{address}, #{phone},
+            #{centerType}, #{directions}, #{business}, #{other}, #{x}, #{y}, #{mapUrl}
         )
     </insert>
 
     <!-- 센터 상세보기 쿼리 -->
     <select id="getCenterInfo" resultType="CenterDTO">
-        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, CENTER_TYPE,
+               DIRECTIONS, BUSINESS, OTHER, X, Y
         FROM Center
         WHERE seq = #{seq};
     </select>
@@ -90,6 +93,15 @@
         SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, X, Y
         FROM Center
         WHERE ADDRESS LIKE CONCAT('%', #{centerAddress}, '%')
+        ORDER BY REGION, CENTER_NAME DESC
+    </select>
+
+    <!-- 센터명을 클릭하였을 때 조회해줄 쿼리-->
+    <select id="searchCenterName" parameterType="String" resultType="CenterDTO">
+        SELECT SEQ, REGION, CENTER_NAME, ADDRESS, PHONE, CENTER_TYPE,
+               DIRECTIONS, BUSINESS, OTHER, MAPURL
+        FROM Center
+        WHERE SEQ = #{seq}
         ORDER BY REGION, CENTER_NAME DESC
     </select>
 

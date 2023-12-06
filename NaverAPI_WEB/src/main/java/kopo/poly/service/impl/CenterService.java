@@ -118,4 +118,11 @@ public class CenterService implements ICenterService {
         // 실제 매퍼 호출하여 센터를 조회하고 결과를 반환하는 코드
         return ICenterMapper.searchCenter_address(centerAddress);
     }
+
+    @Override
+    public List<CenterDTO> searchCenterName(String seq) throws Exception {
+        log.info(this.getClass().getName() + ".searchCenterName 시작~");
+        log.info("seq 값 : " + seq);
+        return ICenterMapper.searchCenterName(seq);
+    }
 }

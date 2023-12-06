@@ -34,8 +34,6 @@ public class CenterController {
         List<CenterDTO> rList = Optional.ofNullable(centerService.getCenterList())
                 .orElseGet(ArrayList::new);
 
-        List<CenterDTO> gList = new ArrayList<>();
-
         // 페이징 처리
         int totalCenter = rList.size();
         int CenterPerPage = 10; // 페이지당 표시할 공지사항 수 (원하는 값으로 수정)
@@ -53,14 +51,6 @@ public class CenterController {
         log.info(this.getClass().getName() + ".CenterList End!");
         return "/center/center";
     }
-
-    public List<CenterDTO> centerStart() throws Exception {
-        List<CenterDTO> rList = Optional.ofNullable(centerService.getCenterList())
-                .orElseGet(ArrayList::new);
-        return rList;
-    }
-
-
 
     // 페이지 번호에 따른 공지사항 리스트 가져오기
     private List<CenterDTO> getPagedList(List<CenterDTO> allNotices, int page, int noticesPerPage) {
@@ -91,10 +81,22 @@ public class CenterController {
             String centerName = CmmUtil.nvl(request.getParameter("centerName"));
             String address = CmmUtil.nvl(request.getParameter("address"));
             String phone = CmmUtil.nvl(request.getParameter("phone"));
+
+            String directions = CmmUtil.nvl(request.getParameter("directions"));
+            String centerType = CmmUtil.nvl(request.getParameter("centerType"));
+            String business = CmmUtil.nvl(request.getParameter("business"));
+            String other = CmmUtil.nvl(request.getParameter("other"));
+
+
             log.info("region : " + region);
             log.info("centerName : " + centerName);
             log.info("address : " + address);
             log.info("phone : " + phone);
+
+            log.info("directions : " + directions);
+            log.info("centerType : " + centerType);
+            log.info("business : " + business);
+            log.info("other : " + other);
 
             CenterDTO pDTO = new CenterDTO();
 
@@ -104,6 +106,11 @@ public class CenterController {
             pDTO.setAddress(address);
             pDTO.setPhone(phone);
 
+            pDTO.setDirections(directions);
+            pDTO.setCenterType(centerType);
+            pDTO.setBusiness(business);
+            pDTO.setOther(other);
+
             // geocoding 을 실행하는 코드
             geocodingService.Geocoding(pDTO);
 
@@ -112,14 +119,26 @@ public class CenterController {
             log.info("centerName : " + pDTO.getCenterName());
             log.info("address : " + pDTO.getAddress());
             log.info("phone : " + pDTO.getPhone());
+
+            log.info("phone : " + pDTO.getCenterType());
+            log.info("phone : " + pDTO.getDirections());
+            log.info("phone : " + pDTO.getBusiness());
+            log.info("phone : " + pDTO.getOther());
+
             log.info("XAddress : " + pDTO.getX());
             log.info("YAddress : " + pDTO.getY());
 
+            if(pDTO.getGCerror() != "1") {
+                // 값을 DB에 저장하는 코드
+                centerService.insertCenterInfo(pDTO);
+                msg = "등록되었습니다.";
+            } else {
+                msg = "실패하였습니다. 실패 원인 : 주소 값이 정확하지 않습니다.";
+                pDTO.setGCerror("0");
+            }
 
-            // 값을 DB에 저장하는 코드
-            centerService.insertCenterInfo(pDTO);
 
-            msg = "등록되었습니다.";
+
         } catch (Exception e) {
             msg = "실패하였습니다. : " + e.getMessage();
             log.info(e.toString());
@@ -188,19 +207,26 @@ public class CenterController {
         return response;
     }
 
-
-
-
-
     // 센터 정보 상세보기 폼
-    // 수정 필요
-    @GetMapping(value = "centerInfo")
-    public String centerInfo(HttpServletRequest request, ModelMap model) throws Exception {
+    @GetMapping(value = "centerinfo")
+    public String centerInfo(ModelMap model, @RequestParam(value = "seq", required = false) String seq) throws Exception {
         log.info(this.getClass().getName() + ".centerInfo Start!");
+
+        List<CenterDTO> rList = Optional.ofNullable(centerService.searchCenterName(seq))
+                .orElseGet(ArrayList::new);
+
+        // 데이터를 모델에 추가
+        model.addAttribute("rList", rList);
+        log.info("전달 받은 seq의 값은 : " + seq);
+        log.info("출력할 DB 열 크기 : " + rList.size());
+
+
         log.info(this.getClass().getName() + ".centerInfo End!");
-        return "center/centerInfo";
+
+        // 해당 뷰로 이동
+        return "/center/centerinfo";
     }
-//
+
 //    // 센터 정보 수정하기 폼
 //    // 수정 필요
 //    @GetMapping(value = "centerEditInfo")

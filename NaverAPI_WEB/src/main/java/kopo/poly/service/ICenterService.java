@@ -30,4 +30,8 @@ public interface ICenterService {
     //검색기능 (주소만 입력하였을 떄)
     List<CenterDTO> searchCenter_address(String centerAddress) throws Exception;
 
+    //검색기능 (센터명을 눌러 클릭하였을 때)
+    List<CenterDTO> searchCenterName(String seq) throws Exception;
+
+
 }

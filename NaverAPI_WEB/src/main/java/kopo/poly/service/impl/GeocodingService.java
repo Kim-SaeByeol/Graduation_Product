@@ -41,6 +41,10 @@ public class GeocodingService implements IGeocodingService {
     public CenterDTO Geocoding(CenterDTO pDTO) throws Exception {
         log.info(this.getClass().getName() + ".Geocoding Start!");
 
+        String URL = "";
+
+        pDTO.setGCerror("0");
+
         log.info("변환할 address : " + pDTO.getAddress());
         String address = CmmUtil.nvl(pDTO.getAddress());  // 변환할 주소
 
@@ -83,15 +87,20 @@ public class GeocodingService implements IGeocodingService {
             double yValue = Double.parseDouble(y);
             y = String.format("%.5f", yValue); // 소수점 다섯 자리까지 유지
 
+            URL = "http://map.naver.com/index.nhn?" + "elng=" + x + "&elat=" + y + "&etext=" + pDTO.getCenterName() + "&menu=route&pathType=1";
+
             pDTO.setX(x);
             pDTO.setY(y);
+            pDTO.setMapUrl(URL);
 
             log.info("값이 잘 들어갔는지 볼까?");
             log.info("x 주소 : " + pDTO.getX());
             log.info("y 주소 : " + pDTO.getY());
+            log.info("URL 주소 : " + pDTO.getMapUrl());
             log.info("address : " + pDTO.getAddress());
         } else {
             log.warn("주소 정보가 없습니다.");
+            pDTO.setGCerror("1");
         }
 
         return pDTO;
