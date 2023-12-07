@@ -76,7 +76,7 @@ public class CenterController {
         String msg = "";
         MsgDTO dto = null;
         try {
-            //            String userId = CmmUtil.nvl((String) session.getAttribute("SESSION_USER_ID"));
+            String userId = CmmUtil.nvl((String) session.getAttribute("SS_USER_ID"));
             String region = CmmUtil.nvl(request.getParameter("region"));
             String centerName = CmmUtil.nvl(request.getParameter("centerName"));
             String address = CmmUtil.nvl(request.getParameter("address"));
@@ -87,7 +87,7 @@ public class CenterController {
             String business = CmmUtil.nvl(request.getParameter("business"));
             String other = CmmUtil.nvl(request.getParameter("other"));
 
-
+            log.info("userId : " + userId);
             log.info("region : " + region);
             log.info("centerName : " + centerName);
             log.info("address : " + address);
@@ -209,8 +209,11 @@ public class CenterController {
 
     // 센터 정보 상세보기 폼
     @GetMapping(value = "centerinfo")
-    public String centerInfo(ModelMap model, @RequestParam(value = "seq", required = false) String seq) throws Exception {
+    public String centerInfo(HttpSession session, ModelMap model, @RequestParam(value = "seq", required = false) String seq) throws Exception {
         log.info(this.getClass().getName() + ".centerInfo Start!");
+
+        session.getAttribute("SS_USER_ID");
+        session.setAttribute("SS_CENTER_SEQ", seq);
 
         List<CenterDTO> rList = Optional.ofNullable(centerService.searchCenterName(seq))
                 .orElseGet(ArrayList::new);
@@ -227,75 +230,140 @@ public class CenterController {
         return "/center/centerinfo";
     }
 
-//    // 센터 정보 수정하기 폼
-//    // 수정 필요
-//    @GetMapping(value = "centerEditInfo")
-//    public String centerEditInfo(HttpServletRequest request, ModelMap model) throws Exception {
-//        log.info(this.getClass().getName() + ".centerEditInfo Start!");
-//        log.info(this.getClass().getName() + ".centerEditInfo End!");
-//        return "/center/centerEditInfo";
-//    }
-//
-//    @ResponseBody
-//    @PostMapping(value = "noticeUpdate")
-//    public MsgDTO noticeUpdate(HttpSession session, HttpServletRequest request) {
-//        log.info(this.getClass().getName() + ".noticeUpdate Start!");
-//        String msg = "";
-//        MsgDTO dto = null;
-//        try {
-//            String userId = CmmUtil.nvl((String) session.getAttribute("SESSION_USER_ID"));
-//            String nSeq = CmmUtil.nvl(request.getParameter("nSeq"));
-//            String title = CmmUtil.nvl(request.getParameter("title"));
-//            String noticeYn = CmmUtil.nvl(request.getParameter("noticeYn"));
-//            String contents = CmmUtil.nvl(request.getParameter("contents"));
-//            log.info("userId : " + userId);
-//            log.info("nSeq : " + nSeq);
-//            log.info("title : " + title);
-//            log.info("noticeYn : " + noticeYn);
-//            log.info("contents : " + contents);
-//            NoticeDTO pDTO = new NoticeDTO();
-//            pDTO.setUserId(userId);
-//            pDTO.setNoticeSeq(nSeq);
-//            pDTO.setTitle(title);
-//            pDTO.setNoticeYn(noticeYn);
-//            pDTO.setContents(contents);
-//            noticeService.updateNoticeInfo(pDTO);
-//            msg = "수정되었습니다.";
-//        } catch (Exception e) {
-//            msg = "실패하였습니다. : " + e.getMessage();
-//            log.info(e.toString());
-//            e.printStackTrace();
-//        } finally {
-//            dto = new MsgDTO();
-//            dto.setMsg(msg);
-//            log.info(this.getClass().getName() + ".noticeUpdate End!");
-//        }
-//        return dto;
-//    }
-//
-//    @ResponseBody
-//    @PostMapping(value = "noticeDelete")
-//    public MsgDTO noticeDelete(HttpServletRequest request) {
-//        log.info(this.getClass().getName() + ".noticeDelete Start!");
-//        String msg = "";
-//        MsgDTO dto = null;
-//        try {
-//            String nSeq = CmmUtil.nvl(request.getParameter("nSeq"));
-//            log.info("nSeq : " + nSeq);
-//            NoticeDTO pDTO = new NoticeDTO();
-//            pDTO.setNoticeSeq(nSeq);
-//            noticeService.deleteNoticeInfo(pDTO);
-//            msg = "삭제되었습니다.";
-//        } catch (Exception e) {
-//            msg = "실패하였습니다. : " + e.getMessage();
-//            log.info(e.toString());
-//            e.printStackTrace();
-//        } finally {
-//            dto = new MsgDTO();
-//            dto.setMsg(msg);
-//            log.info(this.getClass().getName() + ".noticeDelete End!");
-//        }
-//        return dto;
-//    }
+    // 센터 정보 수정하기 폼
+    @GetMapping(value = "centerEditInfo")
+    public String centerEditInfo(HttpServletRequest request, ModelMap model) throws Exception {
+        log.info(this.getClass().getName() + ".centerEditInfo Start!");
+        log.info(this.getClass().getName() + ".centerEditInfo End!");
+        return "/center/centerEditInfo";
+    }
+
+    @ResponseBody
+    @PostMapping(value = "centerUpdate")
+    public MsgDTO centerUpdate(HttpSession session, HttpServletRequest request) {
+        log.info(this.getClass().getName() + ".centerUpdate Start!");
+        String msg = "";
+        MsgDTO dto = null;
+
+        try {
+            CenterDTO pDTO = new CenterDTO();
+
+            String userId = CmmUtil.nvl((String) session.getAttribute("SS_USER_ID"));
+            String seq = CmmUtil.nvl((String) session.getAttribute("SS_CENTER_SEQ"));
+
+            String region = CmmUtil.nvl(request.getParameter("region"));
+            String centerName = CmmUtil.nvl(request.getParameter("centerName"));
+            String address = CmmUtil.nvl(request.getParameter("address"));
+            String phone = CmmUtil.nvl(request.getParameter("phone"));
+
+            String directions = CmmUtil.nvl(request.getParameter("directions"));
+            String centerType = CmmUtil.nvl(request.getParameter("centerType"));
+            String business = CmmUtil.nvl(request.getParameter("business"));
+            String other = CmmUtil.nvl(request.getParameter("other"));
+
+            log.info("userId : " + userId);
+            log.info("seq : " + seq);
+            log.info("region : " + region);
+            log.info("centerName : " + centerName);
+            log.info("address : " + address);
+            log.info("phone : " + phone);
+
+            log.info("directions : " + directions);
+            log.info("centerType : " + centerType);
+            log.info("business : " + business);
+            log.info("other : " + other);
+
+            pDTO.setRegion(region);
+            pDTO.setSeq(seq);
+            pDTO.setCenterName(centerName);
+            pDTO.setAddress(address);
+            pDTO.setPhone(phone);
+
+            pDTO.setDirections(directions);
+            pDTO.setCenterType(centerType);
+            pDTO.setBusiness(business);
+            pDTO.setOther(other);
+
+            // geocoding 을 실행하는 코드
+            geocodingService.Geocoding(pDTO);
+
+            log.info("현재 CenterDTO 에 저장된 값들 ");
+            log.info("SEQ : " + pDTO.getSeq());
+            log.info("region : " + pDTO.getRegion());
+            log.info("centerName : " + pDTO.getCenterName());
+            log.info("address : " + pDTO.getAddress());
+            log.info("phone : " + pDTO.getPhone());
+
+            log.info("CenterType : " + pDTO.getCenterType());
+            log.info("Directions : " + pDTO.getDirections());
+            log.info("Business : " + pDTO.getBusiness());
+            log.info("Other : " + pDTO.getOther());
+
+            log.info("XAddress : " + pDTO.getX());
+            log.info("YAddress : " + pDTO.getY());
+
+            if(pDTO.getGCerror() != "1") {
+                // 값을 DB에 저장하는 코드
+                centerService.updateCenterList(pDTO);
+                msg = "등록되었습니다.";
+            } else {
+                msg = "실패하였습니다. 실패 원인 : 주소 값이 정확하지 않습니다.";
+                pDTO.setGCerror("0");
+            }
+
+
+
+        } catch (Exception e) {
+            msg = "실패하였습니다. : " + e.getMessage();
+            log.info(e.toString());
+            e.printStackTrace();
+        } finally {
+            dto = new MsgDTO();
+            dto.setMsg(msg);
+            log.info(this.getClass().getName() + ".centerUpdate End!");
+        }
+        return dto;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "centerDelete")
+    public MsgDTO centerDelete(HttpServletRequest request, HttpSession session) {
+        log.info(this.getClass().getName() + ".centerDelete Start!");
+
+        String msg = ""; // 메시지 내용
+        MsgDTO dto = null; // 결과 메시지 구조
+
+        try {
+            String seq = CmmUtil.nvl((String)session.getAttribute("SS_CENTER_SEQ"));
+
+            log.info("seq : " + seq);
+
+            /*
+             * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
+             */
+            CenterDTO pDTO = new CenterDTO();
+            pDTO.setSeq(seq); // String 타입을 long 타입으로 변경
+
+            // 게시글 삭제하기 DB
+            centerService.deleteCenterList(pDTO);
+
+            msg = "삭제되었습니다.";
+
+        } catch (Exception e) {
+            msg = "실패하였습니다. : " + e.getMessage();
+            log.info(e.toString());
+            e.printStackTrace();
+
+        } finally {
+            // 결과 메시지 전달하기
+            dto = new MsgDTO();
+            dto.setMsg(msg);
+
+            log.info(this.getClass().getName() + ".centerDelete End!");
+
+        }
+
+        return dto;
+    }
 
 }

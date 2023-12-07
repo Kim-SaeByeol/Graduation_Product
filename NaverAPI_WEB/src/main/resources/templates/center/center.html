@@ -27,6 +27,34 @@
         .subject {
             cursor: pointer;
         }
+
+        /* 목록 버튼 스타일 */
+        .list-button {
+            text-decoration: none;
+            color: #fff;
+            background-color: #90d9d5;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-right: 1px;
+            display: inline-block;
+            margin-left: auto;
+            text-align: right;
+            margin-top: 10px; /* 필요에 따라 조절 */
+
+
+        }
+
+        .list-button:hover {
+            background-color: #45a049;
+        }
+
+        /* 목록 버튼 위치 조절 */
+        .list-button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -297,6 +325,12 @@
             <a class="page-link" th:href="@{/center/center(page=${totalPages})}">&raquo;</a>
         </li>
     </ul>
+    <div class="topGlob" th:if="${session.SS_USER_NAME == 'admin'}">
+                    <span class="btnBc" style="float: right"><a href="/center/centerReg" title="센터 등록"
+                                                                class="list-button">센터 등록</a></span>
+    </div>
+    <div class="topGlob" th:if="${session.SS_USER_NAME != 'admin'}">
+    </div>
 </nav>
 </nav>
 <section id="footer">

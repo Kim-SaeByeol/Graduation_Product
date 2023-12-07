@@ -58,12 +58,21 @@
     <!-- 센터 수정 쿼리 -->
     <update id="updateCenterInfo" parameterType="CenterDTO">
         UPDATE Center
-        SET REGION = #{region},
+        SET
+            REGION = #{region},
             CENTER_NAME = #{centerName},
             ADDRESS = #{address},
-            PHONE = #{phone}
+            PHONE = #{phone},
+            CENTER_TYPE = #{centerType},
+            DIRECTIONS = #{directions},
+            BUSINESS = #{business},
+            OTHER = #{other},
+            X = #{x},
+            Y = #{y},
+            MAPURL = #{mapUrl}
         WHERE seq = #{seq};
     </update>
+
 
     <!-- 센터 삭제 쿼리 -->
     <delete id="deleteCenterInfo" parameterType="CenterDTO">

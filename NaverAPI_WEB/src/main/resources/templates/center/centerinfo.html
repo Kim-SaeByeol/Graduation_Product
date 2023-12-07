@@ -42,6 +42,7 @@
         th {
             background-color: #90d9d5;
             color: white;
+            width: 135px;
         }
 
         .scrollable {
@@ -55,18 +56,22 @@
 
         .container th {
             border: 2px solid #90d9d5;
-            width: 140px;
         }
 
         /* 목록 버튼 스타일 */
         .list-button {
             text-decoration: none;
             color: #fff;
-            background-color: #4caf50;
+            background-color: #90d9d5;
             padding: 10px 20px;
             border-radius: 5px;
             margin-right: 1px;
             display: inline-block;
+            margin-left: auto;
+            text-align: right;
+            margin-top: 10px; /* 필요에 따라 조절 */
+
+
         }
 
         .list-button:hover {
@@ -79,19 +84,7 @@
             bottom: 20px;
             right: 20px;
         }
-        .list-button-container {
-            text-align: right;
-            margin-top: 10px; /* 필요에 따라 조절 */
-        }
 
-        .list-button {
-            text-decoration: none;
-            color: #fff;
-            background-color: #4caf50;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin-right: 1px;
-        }
     </style>
 </head>
 <body>
@@ -143,15 +136,36 @@
             </tr>
             </tbody>
         </table>
+<!--        <div class="topGlob" th:if="${session.SS_USER_NAME == 'admin'}">-->
+                    <span class="btnBc" style="float: right"> <a href="/center/centerEditInfo" class="list-button">수정</a></span>
+                    <span class="btnBc" style="float: right">  <a href="/center/centerDelete" class="list-button">삭제</a></span>
+<!--        </div>-->
+<!--        <div class="topGlob" th:if="${session.SS_USER_NAME != 'admin'}">-->
+<!--        </div>-->
 </div>
-<script>
-    // 여기에 DB에서 정보를 가져와서 각 항목에 동적으로 대입하는 로직을 추가하세요.
+    <script>
+        // 여기에 DB에서 정보를 가져와서 각 항목에 동적으로 대입하는 로직을 추가하세요.
 
-    function openNaverMap(button) {
-        var mapUrl = button.getAttribute('data-mapUrl');
-        // 이제 mapUrl을 사용할 수 있습니다.
-        window.open(mapUrl, "_blank", "width=800, height=600");
-    }
-</script>
+        function openNaverMap(button) {
+            var mapUrl = button.getAttribute('data-mapUrl');
+            // 이제 mapUrl을 사용할 수 있습니다.
+            window.open(mapUrl, "_blank", "width=800, height=600");
+        }
+
+        window.onload = function() {
+            // URL에서 seq 값을 추출
+            var seq = new URLSearchParams(window.location.search).get('seq');
+
+            // seq 값을 다음 HTML 페이지로 전달할 수 있도록 링크를 생성
+            var editLink = document.querySelector('.list-button[href="/center/centerEditInfo"]');
+            var deleteLink = document.querySelector('.list-button[href="/center/centerDelete"]');
+
+            // seq 값이 존재하면 링크에 추가
+            if (seq) {
+                editLink.href += "?seq=" + seq;
+                deleteLink.href += "?seq=" + seq;
+            }
+        };
+    </script>
 </body>
 </html>

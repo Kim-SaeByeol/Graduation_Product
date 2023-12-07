@@ -31,7 +31,4 @@ public interface ICenterMapper {
     List<CenterDTO> searchCenter_address(String centerAddress);
 
     List<CenterDTO> searchCenterName(String seq);
-
-
-
 }

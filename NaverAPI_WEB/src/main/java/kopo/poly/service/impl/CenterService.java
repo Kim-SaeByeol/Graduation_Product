@@ -123,6 +123,9 @@ public class CenterService implements ICenterService {
     public List<CenterDTO> searchCenterName(String seq) throws Exception {
         log.info(this.getClass().getName() + ".searchCenterName 시작~");
         log.info("seq 값 : " + seq);
+        CenterDTO pdto = new CenterDTO();
+        pdto.setSeq(seq);
+        log.info("DTO에 SEQ값이 들어 갔냐? : " + pdto.getSeq());
         return ICenterMapper.searchCenterName(seq);
     }
 }
