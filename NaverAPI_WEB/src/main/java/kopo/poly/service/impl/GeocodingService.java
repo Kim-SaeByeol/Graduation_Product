@@ -1,18 +1,14 @@
-package kopo.poly.Service.impl;
-
+package kopo.poly.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kopo.poly.DTO.CenterDTO;
-import kopo.poly.Service.ICenterService;
-import kopo.poly.Service.IGeocodingService;
-import kopo.poly.mapper.ICT_CenterMapper;
+import kopo.poly.dto.CenterDTO;
+import kopo.poly.service.IGeocodingService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.NetworkUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -23,9 +19,7 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class CT_CenterService implements ICenterService {
-
-    private final ICT_CenterMapper centerMapper;
+public class GeocodingService implements IGeocodingService {
 
     /**
      * Naver API 사용을 위한 접속 정보 설정
@@ -46,15 +40,22 @@ public class CT_CenterService implements ICenterService {
     @Override
     public CenterDTO Geocoding(CenterDTO pDTO) throws Exception {
         log.info(this.getClass().getName() + ".Geocoding Start!");
+
+        String URL = "";
+
+        pDTO.setGCerror("0");
+
         log.info("변환할 address : " + pDTO.getAddress());
         String address = CmmUtil.nvl(pDTO.getAddress());  // 변환할 주소
+
+        pDTO.setAddress(address);
 
         // 호출할 Geocoding API 정보 설정
         String param = "?query=" + URLEncoder.encode(address, "UTF-8");
 
         log.info("query : " + param);
 
-        String url = ICenterService.GeocodingApiURL + param;
+        String url = IGeocodingService.GeocodingApiURL + param;
 
         log.info("url : " + url);
 
@@ -78,65 +79,30 @@ public class CT_CenterService implements ICenterService {
             String x = (String) myList.get(0).get("x");
             String y = (String) myList.get(0).get("y");
 
+            // x 값 처리
+            double xValue = Double.parseDouble(x);
+            x = String.format("%.5f", xValue); // 소수점 다섯 자리까지 유지
+
+            // y 값 처리
+            double yValue = Double.parseDouble(y);
+            y = String.format("%.5f", yValue); // 소수점 다섯 자리까지 유지
+
+            URL = "http://map.naver.com/index.nhn?" + "elng=" + x + "&elat=" + y + "&etext=" + pDTO.getCenterName() + "&menu=route&pathType=1";
+
             pDTO.setX(x);
             pDTO.setY(y);
+            pDTO.setMapUrl(URL);
 
-            log.info("x 주소 : " + x);
-            log.info("y 주소 : " + y);
+            log.info("값이 잘 들어갔는지 볼까?");
+            log.info("x 주소 : " + pDTO.getX());
+            log.info("y 주소 : " + pDTO.getY());
+            log.info("URL 주소 : " + pDTO.getMapUrl());
+            log.info("address : " + pDTO.getAddress());
         } else {
             log.warn("주소 정보가 없습니다.");
+            pDTO.setGCerror("1");
         }
 
         return pDTO;
-    }
-
-        @Override
-    public List<CenterDTO> getCenterList() throws Exception {
-        log.info(this.getClass().getName() + ".getCenterList start!");
-
-        List<CenterDTO> resultList = centerMapper.getCT_CenterList();
-        if (resultList == null) {
-            log.info("resultList is null!");
-        } else if (resultList.isEmpty()) {
-            log.info("resultList is empty!");
-        } else {
-            log.info("resultList size: " + resultList.size());
-        }
-
-        return centerMapper.getCT_CenterList();
-    }
-
-    @Transactional
-    @Override
-    public void insertCenterInfo(CenterDTO centerDTO) throws Exception {
-        log.info(this.getClass().getName() + ".insertCenterInfo Start!");
-        centerMapper.insertCT_CenterInfo(centerDTO);
-
-        log.info("잘 들어갔는지 봐볼까?");
-        log.info("상태메시지 : " + centerDTO.getStatus());
-        log.info("지역명 : " + centerDTO.getRegion());
-        log.info("센터명 : " + centerDTO.getCenterName());
-        log.info("주소 : " + centerDTO.getAddress());
-        log.info("x좌표 : " + centerDTO.getX());
-        log.info("y좌표 : " + centerDTO.getY());
-        log.info(this.getClass().getName() + ".insertCenterInfo End!");
-    }
-
-    @Transactional
-    @Override
-    public void updateCenterList(CenterDTO centerDTO) throws Exception {
-        log.info(this.getClass().getName() + ".updateCenterList start!");
-        centerMapper.updateCT_CenterInfo(centerDTO);
-        log.info(this.getClass().getName() + ".updateCenterList End!");
-    }
-
-
-
-    @Transactional
-    @Override
-    public void deleteCenterList(CenterDTO pDTO) throws Exception {
-        log.info(this.getClass().getName() + ".deleteCenterList start!");
-        centerMapper.deleteCT_CenterInfo(pDTO);
-        log.info(this.getClass().getName() + ".deleteCenterList End!");
     }
 }

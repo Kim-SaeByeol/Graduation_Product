@@ -1,4 +1,4 @@
-package kopo.poly.Controller;
+package kopo.poly.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

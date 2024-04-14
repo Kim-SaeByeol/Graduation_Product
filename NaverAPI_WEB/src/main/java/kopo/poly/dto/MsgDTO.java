@@ -1,4 +1,4 @@
-package kopo.poly.DTO;
+package kopo.poly.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
