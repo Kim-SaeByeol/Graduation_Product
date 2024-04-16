@@ -1,11 +1,14 @@
-package repositoty.entity;
+package poly.graduation_products.repositoty.entity;
+
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "USER_INFO")

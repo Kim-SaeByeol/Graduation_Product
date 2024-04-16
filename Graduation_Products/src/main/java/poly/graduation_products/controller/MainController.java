@@ -1,4 +1,4 @@
-package kopo.poly.controller;
+package poly.graduation_products.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>로그인 페이지</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+    .login-container {
+        width: 100%;
+        max-width: 400px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        text-align: center;
+    }
+    .form-control {
+        margin-bottom: 20px;
+    }
+    .form-control input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 5px;
+    }
+    .btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .btn, .social-btn {
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        color: white;
+        font-size: 16px;
+    }
+    .btn-login {
+        background-color: #007bff;
+    }
+    .find-container {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        margin-top: 10px;
+    }
+    .find-left, .find-right {
+        display: flex;
+    }
+    .find-right {
+        justify-content: flex-end;
+        gap: 10px; /* 오른쪽 링크 사이의 간격 */
+    }
+    .find-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .social-btn {
+        background-color: #f0f0f0;
+        color: #000;
+        text-align: center;
+    }
+    .btn-google {
+        background-color: #DB4437;
+    }
+    .btn-kakao {
+        background-color: #FEE500;
+        color: #000;
+    }
+    .btn-naver {
+        background-color: #03C75A;
+    }
+    .divider {
+        border-bottom: 1px solid #ddd;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+<body>
+<div class="login-container">
+    <h2>로그인</h2>
+    <div class="form-control">
+        <input type="text" id="username" name="username" placeholder="아이디" required>
+    </div>
+    <div class="form-control">
+        <input type="password" id="password" name="password" placeholder="비밀번호" required>
+    </div>
+    <div class="btn-container">
+        <button class="btn btn-login">로그인</button>
+    </div>
+    <div class="find-container">
+        <div class="find-left">
+            <a href="#" class="find-link">회원가입</a>
+        </div>
+        <div class="find-right">
+            <a href="#" class="find-link">아이디 찾기</a>
+            <a href="#" class="find-link">비밀번호 찾기</a>
+        </div>
+    </div>
+    <div class="divider"></div>
+<!--
+    <div class="btn-container">
+        <button class="btn social-btn btn-google">구글 로그인</button>
+        <button class="btn social-btn btn-kakao">카카오 로그인</button>
+        <button class="btn social-btn btn-naver">네이버 로그인</button>
+    </div>
+-->
+</div>
+</body>
+</html>

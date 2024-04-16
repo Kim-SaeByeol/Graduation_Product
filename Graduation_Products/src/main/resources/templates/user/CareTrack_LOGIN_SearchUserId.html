@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>아이디 찾기</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+    .find-id-container {
+        width: 100%;
+        max-width: 550px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        text-align: center;
+    }
+    .form-control {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+    .form-control input, .form-control select, .form-control button {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        width: 100%; /* Adjust the width of inputs to take full width */
+    }
+    .btn-check, .btn-find-id {
+        margin-left: 10px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        width: auto; /* Ensure buttons have only the needed width */
+        padding: 10px 15px; /* Adjust padding for better appearance */
+    }
+    .email-group {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+    .email-group input[type="text"], .email-group select, .email-group div {
+        margin-right: 5px;
+    }
+    .email-group input, .email-group select {
+        flex-grow: 1;
+        flex-basis: 0; /* Adjust basis to distribute space equally */
+    }
+    .at-symbol {
+        flex-grow: 0;
+        padding: 10px;
+        margin-right: 0; /* Adjust margin for symbol alignment */
+    }
+    .email-group select {
+        flex-grow: 2; /* Give more space to the dropdown */
+    }
+    .btn-find-id {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px; /* Add margin for visual separation */
+    }
+    .footer-links {
+        text-align: right;
+        font-size: 0.8em;
+    }
+</style>
+</head>
+<body>
+<div class="find-id-container">
+    <h2>아이디 찾기</h2>
+    <div class="form-control">
+        <input type="text" id="name" name="name" placeholder="이름" required>
+    </div>
+    <div class="form-control email-group">
+        <input type="text" id="email-user" name="email-user" placeholder="이메일" required>
+        <div class="at-symbol">@</div>
+        <input type="text" id="email-domain-user" placeholder="도메인">
+        <select name="email-domain" id="email-domain" onchange="if (this.value) document.getElementById('email-domain-user').value=this.value">
+            <option value="">직접선택</option>
+            <option value="gmail.com">gmail.com</option>
+            <option value="naver.com">naver.com</option>
+        </select>
+    </div>
+    <div class="form-control">
+        <input type="text" id="verification-code" name="verification-code" placeholder="인증번호" required>
+        <button class="btn-check">인증번호 전송</button>
+    </div>
+    <div class="form-control">
+        <button class="btn-find-id">아이디 찾기</button>
+    </div>
+    <div class="footer-links">
+        <a href="#">로그인</a> | <a href="#">비밀번호 찾기</a>
+    </div>
+</div>
+<script>
+    document.getElementById('email-domain').addEventListener('change', function() {
+        document.getElementById('email-domain-user').value = this.value;
+    });
+</script>
+</body>
+</html>

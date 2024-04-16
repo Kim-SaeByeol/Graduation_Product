@@ -1,4 +1,4 @@
-package kopo.poly.util;
+package poly.graduation_products.util;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
@@ -79,6 +79,8 @@ public class EncryptUtil {
         return res;
 
     }
+
+
 
     /**
      * AES128 CBC 암호화 함수

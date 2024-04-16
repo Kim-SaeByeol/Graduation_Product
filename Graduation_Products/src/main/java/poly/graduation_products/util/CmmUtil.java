@@ -1,4 +1,4 @@
-package util;
+package poly.graduation_products.util;
 
 public class CmmUtil {
 
