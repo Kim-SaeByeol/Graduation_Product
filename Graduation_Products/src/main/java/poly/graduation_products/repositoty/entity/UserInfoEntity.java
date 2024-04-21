@@ -19,6 +19,13 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 public class UserInfoEntity {
 
+
+    /**
+     * GeneratedValue(strategy = GenerationType.IDENTITY)
+     * 해당 어노테이션은 해당 식별자가 데이터베이스에 의해 자동으로 생성되고 관리되어야 함을 의미
+     * 새로운 엔티티 값이 생성될 때 마다 자동으로 값을 증가시킴
+     * 초기 값은 1로, 엔터티가 증가함에 따라 +1 씩 증가할 것임
+     */
     @Id
     @Column(name = "USER_SEQ")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

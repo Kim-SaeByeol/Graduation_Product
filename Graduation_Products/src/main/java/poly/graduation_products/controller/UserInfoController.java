@@ -42,10 +42,12 @@ public class UserInfoController {
 
         log.info(this.getClass().getName()  + ".insertUserInfo Start! (회원가입)");
 
-        String msg;
+        String msg = null;
         String userId = CmmUtil.nvl(request.getParameter("userId"));
-        String pwd = CmmUtil.nvl(request.getParameter("pwd"));
-        String email = CmmUtil.nvl(request.getParameter("email"));
+        // 비밀번호는 개인정보인 만큼 암호화를 진행
+        String pwd = EncryptUtil.encAES128CBC(CmmUtil.nvl(request.getParameter("pwd")));
+        // 이메일은 개인정보인 만큼 암호화를 진행
+        String email = EncryptUtil.encAES128CBC(CmmUtil.nvl(request.getParameter("email")));
         String name = CmmUtil.nvl(request.getParameter("userName"));
         String nick = CmmUtil.nvl(request.getParameter("nick"));
 
@@ -65,21 +67,28 @@ public class UserInfoController {
                 .userNickname(nick)
                 .build();
 
-
+        /**
+         * res 는 결과를 저장할 변수
+         * 0 : 실패
+         * 1 : 성공
+         * 2 : 이미 사용자가 존재 (실패)
+         * 3 : 에러
+         */
         int res = userInfoService.insertUserInfo(pDTO);
 
         log.info("회원가입 결과(res) : " + res );
-
-        if(res == 1) {
+        if (res == 0){
+            msg = "회원가입이 실패하였습니다. \n 고객센터 연락 바랍니다.";
+        } else if(res == 1) {
             msg = "회원가입 되었습니다.";
         } else if (res == 2) {
             msg = "이미 가입된 아이디입니다.";
-        } else {
+        } else if (res == 3){
             msg = "오류로 인해 회원가입이 실패하였습니다.";
         }
 
         MsgDTO rmsg = MsgDTO.builder()
-                .result(res)
+                .res(res)
                 .msg(msg)
                 .build();
 
@@ -106,8 +115,8 @@ public class UserInfoController {
         UserInfoDTO rDTO = Optional.ofNullable(userInfoService.getUserIdExists(pDTO))
                 .orElseGet(() -> UserInfoDTO.builder().build());
 
+        log.info("리턴 값 : " + rDTO);
         log.info(this.getClass().getName() + ".getUserIdExists End! (아이디 중복체크)");
-
 
         return rDTO;
     }
@@ -119,17 +128,21 @@ public class UserInfoController {
 
         log.info(this.getClass().getName() + ".getUserEmailExists Start! (이메일 중복체크)");
 
-        String email = CmmUtil.nvl(request.getParameter("email"));
+        // 테스트 이니 이후 삭제할 것.
+        log.info("테스트 이메일 확인 (*삭제필): " + CmmUtil.nvl(request.getParameter("email")));
+
+        String email = EncryptUtil.encAES128CBC(CmmUtil.nvl(request.getParameter("email")));
 
         log.info("email : " + email);
 
         UserInfoDTO pDTO = UserInfoDTO.builder()
-                .userEmail(EncryptUtil.encAES128CBC(email))
+                .userEmail(email)
                 .build();
 
         UserInfoDTO rDTO = Optional.ofNullable(userInfoService.getUserEmailExists(pDTO))
                 .orElseGet(() -> UserInfoDTO.builder().build());
 
+        log.info("리턴 값 : " + rDTO);
         log.info(this.getClass().getName() + ".getUserEmailExists End! (이메일 중복체크)");
 
 

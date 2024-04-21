@@ -7,17 +7,15 @@ import poly.graduation_products.repositoty.entity.UserInfoEntity;
 import java.util.Optional;
 
 @Repository
-public interface UserInfoRepository extends JpaRepository<UserInfoEntity, String> {
-
-
-        //아이디 찾기
+public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> {
+        // 아이디 중복체크
         Optional<UserInfoEntity> findByUserId(String userId);
 
+        // 이메일 중복체크
         Optional<UserInfoEntity> findByEmail(String email);
-        // 이메일 찾기
 
-        Optional<UserInfoEntity> findByNickname(String nick);
         //별명 찾기
+        Optional<UserInfoEntity> findByNickname(String nick);
 
 
         // 아이디와 비밀번호 찾기
