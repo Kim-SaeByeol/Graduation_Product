@@ -92,6 +92,7 @@ public class UserInfoController {
                 .msg(msg)
                 .build();
 
+        log.info(msg);
         log.info(this.getClass().getName()  + ".insertUserInfo End! (회원가입)");
 
         return rmsg;
@@ -127,9 +128,6 @@ public class UserInfoController {
     public UserInfoDTO getUserEmailExists(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + ".getUserEmailExists Start! (이메일 중복체크)");
-
-        // 테스트 이니 이후 삭제할 것.
-        log.info("테스트 이메일 확인 (*삭제필): " + CmmUtil.nvl(request.getParameter("email")));
 
         String email = EncryptUtil.encAES128CBC(CmmUtil.nvl(request.getParameter("email")));
 

@@ -7,7 +7,6 @@
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-
             let f = document.getElementById("f");
 
             /**
@@ -130,7 +129,7 @@
                 });
             }
             //별명 중복 체크
-            $('#nickname').blur(function() {
+            $('#nick').blur(function() {
                 getUserNickExists(f)
             });
 
@@ -147,13 +146,14 @@
                         nick: f.nick.value
                     }, // 서버에 fullEmail 의 값만 보냄.
                     success: function(json) {
-                        if (json.existsIdYn === "Y") {
-                            $('#userIdStatus').html("✗").removeClass("valid").addClass("invalid");
-                        } else if (json.existsIdYn === "N") {
-                            $('#userIdStatus').html("✓").removeClass("invalid").addClass("valid");
-                        } else if (json.existsIdYn === "E") {
-                            $('#userIdStatus').html("✗").removeClass("valid").addClass("invalid");
+                        if (json.existsNickYn === "Y") {
+                            $('#nickStatus').html("✗").removeClass("valid").addClass("invalid");
+                        } else if (json.existsNickYn === "N") {
+                            $('#nickStatus').html("✓").removeClass("invalid").addClass("valid");
+                        } else if (json.existsNickYn === "E") {
+                            $('#nickStatus').html("✗").removeClass("valid").addClass("invalid");
                         } else {
+                            $('#nickStatus').html("✗").removeClass("valid").addClass("invalid");
                             alert("알 수 없는 오류로 인해 실행되지 않았습니다.");
                         }
                     },
@@ -230,11 +230,18 @@
             $("#btnSend").on("click", function() {
                 doSubmit(f)
             });
-
-
             function doSubmit(f) {
-                if (f.userIdStatus.value === "✗" || f.userPwdStatus.value === "✗" || f.userPwdConfirmStatus.value === "✗" || f.emailStatus.value === "✗" || f.codeStatus.value === "✗" || f.nameStatus.value === "✗" ) {
-                    alert("입력이")
+
+                //모두 "✓" 라면 True 하나라도 아니라면 False
+                isAllFields = $('#userIdStatus').html() !== "✓" &&
+                    $('#userPwdStatus').html() !== "✓" &&
+                    $('#userPwdConfirmStatus').html() !== "✓" &&
+                    $('#emailStatus').html() !== "✓" &&
+                    $('#codeStatus').html() !== "✓" &&
+                    $('#nameStatus').html() !== "✓" &&
+                    $('#nickStatus').html() !== "✓";
+
+                if (isAllFields) {
                     return;
                 }
                 $.ajax({
