@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 폼</title>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            let f = document.getElementById("f");
+
+            /**
+             * blur() 함수는 마우스의 포커스가 도메인 필드에서
+             * 벗어났을 때 실행되게 하는 함수,
+             * 즉슨, 칸으로 이동하였을 때 함수가 실행됨.
+             */
+
+            // 아이디 중복 체크
+            $('#userId').blur(function() {
+                getUserIdExists(f)
+            });
+
+            function getUserIdExists(f) {
+                if (f.userId.value === "") {
+                    $('#userIdStatus').html("✗").removeClass("valid").addClass("invalid");
+                    return;
+                }
+                $.ajax({
+                    url: "/user/getUserIdExists",
+                    type: "post",
+                    dataType: "JSON",
+                    data: {
+                        userId: f.userId.value
+                    }, // 서버에 userId 의 값만 보냄.
+                    success: function(json) {
+                        if (json.existsIdYn === "Y") {
+                            $('#userIdStatus').html("✗").removeClass("valid").addClass("invalid");
+                        } else if (json.existsIdYn === "N") {
+                            $('#userIdStatus').html("✓").removeClass("invalid").addClass("valid");
+                        } else if (json.existsIdYn === "E") {
+                            $('#userIdStatus').html("✗").removeClass("valid").addClass("invalid");
+                        } else {
+                            alert("알 수 없는 오류로 인해 실행되지 않았습니다.");
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("AJAX Error:", xhr.status, xhr.statusText);
+                        alert("요청 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+                    }
+                });
+            }
+
+
+
+            // 이메일 중복 체크
+            $('#email, #emailDomain').blur(function() {
+                getUserEmailExists(f)
+            });
+
+            function getUserEmailExists(f) {
+                if (f.email.value === "" || f.emailDomain.value === "") {
+                    $('#emailStatus').html("✗").removeClass("valid").addClass("invalid");
+                    return;
+                }
+                let fullEmail = f.email.value + '@' + f.emailDomain.value;
+                $.ajax({
+                    url: "/user/getUserEmailExists",
+                    type: "post",
+                    contentType: "application/json", // JSON 형식 명시
+                    data: JSON.stringify({ email: fullEmail }), // 데이터를 JSON 문자열로 변환
+                    dataType: "json",
+                    success: function(json) {
+                        if (json.existsEmailYn === "Y") {
+                            $('#emailStatus').html("✗").removeClass("valid").addClass("invalid");
+                        } else if (json.existsEmailYn === "N") {
+                            $('#emailStatus').html("✓").removeClass("invalid").addClass("valid");
+                        } else if (json.existsEmailYn === "E") {
+                            $('#emailStatus').html("✗").removeClass("valid").addClass("invalid");
+                        } else {
+                            alert("알 수 없는 오류로 인해 실행되지 않았습니다.");
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("AJAX Error:", xhr.status, xhr.statusText);
+                        alert("요청 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+                    }
+                });
+            }
+
+            //이메일 인증번호 전송
+            $("#btnEmail").on("click", function() {
+                emailExists(f)
+            });
+
+            function emailExists(f) {
+                function getUserEmailExists(f) {
+                    if (f.email.value === "" || f.emailDomain.value === "") {
+                        $('#emailStatus').html("✗").removeClass("valid").addClass("invalid");
+                        return;
+                    }
+
+                    if (f.email.value === "✗" || f.emailDomain.value === "✗") {
+                        alert("이메일 및 도메인 확인 바랍니다.\n 1. 이메일 중복 \n 2. 잘못된 이메일 \n 3. 기타 오류는 고객문의 바랍니다.")
+                        return;
+                    }
+                }
+
+                let fullEmail = f.email.value + '@' + f.emailDomain.value;
+                $.ajax({
+                    url: "/mail/sendMail",
+                    type: "post",
+                    contentType: "application/json", // 이 부분이 중요합니다!
+                    dataType: "json",
+                    data: JSON.stringify({
+                        toMail: fullEmail}), // 서버에 fullEmail 의 값만 보냄.
+                    success: function(res) {
+                        if (res === 1) {
+                            alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하세요.");
+                        } else if (res === 0) {
+                            alert("이메일 발송이 실패하였습니다. \n이메일 및 도메인 확인 바랍니다.\n 1. 이메일 중복 \n 2. 잘못된 이메일 \n 3. 기타 오류는 고객문의 바랍니다.")
+                        } else {
+                            alert("알 수 없는 오류로 인해 실행되지 않았습니다.");
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("AJAX Error:", xhr.status, xhr.statusText);
+                        alert("요청 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+                    }
+                });
+            }
+            //별명 중복 체크
+            $('#nick').blur(function() {
+                getUserNickExists(f)
+            });
+
+            function getUserNickExists(f) {
+                if (f.nick.value === "") {
+                    $('#nickStatus').html("✗").removeClass("valid").addClass("invalid");
+                    return;
+                }
+                $.ajax({
+                    url: "/user/getUserNickExists",
+                    type: "post",
+                    dataType: "JSON",
+                    data: {
+                        nick: f.nick.value
+                    }, // 서버에 fullEmail 의 값만 보냄.
+                    success: function(json) {
+                        if (json.existsNickYn === "Y") {
+                            $('#nickStatus').html("✗").removeClass("valid").addClass("invalid");
+                        } else if (json.existsNickYn === "N") {
+                            $('#nickStatus').html("✓").removeClass("invalid").addClass("valid");
+                        } else if (json.existsNickYn === "E") {
+                            $('#nickStatus').html("✗").removeClass("valid").addClass("invalid");
+                        } else {
+                            $('#nickStatus').html("✗").removeClass("valid").addClass("invalid");
+                            alert("알 수 없는 오류로 인해 실행되지 않았습니다.");
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("AJAX Error:", xhr.status, xhr.statusText);
+                        alert("요청 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+                    }
+                });
+            }
+
+            // 비밀번호 입력 체크
+            $('#password').blur(function() {
+                passwordCheck(f)
+            });
+
+            function passwordCheck(f) {
+                if (f.password.value === "") {
+                    $('#userPwdStatus').html("✗").removeClass("valid").addClass("invalid");
+                    return;
+                } else {
+                    $('#userPwdStatus').html("✓").removeClass("invalid").addClass("valid");
+                    return;
+                }
+            }
+
+            // 비밀번호 재입력 입력체크
+            $('#passwordConfirm').blur(function() {
+                passwordConfirmCheck(f)
+            });
+
+            function passwordConfirmCheck(f) {
+                if (f.passwordConfirm.value === "" && f.password.value === f.passwordConfirm.value) {
+                    $('#userPwdConfirmStatus').html("✗").removeClass("valid").addClass("invalid");
+                    return;
+                } else {
+                    $('#userPwdConfirmStatus').html("✓").removeClass("invalid").addClass("valid");
+                    return;
+                }
+            }
+
+
+            // 인증번호 입력체크
+            $('#verificationCode').blur(function() {
+                codeCheck(f)
+            });
+
+            function codeCheck(f) {
+                if (f.verificationCode.value === "") {
+                    $('#codeStatus').html("✗").removeClass("valid").addClass("invalid");
+                    return;
+                } else {
+                    $('#codeStatus').html("✓").removeClass("invalid").addClass("valid");
+                    return;
+                }
+            }
+
+            // 이름 입력 체크
+            $('#name').blur(function() {
+                nameCheck(f)
+            });
+
+            function nameCheck(f) {
+                if (f.name.value === "") {
+                    $('#nameStatus').html("✗").removeClass("valid").addClass("invalid");
+                    return;
+                } else {
+                    $('#nameStatus').html("✓").removeClass("invalid").addClass("valid");
+                    return;
+                }
+            }
+
+
+            // 회원가입 버튼 클릭 시 실행
+            $("#btnSend").on("click", function() {
+                doSubmit(f)
+            });
+            function doSubmit(f) {
+
+                //모두 "✓" 라면 True 하나라도 아니라면 False
+                isAllFields = $('#userIdStatus').html() !== "✓" &&
+                    $('#userPwdStatus').html() !== "✓" &&
+                    $('#userPwdConfirmStatus').html() !== "✓" &&
+                    $('#emailStatus').html() !== "✓" &&
+                    $('#codeStatus').html() !== "✓" &&
+                    $('#nameStatus').html() !== "✓" &&
+                    $('#nickStatus').html() !== "✓";
+
+                if (!isAllFields) {
+                    alert("체크가 전부 되었는지 확인해주세요.\n 기타 오류는 고객문의 바랍니다.")
+                    return;
+                }
+                $.ajax({
+                    url: "/user/insertUserInfo",
+                    type: "post",
+                    datatype: "JSON",
+                    data: $("#f").serialize(),
+                    success: function(json) {
+                        if (json.res === 1) {
+                            alert(json.msg);
+                            return;
+                        } else if (json.res === 2) {
+                            alert(json.msg);
+                            return;
+                        } else if (json.res === 3) {
+                            alert(json.msg);
+                            return;
+                        } else {
+                            alert(json.msg);
+                            return;
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error("AJAX Error:", xhr.status, xhr.statusText);
+                        alert("요청 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+                    }
+                });
+            }
+            //도메인 자동입력
+            function updateEmailDomain() {
+                var domainSelect = document.getElementById('emailDomainOption');
+                var emailDomainInput = document.getElementById('emailDomain');
+
+                // 선택된 도메인 값을 입력 필드에 설정
+                emailDomainInput.value = domainSelect.value;
+
+                // 입력 필드 활성화/비활성화 조절
+                if (domainSelect.value) {
+                    emailDomainInput.disabled = true;  // 드롭다운에서 도메인을 선택한 경우 입력 필드 비활성화
+                } else {
+                    emailDomainInput.disabled = false; // 직접 입력 옵션을 선택한 경우 입력 필드 활성화
+                }
+            }
+
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .signup-container {
+            width: 100%;
+            max-width: 550px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .form-control {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-control input,
+        .form-control select,
+        .form-control button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-control input[type="text"],
+        .form-control input[type="password"],
+        .form-control input[type="email"] {
+            flex-grow: 1;
+        }
+
+        .btn-check {
+            margin-left: 10px;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .email-group {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .email-group .at-symbol {
+            margin: 0 5px;
+            /* "@" 기호와 input 사이의 간격 */
+        }
+
+        .email-group input,
+        .email-group select {
+            margin-right: 5px;
+            /* 요소들 사이의 간격 */
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: rgb(0, 123, 255);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .valid {
+            color: green;
+        }
+
+        .invalid {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<div class="signup-container">
+    <h2>회원가입</h2>
+    <form id="f">
+        <div class="form-control">
+            <input type="text" id="userId" name="userId" placeholder="아이디" required>
+            <span id="userIdStatus"></span>
+        </div>
+        <div class="form-control">
+            <input type="password" id="password" name="pwd" placeholder="비밀번호" required>
+            <span id="userPwdStatus"></span>
+        </div>
+        <div class="form-control">
+            <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호 재입력" required>
+            <span id="userPwdConfirmStatus"> </span>
+        </div>
+        <div class="form-control email-group">
+            <input type="text" id="email" name="email" placeholder="이메일" required>
+            <span class="at-symbol">@</span>
+            <input type="text" id="emailDomain" class="emailDomain" placeholder="도메인">
+            <select name="emailDomainOption" id="emailDomainOption" onchange="updateEmailDomain()">
+                <option value="">--직접선택--</option>
+                <option value="gmail.com">Gmail.com</option>
+                <option value="naver.com">Naver.com</option>
+            </select>
+            <span id="emailStatus"></span>
+        </div>
+        <div class="form-control">
+            <input type="text" id="verificationCode" name="verificationCode" placeholder="인증번호" required>
+            <span id="codeStatus"></span>
+            <button class="btn-check" id="btnEmail" type="button">인증번호 전송</button>
+        </div>
+        <div class="form-control">
+            <input type="text" id="name" name="userName" placeholder="이름" required>
+            <span id="nameStatus"></span>
+        </div>
+        <div class="form-control">
+            <input type="text" id="nick" name="nick" placeholder="별명" required>
+            <span id="nickStatus"></span>
+        </div>
+        <div class="form-control">
+            <button class="btn-submit" id="btnSend" type="submit">회원가입</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

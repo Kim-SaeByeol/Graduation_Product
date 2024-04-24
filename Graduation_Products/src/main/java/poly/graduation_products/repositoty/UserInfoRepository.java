@@ -8,17 +8,19 @@ import java.util.Optional;
 
 @Repository
 public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> {
-        // 아이디 중복체크
+        // 아이디 찾기 (중복체크)
         Optional<UserInfoEntity> findByUserId(String userId);
 
-        // 이메일 중복체크
+        // 이메일 찾기 (중복체크)
         Optional<UserInfoEntity> findByEmail(String email);
 
-        //별명 찾기
+        //별명 찾기 (중복체크)
         Optional<UserInfoEntity> findByNickname(String nick);
 
 
-        // 아이디와 비밀번호 찾기
+
+
+        // 아이디와 비밀번호 찾기 => 로그인
         Optional<UserInfoEntity> findByUserIdAndPwd(String userId, String pwd);
 
 }

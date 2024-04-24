@@ -29,9 +29,22 @@ public class MailService implements IMailService {
     private String from;    //보내는 이메일 주소
 
     @Override
-    public int sendMail(MailDTO pDTO) {
+    public MailDTO sendMail(MailDTO pDTO) {
 
         log.info(this.getClass().getName() + ".SendMail(메일전송) start!");
+
+        MailDTO rDTO;
+
+        //영어 소문자, 대문자와 숫자로 이루어진 6자리 난수코드 생성
+        String OTP = RandomUtil.generateRandomCode(6);  // 인증번호
+        log.info("OTP : " + OTP);
+
+        String toMail = CmmUtil.nvl(pDTO.toMail()); // 받는 사람
+        String title = "[케어트랙] 이메일 인증번호 발송";    // 제목
+        String text = "케어트랙 이메일 인증번호 : [" + OTP+"]\n 해당 인증번호를 입력해주세요."; // 내용
+
+        log.info("이메일 제목 : " + title);
+        log.info("이메일 내용 : " + text);
 
         /**
          * res 는 결과를 저장할 변수
@@ -46,16 +59,11 @@ public class MailService implements IMailService {
         if (pDTO == null) {
             log.error("pDTO is null");
             res = 3;
-            return res;
+            rDTO = MailDTO.builder()
+                    .result(res)
+                    .build();
+            return rDTO;
         }
-
-        String toMail = CmmUtil.nvl(pDTO.toMail()); // 받는 사람
-        String title = CmmUtil.nvl(pDTO.title());   // 보내는 메일 제목
-        String text = CmmUtil.nvl(pDTO.text());     // 보내는 메일 내용
-
-        log.info("toMail : " + toMail);
-        log.info("title : " + title);
-        log.info("text : " + text);
 
         MimeMessage m = mailSender.createMimeMessage();
         MimeMessageHelper h = new MimeMessageHelper(m,"UTF-8");
@@ -78,7 +86,6 @@ public class MailService implements IMailService {
              * 4. 프로토콜 (메일전송 프로토콜 오류)
              * 5. 기타서버 (서버, 설정 등 서버가 일시적으로 응답하지 않는 경우)
              */
-
             res = 0; // 메일 전송 실패
             log.error(this.getClass().getName() + ".sendMail - 메일전송 실패 (에러 이유): ", e);
         } catch (Exception e) {
@@ -86,7 +93,12 @@ public class MailService implements IMailService {
             log.error(this.getClass().getName() + ".sendMail - 메일전송 오류: ", e);
         }
 
+        rDTO = MailDTO.builder()
+                .result(res)
+                .authNumber(OTP)
+                .build();
+
         log.info(this.getClass().getName() + ".SendMail(메일전송) end!");
-        return res;
+        return rDTO;
     }
 }

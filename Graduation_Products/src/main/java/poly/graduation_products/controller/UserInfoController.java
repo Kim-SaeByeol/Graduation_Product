@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import poly.graduation_products.service.IMailService;
 import poly.graduation_products.util.CmmUtil;
 import poly.graduation_products.util.EncryptUtil;
 import poly.graduation_products.service.IUserInfoService;
@@ -23,7 +24,14 @@ import java.util.Optional;
 public class UserInfoController {
 
     private final IUserInfoService userInfoService;
+    private final IMailService mailService;
 
+    @GetMapping(value = "/test")
+    public String test() {
+        log.info(this.getClass().getName() + ".test Start");
+        // main 메서드 로직
+        return "login";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
+    }
 
     //회원가입 폼
     @GetMapping(value = "userRegForm")
@@ -48,7 +56,7 @@ public class UserInfoController {
         String pwd = EncryptUtil.encAES128CBC(CmmUtil.nvl(request.getParameter("pwd")));
         // 이메일은 개인정보인 만큼 암호화를 진행
         String email = EncryptUtil.encAES128CBC(CmmUtil.nvl(request.getParameter("email")));
-        String name = CmmUtil.nvl(request.getParameter("userName"));
+        String name = CmmUtil.nvl(request.getParameter("name"));
         String nick = CmmUtil.nvl(request.getParameter("nick"));
 
 

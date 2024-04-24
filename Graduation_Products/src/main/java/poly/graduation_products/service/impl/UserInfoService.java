@@ -142,8 +142,11 @@ public class UserInfoService implements IUserInfoService {
 
             if (rEntity.isPresent()) {
                 rDTO = UserInfoDTO.builder().existsEmailYn("Y").build();
+                log.info("existsEmailYn : Y");
             } else {
                 rDTO = UserInfoDTO.builder().existsEmailYn("N").build();
+                log.info("existsEmailYn : N");
+
             }
         } catch (DataAccessException e) {
             log.error("데이터베이스 접근 중 예외 발생, 에러내용 : ", e);

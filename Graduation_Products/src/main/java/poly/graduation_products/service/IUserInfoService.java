@@ -10,7 +10,7 @@ public interface IUserInfoService {
     // 이메일 중복체크
     UserInfoDTO getUserEmailExists(UserInfoDTO pDTO) throws Exception;
 
-    // 닉네임 중복체크
+    // 별명 중복체크
     UserInfoDTO getUserNickExists(UserInfoDTO pDTO) throws Exception;
 
     //회원가입

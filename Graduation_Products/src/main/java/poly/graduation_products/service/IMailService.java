@@ -6,5 +6,5 @@ import poly.graduation_products.dto.MailDTO;
 public interface IMailService {
 
     //메일 발송
-    int sendMail(MailDTO pDTO) throws MessagingException;
+    MailDTO sendMail(MailDTO pDTO) throws MessagingException;
 }
