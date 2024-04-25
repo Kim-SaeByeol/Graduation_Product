@@ -1,161 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>회원가입 화면</title>
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <script src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" th:src="@{/assets/js/signup.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/js/css/sigup.css}">
 
 </head>
-<script type="text/javascript">
-    $(document).ready(function() {
-        let f = document.getElementById("f");
-
-        $("#btnUserId").on("click", function () {
-            getUserIdExists(f)
-        });
-        $("#btnemail").on("click", function () {
-            getUserEmailExists(f)
-        });
-
-
-        $("#f").on("submit", function (event) {
-            event.preventDefault();
-            doSubmit(f);
-        });
-    });
-    let userIdCheck = "Y";
-    let emailAuthNumber = "";
-
-    function getUserIdExists(f) {
-        if (f.userId.value === "") {
-            alert("아이디를 입력하세요.");
-            return;
-        }
-        $.ajax({
-            url: "/user/getUserIdExists",
-            type: "post",
-            dataType: "JSON",
-            data: {
-                userId: f.userId.value
-            }, // 서버에 userId 의 값만 보냄.
-            success: function(json) {
-                if (json.existsIdYn === "Y") {
-                    alert("이미 가입된 아이디가 존재합니다.");
-                } else {
-                    alert("가입 가능한 아이디입니다.");
-                    userIdCheck = "N";
-                }
-            },
-            error: function(xhr) {
-                console.error("AJAX Error:", xhr.status, xhr.statusText);
-                alert("요청 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.");
-            }
-        });
-    }
-
-
-    function getUserEmailExists(f) {
-        if (f.email.value === "" ) {
-            alert("이메일을 입력하세요.");
-            return;
-        }
-
-        $.ajax({
-            url: "/user/getUserEmailExists",
-            type: "post",
-            dataType: "JSON",
-            data: {
-                email: f.email.value
-            },
-            success: function (json) {
-                if (json.existsEmailYn === "Y") {
-                    alert("이미 가입된 이메일 주소가 존재합니다.");
-                } else {
-                    sendEmail(f)
-                }
-            }
-        });
-    }
-
-    function sendEmail(f) {
-        $.ajax({
-            url: "/mail/sendMail",
-            type: "post",
-            contentType: "application/json", // 이 부분이 중요합니다!
-            dataType: "json",
-            data: JSON.stringify({
-                toMail: f.email.value}), // 서버에 fullEmail 의 값만 보냄.
-            success: function(res) {
-                if (res.result === 1) {
-                    alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하세요.");
-                    emailAuthNumber = res.authNumber;
-                } else if (res.result === 0) {
-                    alert("이메일 발송이 실패하였습니다. \n이메일 및 도메인 확인 바랍니다.\n 1. 이메일 중복 \n 2. 잘못된 이메일 \n 3. 기타 오류는 고객문의 바랍니다.")
-                } else {
-                    alert("알 수 없는 오류로 인해 실행되지 않았습니다.");
-                }
-            },
-            error: function(xhr) {
-                console.error("AJAX Error:", xhr.status, xhr.statusText);
-                alert("요청 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.");
-            }
-        });
-    }
-
-    function doSubmit(f) {
-        const form = $("#f")[0];
-
-        if (form.checkValidity() === false) {
-            form.classList.add('was-validated');
-            return;
-        }
-
-        if (userIdCheck !== "N") {
-            alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입해주세요.");
-            return;
-        }
-
-        const authNumber = $("input[name='authNumber']").val();
-        const email = $("input[name='email']").val(); // 이메일 주소 가져오기
-
-        if (authNumber != emailAuthNumber) {
-            alert("이메일 인증번호가 일치하지 않습니다.");
-            $("input[name='authNumber']").focus();
-            return;
-        }
-
-        // 이메일 인증이 성공한 경우에만 회원가입 요청을 서버에 보냄
-        $.ajax({
-            url: "/user/insertUserInfo",
-            type: "post",
-            dataType: "JSON",
-            data: $("#registration-form").serialize(),
-            success: function (json) {
-                if (json.result === 1) {
-                    alert(json.msg);
-                    location.href = "/user/login";
-                } else {
-                    alert(json.msg);
-                }
-            }
-        });
-    }
-
-</script>
-
 <body>
 <div class="login">
     <form id="f">
         <div class="login__content">
-            <!--        <div class="login__img">-->
-            <!--            <img src="https://image.freepik.com/free-vector/code-typing-concept-illustration_114360-3581.jpg" alt="user login">-->
-            <!--        </div>-->
             <div class="login__forms">
-                <!--         create account form -->
                 <div class="login__register" id="login-in">
                     <h1 class="login__title">회원가입</h1>
-
                     <!--                아이디-->
                     <div class="login__box">
                         <i class='bx bx-user login__icon'></i>
@@ -177,7 +37,7 @@
                     <!--                비밀번호-->
                     <div class="login__box">
                         <i class='bx bx-lock login__icon'></i>
-                        <input type="text" name="pwd" placeholder="비밀번호" class="login__input">
+                        <input type="password" name="pwd" placeholder="비밀번호" class="login__input">
                     </div>
 
                     <!--                비밀번호 재입력-->
@@ -189,7 +49,7 @@
                     <!--                이름-->
                     <div class="login__box">
                         <i class='bx bx-user login__icon'></i>
-                        <input type="password" name="name" placeholder="이름" class="login__input">
+                        <input type="text" name="name" placeholder="이름" class="login__input">
                     </div>
 
                     <!--                별명-->
@@ -198,7 +58,8 @@
                         <input type="text" name="nick" style="width:60%" class="login__input" placeholder="별명"/>
                         <button id="btnnick" type="button" class="check">중복체크</button>
                     </div>
-                    <button class="login__button" id="btnSend" type="submit">회원가입</button>
+                    <a id="btnSend" class="login__button">회원가입</a>
+                    <a href="/user/login" class="login__forgot">로그인</a>
                 </div>
             </div>
         </div>
@@ -207,207 +68,5 @@
 </body>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-
-    :root {
-        --color: #4AD395;
-        --color-dark: #23004d;
-        --color-light: #a49eac;
-        --color-lighten: #f2f2f2;
-        --color-hover: #65bf97;
-        --font: "Open Sans", sans-serif;
-        --big-font-size: 1.5rem;
-        --normal-font-size: 0.938rem;
-        --small-font-size: 0.813rem;
-    }
-
-    @media screen and (min-width: 768px) {
-        :root {
-            --normal-font-size: 1rem;
-            --small-font-size: 0.875rem;
-        }
-    }
-
-    *, ::before, ::after {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: var(--font);
-        font-size: var(--normal-font-size);
-        color: var(--color-dark);
-    }
-
-    h1 {
-        margin: 0;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-
-    .login {
-        display: grid;
-        grid-template-columns: 100%;
-        height: 100vh;
-        margin-left: 1.5rem;
-        margin-right: 1.5rem;
-    }
-
-    .login__content {
-        display: grid;
-    }
-
-    .login__img {
-        justify-self: center;
-    }
-    .check {
-        flex-shrink: 0; /* 버튼이 내용에 맞게 크기 조정되지 않도록 설정 */
-        padding: 0 1em; /* 버튼 내부 패딩 조정 */
-    }
-
-    .login__img img {
-        width: 310px;
-    }
-    .login__register, .login__create {
-        position: absolute;
-        top: 20%; /* 화면의 중간 또는 원하는 위치로 조정 */
-        left: 50%;           /* 요소의 왼쪽 끝을 부모의 중앙으로 이동 */
-        transform: translateX(-50%); /* 요소를 자신의 너비의 50%만큼 왼쪽으로 이동 */
-        width: 30%;
-        background-color: var(--color-lighten);
-        padding: 2rem 1rem;
-        border-radius: 1rem;
-        text-align: center;
-        box-shadow: 0 8px 20px rgba(35, 0, 77, .2);
-        animation-duration: .4s;
-        animation-name: animateLogin;
-    }
-
-    .login__title {
-        font-size: var(--big-font-size);
-        margin-bottom: 2rem;
-    }
-
-    .login__box {
-        /*display: grid;*/
-        display: flex; /* 플렉스박스 적용 */
-        align-items: center; /* 아이콘과 입력란, 버튼을 세로 중앙 정렬 */
-        grid-template-columns: max-content 1fr;
-        column-gap: .5rem;
-        /*padding: 1.125rem 1rem;*/
-        padding: 0.5rem; /* 패딩 줄이기 */
-        background-color: #fff;
-        margin-top: 1rem;
-        border-radius: .5rem;
-    }
-
-    .login__input, .check {
-        height: 36px; /* 입력 필드와 버튼의 높이 조정 */
-    }
-
-    .login__icon {
-        font-size: 20px; /* 아이콘 크기 조정, 필요에 따라 변경 가능 */
-        margin-right: 0.5rem; /* 아이콘과 입력 필드 사이의 간격 */
-        color: var(--color);
-    }
-
-    .login__input {
-        border: none;
-        outline: none;
-        font-size: var(--normal-font-size);
-        font-weight: 700;
-        color: var(--color-dark);
-        width: 100%;
-        flex-grow: 1; /* 입력 필드가 가능한 많은 공간을 차지하도록 설정 */
-        margin-right: 0.5rem; /* 버튼과의 간격 조정 */
-    }
-
-    .login__input::placeholder {
-        font-size: var(--normal-font-size);
-        font-family: var(--font);
-        color: var(--color-light);
-    }
-
-    .login__forgot {
-        display: block;
-        width: max-content;
-        margin-left: auto;
-        margin-top: .5rem;
-        font-size: var(--small-font-size);
-        font-weight: 600;
-        color: var(--color-light);
-    }
-    .check {
-        display: inline-block; /* 버튼을 인라인 블록으로 설정 */
-        padding: 0.5rem; /* 패딩을 0.5rem으로 설정 */
-        background-color: transparent; /* 배경색을 투명하게 설정 */
-        color: var(--color); /* 색상 설정, 기존의 버튼 색상을 사용 */
-        border: none; /* 테두리 제거 */
-        border-radius: .5rem; /* 테두리 둥글기 설정 */
-        font-size: 14px; /* 폰트 크기 설정 */
-        cursor: pointer; /* 마우스 커서를 포인터로 설정 */
-        transition: .3s; /* 트랜지션 효과 */
-    }
-
-    .check:hover {
-        color: #fff; /* 호버 시 글씨 색상 변경 */
-        background-color: var(--color-hover); /* 호버 시 배경색 변경 */
-    }
-
-
-    .login__button {
-        display: block;
-        padding: 1rem;
-        margin: 2rem 0;
-        background-color: var(--color);
-        color: #fff;
-        font-weight: 600;
-        text-align: center;
-        border-radius: .5rem;
-        transition: .3s;
-    }
-
-    .login__button:hover {
-        background-color: var(--color-hover);
-    }
-
-
-    .login__input, .login__button.check {
-        height: 36px; /* 높이 조정 */
-        font-size: 14px; /* 필요하다면 글씨 크기 조정 */
-    }
-
-    .login__account, .login__signin, .login__signup {
-        font-weight: 600;
-        font-size: var(--small-font-size);
-    }
-
-    .login__account--account, .login__signin--signin, .login__signup--signup {
-        color: var(--color);
-        cursor: pointer;
-    }
-
-    .login__social {
-        margin-top: 2rem;
-    }
-
-    .login__social--icon {
-        font-size: 1.5rem;
-        color: var(--color-dark);
-        margin: 0 1rem;
-    }
-
-    .block {
-        display: block;
-    }
-    .none
-
 </style>
 </html>

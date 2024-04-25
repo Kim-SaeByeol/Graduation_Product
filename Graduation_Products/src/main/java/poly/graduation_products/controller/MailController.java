@@ -4,58 +4,88 @@ package poly.graduation_products.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import poly.graduation_products.dto.MailDTO;
 import poly.graduation_products.dto.MsgDTO;
-import poly.graduation_products.dto.UserInfoDTO;
 import poly.graduation_products.service.IMailService;
-import poly.graduation_products.service.impl.MailService;
 import poly.graduation_products.util.CmmUtil;
-import poly.graduation_products.util.RandomUtil;
-
-import java.util.Optional;
-
 
 @Slf4j
-@Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/mail")
+@RequestMapping(value="/mail")
+@Controller
 public class MailController {
 
-    private final IMailService mailService;
+    private final IMailService mailService; // 메일 발송을 위한 서비스 객체를 사용하기
 
-    //이메일 인증번호 발송
+    /**
+     * 메일 발송하기 폼
+     */
+
+    @GetMapping(value = "mailForm")
+    public String mailForm() throws Exception {
+
+        // 로그 찍기
+        log.info(this.getClass().getName() + "mailForm Start!");
+
+        return "/mail/mailForm";
+    }
+
+    /**
+     * 메일 발송하기
+     */
+
     @ResponseBody
+    /* Ajax -> Json 형식 변경 */
     @PostMapping(value = "sendMail")
-    public MailDTO sendMail(@RequestBody MailDTO mailDTO) throws Exception {
+    public MsgDTO sendMail(HttpServletRequest request, ModelMap model) throws Exception {
+        log.info(this.getClass().getName() + ".sendMail Start!");
 
-        log.info(this.getClass().getName() + ".sendMail (인증번호 발송) Start");
+        String msg = ""; // 발송 결과 메세지
 
-        String toMail = CmmUtil.nvl(mailDTO.toMail()); // 받는사람
+        // 웹 URL로부터 전달 받는 값들
+        String toMail = CmmUtil.nvl(request.getParameter("toMail")); // 받는 사람
+        String title = CmmUtil.nvl(request.getParameter("title")); // 제목
+        String text = CmmUtil.nvl(request.getParameter("text")); // 내용
+
+        /*
+         * 들어온 값 확인
+         */
+
+        log.info("toMail : " + toMail);
+        log.info("title : " + title);
+        log.info("text " + text);
 
         MailDTO pDTO = MailDTO.builder()
-                .toMail(toMail) //받는 사람
+                .toMail(toMail)
+                .title(title)
+                .text(text)
                 .build();
 
-        MailDTO rDTO = Optional.ofNullable(mailService.sendMail(pDTO))
-                .orElseGet(() -> MailDTO.builder().build());
 
+        //메일 발송하기
+        int res = mailService.sendMail(pDTO);
 
-        String msg = "";
-        if (rDTO.result() == 1) { //메일발송 성공
-            log.info("메일 발송 성공");
+        if(res == 1) { // 메일 발송 성공
+            msg = "메일 발송하였습니다.";
         } else { //메일발송 실패
-            log.info("메일 발송 실패");
+            msg = "메일 발송 실패하였습니다.";
         }
 
-        log.info("리턴 값 : " + rDTO);
-        log.info(this.getClass().getName() + ".sendMail (인증번호 발송) End");
+        log.info(msg);
 
-        return rDTO;
+        MsgDTO dto = MsgDTO.builder()
+                .msg(msg)
+                .build();
+
+        log.info(this.getClass().getName() + ".sendMail End!");
+
+        return dto;
     }
+
 }

@@ -20,7 +20,9 @@ public record UserInfoDTO (
         //가상의 컬럼
         String existsIdYn,    //아이디 중복 방지
         String existsEmailYn,    //이메일 중복 방지
-        String existsNickYn    //별명 중복 방지
+        String existsNickYn,    //별명 중복 방지
+        String authNumber, //인증번호
+        int mailNumber
 
 ){
 }

@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/main")
+@RequestMapping(value = "/index")
 @Controller
-public class MainController {
+public class indexController {
 
-    @GetMapping(value = "/main")
-    public String main() {
-        log.info(this.getClass().getName() + ".main Start");
+    @GetMapping(value = "/index")
+    public String index() {
+        log.info(this.getClass().getName() + ".index Start");
+        log.info(this.getClass().getName() + ".index end");
         // main 메서드 로직
-        return "main/main";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
+        return "index/index";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
     }
 }

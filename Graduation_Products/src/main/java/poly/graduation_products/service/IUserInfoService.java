@@ -15,4 +15,19 @@ public interface IUserInfoService {
 
     //회원가입
     int insertUserInfo(UserInfoDTO pDTO) throws Exception;
+
+    //로그인
+    int getUserLogin(UserInfoDTO pDTO) throws Exception;
+
+    // 아이디 찾기
+    String searchUserIdProc(UserInfoDTO pDTO) throws Exception;
+
+    //이메일 인증번호 받기
+    UserInfoDTO getEmailAuthNumber(UserInfoDTO pDTO) throws Exception;
+
+    // 비밀번호 찾기 (재설정)
+    String searchPasswordProc(UserInfoDTO pDTO) throws Exception;
+
+    //     비밀번호 재설정
+    String newPasswordProc(UserInfoDTO pDTO) throws Exception;
 }
