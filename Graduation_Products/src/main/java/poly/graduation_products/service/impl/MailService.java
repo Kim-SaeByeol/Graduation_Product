@@ -49,7 +49,6 @@ public class MailService implements IMailService {
         if (pDTO == null) {
             log.error("pDTO is null");
             res = 3;
-
             return res;
         }
 
