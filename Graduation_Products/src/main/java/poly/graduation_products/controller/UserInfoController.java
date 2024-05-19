@@ -418,4 +418,12 @@ public class UserInfoController {
         log.info(this.getClass().getName() + ".searchPasswordProc end! (비밀번호 찾기)");
         return dto;
     }
+
+    @GetMapping(value = "myPage")
+    public String getMyPage() {
+        log.info(this.getClass().getName() + ".getMyPage Start (마이페이지)");
+        log.info(this.getClass().getName() + ".getMyPage end (마이페이지)");
+        // main 메서드 로직
+        return "user/myPage";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
+    }
 }

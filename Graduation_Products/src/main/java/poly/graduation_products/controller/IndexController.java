@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping(value = "/index")
 @Controller
-public class indexController {
+public class IndexController {
 
-    @GetMapping(value = "/index")
+    @GetMapping(value = "index")
     public String index() {
         log.info(this.getClass().getName() + ".index Start");
         log.info(this.getClass().getName() + ".index end");
