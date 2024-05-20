@@ -29,6 +29,16 @@ public class UserInfoController {
     private final IUserInfoService userInfoService;
     private final IMailService mailService;
 
+
+    //로그인
+    @GetMapping(value = "login")
+    public String login() {
+        log.info(this.getClass().getName() + ".user/login start (로그인 페이지)");
+        log.info(this.getClass().getName() + ".user/login End! (로그인 페이지)");
+
+        return "user/login";
+    }
+
     //회원가입 폼
     @GetMapping(value = "userRegForm")
     public String userRegForm() {
@@ -49,6 +59,90 @@ public class UserInfoController {
         return "user/searchUserId";
     }
 
+    //비밀번호 찾기
+    @GetMapping(value = "searchPassword")
+    public String searchPassword(HttpSession session) {
+        log.info(this.getClass().getName() + ".user/searchPassword Start! (비밀번호 찾기)");
+
+        // 강제 URL 입력 등 오는 경우가 있어 세션 삭제
+        // 비밀번호 재생성하는 화면은 보안을 위해 생성한 NEW_PASSWORD 세션 삭제
+        session.setAttribute("NEW_PASSWORD", "");
+        session.removeAttribute("NEW_PASSWORD");
+
+        log.info(this.getClass().getName() + ".user/searchPassword End! (비밀번호 찾기)");
+
+        return "user/searchPassword";
+    }
+
+    //비밀번호 재설정
+    @GetMapping(value = "newPassword")
+    public String newPassword(HttpSession session) {
+        log.info(this.getClass().getName() + ".Get-newPassword Start! (비밀번호 재설정)");
+
+         // 강제 URL 입력 등 오는 경우가 있어 세션 삭제
+         // 비밀번호 재생성하는 화면은 보안을 위해 생성한 NEW_PASSWORD 세션 삭제
+        session.setAttribute("NEW_PASSWORD", "");
+        session.removeAttribute("NEW_PASSWORD");
+
+        log.info(this.getClass().getName() + ".Get-newPassword End! (비밀번호 재설정)");
+
+        return "user/newPassword";
+    }
+
+    // 마이페이지
+    @GetMapping(value = "myPage")
+    public String getMyPage() {
+        log.info(this.getClass().getName() + ".getMyPage Start (마이페이지)");
+        log.info(this.getClass().getName() + ".getMyPage end (마이페이지)");
+
+        return "user/myPage";
+    }
+
+
+    // #######################################################################
+    //                          이 밑은 POST 만
+    // #######################################################################
+
+    //로그인
+    @ResponseBody
+    @PostMapping(value = "loginProc")
+    public MsgDTO loginProc(HttpServletRequest request, HttpSession session) throws Exception {
+        log.info(this.getClass().getName() + ".loginProc start (로그인 로직 실행)");
+
+        String msg;
+
+        String userId = CmmUtil.nvl(request.getParameter("userId"));
+        String password = CmmUtil.nvl(request.getParameter("pwd"));
+
+        log.info("user_id : "  + userId);
+        log.info("password : " + password);
+
+        UserInfoDTO pDTO = UserInfoDTO.builder()
+                .userId(userId)
+                .userPassword(password)
+                .build();
+
+        int res = userInfoService.getUserLogin(pDTO);
+
+        log.info("res : " + res);
+
+        if (res == 1) {
+            msg = "로그인이 성공했습니다.";
+            session.setAttribute("SS_USER_ID", userId);
+        } else {
+            msg = "아이디와 비밀번호가 올바르지 않습니다.";
+        }
+
+        MsgDTO dto = MsgDTO.builder()
+                .res(res)
+                .msg(msg)
+                .build();
+        log.info(this.getClass().getName() + ".loginProc End! (로그인 로직 실행)");
+
+        return dto;
+    }
+    
+    
     //회원가입하기
     @ResponseBody
     @PostMapping(value = "insertUserInfo")
@@ -188,49 +282,8 @@ public class UserInfoController {
         return rDTO;
     }
 
-    @GetMapping(value = "login")
-    public String login() {
-        log.info(this.getClass().getName() + ".user/login start (로그인 페이지)");
-        log.info(this.getClass().getName() + ".user/login End! (로그인 페이지)");
 
-        return "user/login";
-    }
-    @ResponseBody
-    @PostMapping(value = "loginProc")
-    public MsgDTO loginProc(HttpServletRequest request, HttpSession session) throws Exception {
-        log.info(this.getClass().getName() + ".loginProc start (로그인 로직 실행)");
 
-        String msg;
-
-        String userId = CmmUtil.nvl(request.getParameter("userId"));
-        String password = CmmUtil.nvl(request.getParameter("pwd"));
-
-        log.info("user_id : "  + userId);
-        log.info("password : " + password);
-
-        UserInfoDTO pDTO = UserInfoDTO.builder()
-                .userId(userId)
-                .userPassword(password).build();
-
-        int res = userInfoService.getUserLogin(pDTO);
-
-        log.info("res : " + res);
-
-        if (res == 1) {
-            msg = "로그인이 성공했습니다.";
-            session.setAttribute("SS_USER_ID", userId);
-        } else {
-            msg = "아이디와 비밀번호가 올바르지 않습니다.";
-        }
-
-        MsgDTO dto = MsgDTO.builder()
-                .res(res)
-                .msg(msg)
-                .build();
-        log.info(this.getClass().getName() + ".loginProc End! (로그인 로직 실행)");
-
-        return dto;
-    }
 
 
     //아이디 찾기
@@ -299,36 +352,9 @@ public class UserInfoController {
     }
 
 
-    /**
-     * 비밀번호 재설정 화면
-     */
-    @GetMapping(value = "searchPassword")
-    public String searchPassword(HttpSession session) {
-        log.info(this.getClass().getName() + ".user/searchPassword Start! (비밀번호 찾기)");
+  
 
-        // 강제 URL 입력 등 오는 경우가 있어 세션 삭제
-        // 비밀번호 재생성하는 화면은 보안을 위해 생성한 NEW_PASSWORD 세션 삭제
-        session.setAttribute("NEW_PASSWORD", "");
-        session.removeAttribute("NEW_PASSWORD");
 
-        log.info(this.getClass().getName() + ".user/searchPassword End! (비밀번호 찾기)");
-
-        return "user/searchPassword";
-    }
-
-    @GetMapping(value = "newPassword")
-    public String newPassword(HttpSession session) {
-        log.info(this.getClass().getName() + ".Get-newPassword Start! (비밀번호 재설정)");
-//
-//        // 강제 URL 입력 등 오는 경우가 있어 세션 삭제
-//        // 비밀번호 재생성하는 화면은 보안을 위해 생성한 NEW_PASSWORD 세션 삭제
-//        session.setAttribute("NEW_PASSWORD", "");
-//        session.removeAttribute("NEW_PASSWORD");
-
-        log.info(this.getClass().getName() + ".Get-newPassword End! (비밀번호 재설정)");
-
-        return "user/newPassword";
-    }
     // 비밀번호 찾기
     @ResponseBody
     @PostMapping(value = "newPassword", produces = "application/json; charset=UTF-8")
@@ -419,11 +445,5 @@ public class UserInfoController {
         return dto;
     }
 
-    @GetMapping(value = "myPage")
-    public String getMyPage() {
-        log.info(this.getClass().getName() + ".getMyPage Start (마이페이지)");
-        log.info(this.getClass().getName() + ".getMyPage end (마이페이지)");
-        // main 메서드 로직
-        return "user/myPage";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
-    }
+    
 }

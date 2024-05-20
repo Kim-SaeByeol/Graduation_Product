@@ -25,6 +25,34 @@ public class UserInfoService implements IUserInfoService {
     private final MailService mailService;
 
 
+    @Override
+    public int getUserLogin(UserInfoDTO pDTO) throws Exception {
+        log.info(this.getClass().getName() + ".getUserLogin Start! (로그인)");
+
+        int res = 0;
+
+        String userId = CmmUtil.nvl(pDTO.userId());
+        String password = CmmUtil.nvl(pDTO.userPassword());
+
+        log.info("userId : " + userId);
+        log.info("password : " + password);
+
+        Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserIdAndPwd(userId, password);
+
+        if (rEntity.isPresent()) {
+            log.info("아이디와 비밀번호가 일치합니다.");
+            res = 1;
+        } else {
+            log.info("아이디와 비밀번호가 일치하지 않습니다.");
+        }
+        log.info(this.getClass().getName() + ".getuserLoginCheck End! (로그인)");
+
+        return res;
+    }
+
+
+
+
     /**
      * 회원가입 하기
      * @param pDTO DB에 저장할 값
@@ -102,30 +130,7 @@ public class UserInfoService implements IUserInfoService {
         return res;
     }
 
-    @Override
-    public int getUserLogin(UserInfoDTO pDTO) throws Exception {
-        log.info(this.getClass().getName() + ".getUserLogin Start! (로그인)");
 
-        int res = 0;
-
-        String userId = CmmUtil.nvl(pDTO.userId());
-        String password = CmmUtil.nvl(pDTO.userPassword());
-
-        log.info("userId : " + userId);
-        log.info("password : " + password);
-
-        Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserIdAndPwd(userId, password);
-
-        if (rEntity.isPresent()) {
-            log.info("아이디와 비밀번호가 일치합니다.");
-                res = 1;
-        } else {
-            log.info("아이디와 비밀번호가 일치하지 않습니다.");
-        }
-        log.info(this.getClass().getName() + ".getuserLoginCheck End! (로그인)");
-
-        return res;
-    }
 
 
     // 아이디 찾기

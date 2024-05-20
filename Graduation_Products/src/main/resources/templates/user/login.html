@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 페이지</title>
+    <link rel="stylesheet" href="/css/setting.css">
+    <link rel="stylesheet" href="/css/plugin.css">
+    <link rel="stylesheet" href="/css/template.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/style.css">
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -10,12 +15,12 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background-color: #f0f0f0;
+        background-color: #ffffff;
     }
     .login-container {
         width: 100%;
         max-width: 400px;
-        background-color: #fff;
+        background-color: #f2f2f2;
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -29,7 +34,7 @@
     .form-control input {
         width: 100%;
         padding: 10px;
-        border: 1px solid #ddd;
+        border: 1px solid #fff;
         border-radius: 4px;
         box-sizing: border-box;
         margin-top: 5px;
@@ -48,7 +53,7 @@
         font-size: 16px;
     }
     .btn-login {
-        background-color: #007bff;
+        background-color: #111111;
     }
     .find-container {
         display: flex;
@@ -64,7 +69,7 @@
         gap: 10px; /* 오른쪽 링크 사이의 간격 */
     }
     .find-link {
-        color: #007bff;
+        color: #111111;
         text-decoration: none;
     }
     .social-btn {
@@ -90,34 +95,345 @@
 </style>
 </head>
 <body>
+<!-- [S]basic-N56 -->
+<div class="basic-N56" data-bid="phlwbDb2my">
+    <div class="header-container container-lg">
+        <div class="header-left">
+            <h1 class="header-title">
+                <a href="/index/index">
+                    <img src="/images/img_logo_white.png" alt="로고">
+                </a>
+            </h1>
+        </div>
+        <div class="header-center">
+            <ul class="header-member">
+                <li>
+                    <a href="/user/login">로그인</a>
+                </li>
+                <li>
+                    <a href="/user/userRegForm">회원가입</a>
+                </li>
+            </ul>
+            <ul class="header-gnblist">
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/gallery/cardNews">
+                        <span>건강관리 정보</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/gallery/cardNews">
+                                <span>카드뉴스</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/gallery/healthCare">
+                                <span>건강관리</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/gallery/DP">
+                                <span>질병예방</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/medicine/otcDrugs">
+                        <span>의약품 정보</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/medicine/otcDrugs">
+                                <span>일반 의약품</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/medicine/medDosage">
+                                <span>의약품 복용법</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/medicine/topicalUsage">
+                                <span>외용약 사용법</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/medicine/medSearch">
+                                <span>의약품 상세검색</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/board/noticeBorad">
+                        <span>게시판</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/board/noticeBorad">
+                                <span>공지사항</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/board/healthBoard">
+                                <span>건강 게시판</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/board/questionBorad">
+                                <span>질문 게시판</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/board/freeBorad">
+                                <span>자유 게시판</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/user/myPage">
+                        <span>마이페이지</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/user/myPage">
+                                <span>마이페이지</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="javascript:void(0)">
+                                <span>나의 활동</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="javascript:void(0)">
+                                <span>의약품 복용 캘린더</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="javascript:void(0)">
+                                <span>복용 의약품 추적</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/customerSvc/FAQ">
+                        <span>고객지원</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/customerSvc/FAQ">
+                                <span>자주 묻는 질문</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="javascript:void(0)">
+                                <span>1:1 문의</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="header-right">
+            <div class="header-utils">
+                <button class="btn-allmenu header-utils-btn">
+                    <img src="/icon/ico_menu_white.svg" alt="PC메뉴">
+                </button>
+                <button class="btn-momenu header-utils-btn">
+                    <img src="/icon/ico_menu_white.svg" alt="모바일메뉴">
+                </button>
+                <button class="btn-moclose header-utils-btn">
+                    <img src="/icon/ico_close_white.svg" alt="닫기">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="header-fullmenu fullmenu-right">
+        <div class="fullmenu-wrapper">
+            <div class="fullmenu-head">
+                <h4 class="fullmenu-title">
+                    <a href="/index/index">
+                        <img src="/images/img_logo_white.png" alt="로고">
+                    </a>
+                </h4>
+                <ul class="fullmenu-member">
+                    <li>
+                        <a href="/user/login">로그인</a>
+                    </li>
+                    <li>
+                        <a href="/user/userRegForm">회원가입</a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="fullmenu-gnblist">
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="javascript:void(0)">
+                        <span>건강관리 정보</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/gallery/cardNews">
+                                <span>카드뉴스</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/gallery/healthCare">
+                                <span>건강관리</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/gallery/DP">
+                                <span>질병예방</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="/medicine/otcDrugs">
+                        <span>의약품 정보</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/medicine/otcDrugs">
+                                <span>일반 의약품</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/medicine/medDosage">
+                                <span>의약품 복용법</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/medicine/topicalUsage">
+                                <span>외용약 사용법</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/medicine/medSearch">
+                                <span>의약품 상세검색</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="/board/noticeBorad">
+                        <span>게시판</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/board/noticeBorad">
+                                <span>공지사항</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/board/healthBoard">
+                                <span>건강 게시판</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/board/questionBorad">
+                                <span>질문 게시판</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/board/freeBorad">
+                                <span>자유 게시판</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="/user/myPage">
+                        <span>마이페이지</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/user/myPage">
+                                <span>내 정보수정</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="javascript:void(0)">
+                                <span>나의 활동</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="javascript:void(0)">
+                                <span>의약품 복용 캘린더</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="javascript:void(0)">
+                                <span>복용 의약품 추적</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="/customerSvc/FAQ">
+                        <span>고객지원</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/customerSvc/FAQ">
+                                <span>자주 묻는 질문</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="javascript:void(0)">
+                                <span>1:1 문의</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <button class="fullmenu-close">
+            <img src="/icon/ico_close_white.svg" alt="닫기">
+        </button>
+    </div>
+</div>
+
+
+
 <div class="login-container">
     <h2>로그인</h2>
     <div class="form-control">
-        <input type="text" id="username" name="username" placeholder="아이디" required>
+        <input type="text" id="userId" name="userId" placeholder="아이디" required>
     </div>
     <div class="form-control">
-        <input type="password" id="password" name="password" placeholder="비밀번호" required>
+        <input type="password" id="pwd" name="pwd" placeholder="비밀번호" required>
     </div>
     <div class="btn-container">
         <button class="btn btn-login">로그인</button>
     </div>
     <div class="find-container">
         <div class="find-left">
-            <a href="#" class="find-link">회원가입</a>
+            <a href="/user/userRegForm" class="find-link">회원가입</a>
         </div>
         <div class="find-right">
-            <a href="#" class="find-link">아이디 찾기</a>
-            <a href="#" class="find-link">비밀번호 찾기</a>
+            <a href="/user/searchUserId" class="find-link">아이디 찾기</a>
+            <a href="/user/searchPassword" class="find-link">비밀번호 찾기</a>
         </div>
     </div>
     <div class="divider"></div>
-<!--
+
     <div class="btn-container">
         <button class="btn social-btn btn-google">구글 로그인</button>
         <button class="btn social-btn btn-kakao">카카오 로그인</button>
         <button class="btn social-btn btn-naver">네이버 로그인</button>
     </div>
--->
 </div>
+
+
+<!-- [E]basic-N55 -->
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/template.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/script.js"></script>
 </body>
 </html>

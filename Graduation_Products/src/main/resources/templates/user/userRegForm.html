@@ -1,72 +1,591 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 화면</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <script src="/js/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" th:src="@{/assets/js/signup.js}"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/assets/js/css/sigup.css}">
+    <script type="text/javascript" th:src="@{/js/signup.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sigup.css}">
+    <link rel="stylesheet" href="/css/setting.css">
+    <link rel="stylesheet" href="/css/plugin.css">
+    <link rel="stylesheet" href="/css/template.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/style.css">
 
+    <style>
+        body {
+            min-height: 100vh;
+            background-color: #ffffff;
+        }
+
+        .input-form {
+            max-width: 680px;
+            margin-top: 80px;
+            padding: 32px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .gender-label {
+            display: flex;
+            align-items: center;
+        }
+
+        .gender-label .form-check-input {
+            margin-right: 5px;
+        }
+
+        .agreement-checkbox {
+            display: flex;
+            align-items: center;
+        }
+
+        .agreement-checkbox .custom-control-label {
+            margin-left: 5px;
+        }
+    </style>
 </head>
 <body>
-<div class="login">
-    <form id="f">
-        <div class="login__content">
-            <div class="login__forms">
-                <div class="login__register" id="login-in">
-                    <h1 class="login__title">회원가입</h1>
-                    <!--                아이디-->
-                    <div class="login__box">
-                        <i class='bx bx-user login__icon'></i>
-                        <input type="text" name="userId" style="width:60%" class="login__input" placeholder="아이디"/>
-                        <button id="btnUserId" type="button" class="check">중복체크</button>
-                    </div>
 
-                    <!--                이메일-->
-                    <div class="login__box">
-                        <i class='bx bx-at login__icon'></i>
-                        <input type="text" name="email" style="width:60%" class="login__input" placeholder="이메일"/>
-                        <button id="btnemail" type="button" class="check">인증번호</button>
-                    </div>
-                    <!--                인증번호-->
-                    <div class="login__box">
-                        <i class='bx bx-at login__icon'></i>
-                        <input type="text" name="authNumber" placeholder="이메일 인증번호" class="login__input">
-                    </div>
-                    <!--                비밀번호-->
-                    <div class="login__box">
-                        <i class='bx bx-lock login__icon'></i>
-                        <input type="password" name="pwd" placeholder="비밀번호" class="login__input">
-                    </div>
-
-                    <!--                비밀번호 재입력-->
-                    <div class="login__box">
-                        <i class='bx bx-lock login__icon'></i>
-                        <input type="password" name="pwdCheck" placeholder="비밀번호 재입력" class="login__input">
-                    </div>
-
-                    <!--                이름-->
-                    <div class="login__box">
-                        <i class='bx bx-user login__icon'></i>
-                        <input type="text" name="name" placeholder="이름" class="login__input">
-                    </div>
-
-                    <!--                별명-->
-                    <div class="login__box">
-                        <i class='bx bx-user login__icon'></i>
-                        <input type="text" name="nick" style="width:60%" class="login__input" placeholder="별명"/>
-                        <button id="btnnick" type="button" class="check">중복체크</button>
-                    </div>
-                    <a id="btnSend" class="login__button">회원가입</a>
-                    <a href="/user/login" class="login__forgot">로그인</a>
-                </div>
+<!-- [S]basic-N56 -->
+<div class="basic-N56" data-bid="phlwbDb2my">
+    <div class="header-container container-lg">
+        <div class="header-left">
+            <h1 class="header-title">
+                <a href="/index/index">
+                    <img src="/images/img_logo_white.png" alt="로고">
+                </a>
+            </h1>
+        </div>
+        <div class="header-center">
+            <ul class="header-member">
+                <li>
+                    <a href="/user/login">로그인</a>
+                </li>
+                <li>
+                    <a href="/user/userRegForm">회원가입</a>
+                </li>
+            </ul>
+            <ul class="header-gnblist">
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/gallery/cardNews">
+                        <span>건강관리 정보</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/gallery/cardNews">
+                                <span>카드뉴스</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/gallery/healthCare">
+                                <span>건강관리</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/gallery/DP">
+                                <span>질병예방</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/medicine/otcDrugs">
+                        <span>의약품 정보</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/medicine/otcDrugs">
+                                <span>일반 의약품</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/medicine/medDosage">
+                                <span>의약품 복용법</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/medicine/topicalUsage">
+                                <span>외용약 사용법</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/medicine/medSearch">
+                                <span>의약품 상세검색</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/board/noticeBorad">
+                        <span>게시판</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/board/noticeBorad">
+                                <span>공지사항</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/board/healthBoard">
+                                <span>건강 게시판</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/board/questionBorad">
+                                <span>질문 게시판</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/board/freeBorad">
+                                <span>자유 게시판</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/user/myPage">
+                        <span>마이페이지</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/user/myPage">
+                                <span>마이페이지</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="javascript:void(0)">
+                                <span>나의 활동</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="javascript:void(0)">
+                                <span>의약품 복용 캘린더</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="javascript:void(0)">
+                                <span>복용 의약품 추적</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="header-gnbitem">
+                    <a class="header-gnblink" href="/customerSvc/FAQ">
+                        <span>고객지원</span>
+                    </a>
+                    <ul class="header-sublist">
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="/customerSvc/FAQ">
+                                <span>자주 묻는 질문</span>
+                            </a>
+                        </li>
+                        <li class="header-subitem">
+                            <a class="header-sublink" href="javascript:void(0)">
+                                <span>1:1 문의</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="header-right">
+            <div class="header-utils">
+                <button class="btn-allmenu header-utils-btn">
+                    <img src="/icon/ico_menu_white.svg" alt="PC메뉴">
+                </button>
+                <button class="btn-momenu header-utils-btn">
+                    <img src="/icon/ico_menu_white.svg" alt="모바일메뉴">
+                </button>
+                <button class="btn-moclose header-utils-btn">
+                    <img src="/icon/ico_close_white.svg" alt="닫기">
+                </button>
             </div>
         </div>
-</form>
+    </div>
+    <div class="header-fullmenu fullmenu-right">
+        <div class="fullmenu-wrapper">
+            <div class="fullmenu-head">
+                <h4 class="fullmenu-title">
+                    <a href="/index/index">
+                        <img src="/images/img_logo_white.png" alt="로고">
+                    </a>
+                </h4>
+                <ul class="fullmenu-member">
+                    <li>
+                        <a href="/user/login">로그인</a>
+                    </li>
+                    <li>
+                        <a href="/user/userRegForm">회원가입</a>
+                    </li>
+                </ul>
+            </div>
+            <ul class="fullmenu-gnblist">
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="javascript:void(0)">
+                        <span>건강관리 정보</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/gallery/cardNews">
+                                <span>카드뉴스</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/gallery/healthCare">
+                                <span>건강관리</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/gallery/DP">
+                                <span>질병예방</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="/medicine/otcDrugs">
+                        <span>의약품 정보</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/medicine/otcDrugs">
+                                <span>일반 의약품</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/medicine/medDosage">
+                                <span>의약품 복용법</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/medicine/topicalUsage">
+                                <span>외용약 사용법</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/medicine/medSearch">
+                                <span>의약품 상세검색</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="/board/noticeBorad">
+                        <span>게시판</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/board/noticeBorad">
+                                <span>공지사항</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/board/healthBoard">
+                                <span>건강 게시판</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/board/questionBorad">
+                                <span>질문 게시판</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/board/freeBorad">
+                                <span>자유 게시판</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="/user/myPage">
+                        <span>마이페이지</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/user/myPage">
+                                <span>내 정보수정</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="javascript:void(0)">
+                                <span>나의 활동</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="javascript:void(0)">
+                                <span>의약품 복용 캘린더</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="javascript:void(0)">
+                                <span>복용 의약품 추적</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fullmenu-gnbitem">
+                    <a class="fullmenu-gnblink" href="/customerSvc/FAQ">
+                        <span>고객지원</span>
+                    </a>
+                    <ul class="fullmenu-sublist">
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="/customerSvc/FAQ">
+                                <span>자주 묻는 질문</span>
+                            </a>
+                        </li>
+                        <li class="fullmenu-subitem">
+                            <a class="fullmenu-sublink" href="javascript:void(0)">
+                                <span>1:1 문의</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <button class="fullmenu-close">
+            <img src="/icon/ico_close_white.svg" alt="닫기">
+        </button>
+    </div>
 </div>
+
+
+
+<div class="login">
+    <div class="login__forms">
+        <div class="login__register mx-auto">
+            <h4 class="mb-3">회원가입</h4>
+            <form id="registration-form" class="validation-form" novalidate>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="login__box">
+                            <i class='bx bx-user login__icon'></i>
+                            <input type="text" name="userId" style="width:60%; border: none;" class="login__input form-control" placeholder="아이디" required>
+                            <button id="btnUserId" type="button" class="check">중복체크</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="login__box">
+                            <i class='bx bx-user login__icon'></i>
+                            <input type="text" style="border: none;" class="form-control login__input" name="name" placeholder="이름" required>
+                            <br>
+                            <div class="invalid-feedback">
+                                이름을 입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="login__box">
+                            <i class='bx bx-lock login__icon'></i>
+                            <input type="password" style="border: none;" class="form-control login__input" name="pwd" placeholder="비밀번호" required>
+                            <div class="invalid-feedback">
+                                비밀번호를 입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="login__box">
+                            <i class='bx bx-lock login__icon'></i>
+                            <input type="password" style="border: none;" class="form-control login__input" name="pwdCheck" placeholder="비밀번호 확인" required>
+                            <div class="invalid-feedback">
+                                동일한 비밀번호를<br>입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="login__box">
+                            <i class='bx bx-at login__icon'></i>
+                            <input type="text" name="email" style="width:60%; border: none;" class="login__input form-control" placeholder="이메일" required>
+                            <button id="btnEmail" type="button" class="check">인증번호 전송</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="login__box">
+                            <i class='bx bx-at login__icon'></i>
+                            <input type="text" style="border: none;" class="form-control login__input" name="authNumber" placeholder="이메일 인증번호" required>
+                            <br>
+                            <div class="invalid-feedback">
+                                인증번호를 입력해주세요.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <div class="login__box">
+                            <i class='bx bx-user login__icon'></i>
+                            <input type="text" name="nick" style="width:60%; border: none;" class="login__input form-control" placeholder="별명" required>
+                            <button id="btnNick" type="button" class="check">중복체크</button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <div class="custom-control custom-checkbox agreement-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="agreement" required>
+                    <label class="custom-control-label" for="agreement">개인정보 수집 및 이용에 동의합니다.</label>
+                    <div class="invalid-feedback">
+                        동의가 필요합니다.
+                    </div>
+                </div>
+                <div class="mb-4"></div>
+                <button class="login__button btn-lg btn-block" type="submit" id="btnSend">회원가입</button>
+                <a href="/user/login" class="login__forgot">로그인</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnUserId").on("click", function () {
+            userIdExists();
+        });
+
+        $("#btnEmail").on("click", function () {
+            emailExists();
+        });
+
+        $("#btnAddr").on("click", function () {
+            kakaoPost();
+        });
+
+        $("#registration-form").on("submit", function (event) {
+            event.preventDefault();
+            doSubmit();
+        });
+    });
+
+    let userIdCheck = "Y";
+    let emailAuthNumber = "";
+
+    function userIdExists() {
+        const userId = $("input[name='userId']").val();
+
+        if (userId === "") {
+            alert("아이디를 입력하세요.");
+            return;
+        }
+
+        $.ajax({
+            url: "/user/getUserIdExists",
+            type: "post",
+            dataType: "JSON",
+            data: { userId: userId },
+            success: function (json) {
+                if (json.existsYn === "Y") {
+                    alert("이미 가입된 아이디가 존재합니다.");
+                } else {
+                    alert("가입 가능한 아이디입니다.");
+                    userIdCheck = "N";
+                }
+            }
+        });
+    }
+
+    function emailExists() {
+        const email = $("input[name='email']").val();
+
+        if (email === "") {
+            alert("이메일을 입력하세요.");
+            return;
+        }
+
+        $.ajax({
+            url: "/user/getEmailExists",
+            type: "post",
+            dataType: "JSON",
+            data: { email: email },
+            success: function (json) {
+                if (json.existsYn === "Y") {
+                    alert("이미 가입된 이메일 주소가 존재합니다.");
+                } else {
+                    alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하세요.");
+                    emailAuthNumber = json.authNumber;
+                }
+            }
+        });
+    }
+
+    function kakaoPost() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                let address = "(" + data.zonecode + ") " + data.address;
+                $("input[name='addr1']").val(address);
+            }
+        }).open();
+    }
+
+    function doSubmit() {
+        const form = $("#registration-form")[0];
+
+        if (form.checkValidity() === false) {
+            form.classList.add('was-validated');
+            return;
+        }
+
+        if (userIdCheck !== "N") {
+            alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입해주세요.");
+            return;
+        }
+
+        const authNumber = $("input[name='authNumber']").val();
+        const email = $("input[name='email']").val(); // 이메일 주소 가져오기
+
+        if (authNumber != emailAuthNumber) {
+            alert("이메일 인증번호가 일치하지 않습니다.");
+            $("input[name='authNumber']").focus();
+            return;
+        }
+
+        // 이메일 인증이 성공한 경우에만 회원가입 요청을 서버에 보냄
+        $.ajax({
+            url: "/user/insertUserInfo",
+            type: "post",
+            dataType: "JSON",
+            data: $("#registration-form").serialize(),
+            success: function (json) {
+                if (json.result === 1) {
+                    alert(json.msg);
+                    location.href = "/user/login";
+                } else {
+                    alert(json.msg);
+                }
+            }
+        });
+    }
+</script>
+
+
 </body>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-</style>
+
 </html>
+

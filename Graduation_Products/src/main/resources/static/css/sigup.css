@@ -106,7 +106,7 @@ img {
 .login__icon {
     font-size: 20px; /* 아이콘 크기 조정, 필요에 따라 변경 가능 */
     margin-right: 0.5rem; /* 아이콘과 입력 필드 사이의 간격 */
-    color: var(--color);
+    color: #000000;
 }
 
 .login__input {
@@ -139,7 +139,7 @@ img {
     display: inline-block; /* 버튼을 인라인 블록으로 설정 */
     padding: 0.5rem; /* 패딩을 0.5rem으로 설정 */
     background-color: transparent; /* 배경색을 투명하게 설정 */
-    color: var(--color); /* 색상 설정, 기존의 버튼 색상을 사용 */
+    color: #858585; /* 색상 설정, 기존의 버튼 색상을 사용 */
     border: none; /* 테두리 제거 */
     border-radius: .5rem; /* 테두리 둥글기 설정 */
     font-size: 14px; /* 폰트 크기 설정 */
@@ -149,31 +149,34 @@ img {
 
 .check:hover {
     color: #fff; /* 호버 시 글씨 색상 변경 */
-    background-color: var(--color-hover); /* 호버 시 배경색 변경 */
+    background-color: #000000; /* 호버 시 배경색 변경 */
 }
 
 
 .login__button {
-    display: block;
+    display: flex;
+    align-items: center;  /* 세로 중앙 정렬 */
+    justify-content: center;  /* 가로 중앙 정렬 */
     padding: 1rem;
     margin: 2rem 0;
-    background-color: var(--color);
+    background-color: #000000;
     color: #fff;
     font-weight: 600;
     text-align: center;
     border-radius: .5rem;
     transition: .3s;
+    width: 100%;
 }
 
 .login__button:hover {
-    background-color: var(--color-hover);
+    background-color: #858585;
 }
-
 
 .login__input, .login__button.check {
     height: 36px; /* 높이 조정 */
     font-size: 14px; /* 필요하다면 글씨 크기 조정 */
 }
+
 
 .login__account, .login__signin, .login__signup {
     font-weight: 600;
