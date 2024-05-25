@@ -20,23 +20,22 @@ public class SecurityConfiguration{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf((csrfConfig) ->
-                        csrfConfig.disable())
-                .headers((headerConfig) ->
-                        headerConfig.frameOptions(frameOptionsConfig ->
-                                frameOptionsConfig.disable())
+                .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/", "/index/**", "/user/**", "/board/**", "/customerSvc/**", "/mail/**", "/medicine/**", "/gallery/**", "/css/**", "/images/**", "/js/**", "/icon/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/api/v1/**").hasRole(Role.USER.name())
+                        .anyRequest().authenticated()
                 )
-                .authorizeHttpRequests((authorizeRequests) ->
-                        authorizeRequests
-                                .requestMatchers("/","/index/**","/user/**","/board/**","/customerSvc/**","/mail/**", "/medicine/**","/gallery/**","/css/**", "/images/**","/js/**","/icon/**", "/h2-console/**").permitAll()
-                                .requestMatchers("/api/v1/**").hasRole(Role.USER.name())
-                                .anyRequest().authenticated()
-                )
-                .logout((logoutConfig) ->
-                        logoutConfig.logoutSuccessUrl("/"))
-
-                .oauth2Login(Customizer.withDefaults());
+                .logout(logout -> logout.logoutSuccessUrl("/"))
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/oauth2/authorization/google") // Optional: specify custom login page URL
+                        .defaultSuccessUrl("/index/index") // Login 성공 후 이동할 URL
+                        .failureUrl("/login?error=true") // Login 실패 시 이동할 URL
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                                .userService(customOAuth2UserService)
+                        )
+                );
         return http.build();
     }
-
 }
