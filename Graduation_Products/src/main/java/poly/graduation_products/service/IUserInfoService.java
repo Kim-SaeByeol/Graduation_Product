@@ -25,7 +25,7 @@ public interface IUserInfoService {
     //이메일 인증번호 받기
     UserInfoDTO getEmailAuthNumber(UserInfoDTO pDTO) throws Exception;
 
-    // 비밀번호 찾기 (재설정)
+    // 비밀번호 찾기
     String searchPasswordProc(UserInfoDTO pDTO) throws Exception;
 
     //     비밀번호 재설정

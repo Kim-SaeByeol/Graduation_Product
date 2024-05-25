@@ -501,7 +501,7 @@
             dataType: "JSON",
             data: { userId: userId },
             success: function (json) {
-                if (json.existsYn === "Y") {
+                if (json.existsIdYn === "Y") {
                     alert("이미 가입된 아이디가 존재합니다.");
                 } else {
                     alert("가입 가능한 아이디입니다.");
@@ -520,7 +520,7 @@
         }
 
         $.ajax({
-            url: "/user/getEmailExists",
+            url: "/user/getUserEmailExists",
             type: "post",
             dataType: "JSON",
             data: { email: email },
@@ -529,7 +529,7 @@
                     alert("이미 가입된 이메일 주소가 존재합니다.");
                 } else {
                     alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하세요.");
-                    emailAuthNumber = json.authNumber;
+                    emailAuthNumber = json.OTP;
                 }
             }
         });
