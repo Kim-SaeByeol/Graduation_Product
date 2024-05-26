@@ -10,9 +10,12 @@ $(document).ready(function () {
         myFunction();  // myFunction 내에서 로그인 로직을 처리
     });
 
-    function myFunction() {
+    // 구글 로그인
+    $('#googlelogin').on('click', function() {
+        googleLogin();
+    });
 
-        // 예제 로그인 로직
+    function myFunction() {
         let userId = $("#userId").val();
         let password = $("#pwd").val();
 
@@ -28,11 +31,10 @@ $(document).ready(function () {
             return;
         }
 
-        // Ajax 호출해서 로그인하기
         $.ajax({
             url: "/user/loginProc",
             type: "post",
-            dataType: "JSON", // "datatype" 대신 "dataType"으로 올바르게 수정
+            dataType: "json",
             data: $("#f").serialize(),
             success: function (json) {
                 if (json.res === 1) {
@@ -40,10 +42,29 @@ $(document).ready(function () {
                     location.href = "/index/index";
                 } else {
                     alert(json.msg);
-                    $("#userId").focus();  // 아이디 입력 항목에 마우스 커서 이동
+                    $("#userId").focus();
                 }
+            },
+            error: function() {
+                alert("로그인 처리 중 오류가 발생했습니다.");
             }
         });
-
+    }
+    function googleLogin() {
+        $('#google-login-btn').on('click', function () {
+            $.ajax({
+                url: '/google/authorization', // Google 로그인을 시작하는 URL
+                type: 'GET',
+                success: function (response) {
+                    alert(response.msg);
+                    if (response.res === 1) {
+                        window.location.href = '/index/index'; // 성공 시 페이지 리디렉션
+                    }
+                },
+                error: function () {
+                    alert("로그인 과정 중 문제가 발생했습니다.");
+                }
+            });
+        });
     }
 });
