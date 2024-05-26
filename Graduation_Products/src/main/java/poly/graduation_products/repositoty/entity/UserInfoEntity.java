@@ -15,7 +15,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @Cacheable
 @Entity
-public class UserInfoEntity {
+public class UserInfoEntity extends BaseTimeEntity{
 
 
     /**
@@ -30,12 +30,12 @@ public class UserInfoEntity {
     private Long userSeq;
 
     @NonNull
-    @Column(name = "USER_ID", length = 10, nullable = false)
+    @Column(name = "USER_ID", length = 16, nullable = false)
     private String userId;
 
     @NonNull
     @Column(name = "USER_PASSWORD", length = 50, nullable = false)
-    private String pwd;
+    private String password;
 
     @NonNull
     @Column(name = "USER_EMAIL", length = 64, nullable = false)
@@ -49,11 +49,7 @@ public class UserInfoEntity {
     @Column(name = "USER_NICKNAME", length = 20, nullable = false)
     private String nickname;
 
-    @NonNull
-    @Column(name = "USER_SINCE", nullable = false)
-    private String userSince;
-
-    @NonNull
-    @Column(name = "USER_ROLES", length = 64, nullable = false)
-    private String roles;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 }

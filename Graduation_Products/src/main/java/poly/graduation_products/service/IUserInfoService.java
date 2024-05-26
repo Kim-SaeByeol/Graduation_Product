@@ -5,29 +5,51 @@ import poly.graduation_products.dto.UserInfoDTO;
 public interface IUserInfoService {
 
     // 아이디 중복체크
-    UserInfoDTO getUserIdExists(UserInfoDTO pDTO) throws Exception;
+    String UserIdExists(final String userId) throws Exception;
 
     // 이메일 중복체크
-    UserInfoDTO getUserEmailExists(UserInfoDTO pDTO) throws Exception;
+    String UserEmailExists(final String email) throws Exception;
 
     // 별명 중복체크
-    UserInfoDTO getUserNickExists(UserInfoDTO pDTO) throws Exception;
+    String UserNickExists(final String nickName) throws Exception;
 
     //회원가입
-    int insertUserInfo(UserInfoDTO pDTO) throws Exception;
+    int insertUserInfo(final String userId,
+                       final String password,
+                       final String email,
+                       final String nickname,
+                       final String userName) throws Exception;
 
     //로그인
-    int getUserLogin(UserInfoDTO pDTO) throws Exception;
+    int Login(final String userId,
+                     final String password) throws Exception;
 
     // 아이디 찾기
-    String searchUserIdProc(UserInfoDTO pDTO) throws Exception;
+    String searchUserId(final String userName,
+                            final String email) throws Exception;
 
     //이메일 인증번호 받기
-    UserInfoDTO getEmailAuthNumber(UserInfoDTO pDTO) throws Exception;
+    UserInfoDTO emailAuthNumber(final String email) throws Exception;
 
     // 비밀번호 찾기
-    String searchPasswordProc(UserInfoDTO pDTO) throws Exception;
+    int searchPassword(final String userId,
+                       final String userName,
+                       final String email) throws Exception;
 
     //     비밀번호 재설정
-    String newPasswordProc(UserInfoDTO pDTO) throws Exception;
+    String  newPassword(final String userId, final String newPassword) throws Exception;
+
+
+
+
+
+
+    void updateUserInfo(final String userId,
+                        final String nickname) throws Exception;
+
+    /**
+     * 내 정보 삭제
+     */
+    void deleteUserInfo(final String userId) throws Exception;
+
 }

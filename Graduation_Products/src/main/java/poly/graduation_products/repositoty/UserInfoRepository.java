@@ -15,10 +15,10 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> 
         Optional<UserInfoEntity> findByEmail(String email);
 
         //별명 찾기 (중복체크)
-        Optional<UserInfoEntity> findByNickname(String nick);
+        Optional<UserInfoEntity> findByNickname(String nickName);
 
         // 아이디와 비밀번호 찾기 => 로그인
-        Optional<UserInfoEntity> findByUserIdAndPwd(String userId, String pwd);
+        Optional<UserInfoEntity> findByUserIdAndPassword(String userId, String password);
 
         // 아이디 찾기
         Optional<UserInfoEntity> findByUserNameAndEmail(String email, String userName);
@@ -27,6 +27,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> 
         Optional<UserInfoEntity> findByUserIdAndUserNameAndEmail(String userId, String userName, String email);
 
 
+        void deleteByUserId(String userId);
 
 
 }

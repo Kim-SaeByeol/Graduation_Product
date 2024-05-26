@@ -45,6 +45,8 @@ $(document).ready(function () {
                     } else if(json.msg === "false"){
                         alert("서버 오류: 비밀번호를 재설정할 수 없습니다.");
                     }
+                } else if (json.msg === "session"){
+                    alert("세션이 만료되었습니다. 다시 비밀번호 찾기를 진행해주세요.");
                 } else {
                     alert("서버로부터 응답을 받지 못했습니다.");
                 }
