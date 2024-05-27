@@ -81,30 +81,32 @@
         <input type="text" id="name" name="name" placeholder="이름" required>
     </div>
     <div class="form-control email-group">
-        <input type="text" id="email-user" name="email-user" placeholder="이메일" required>
+        <input type="text" id="email" name="email" placeholder="이메일" required>
         <div class="at-symbol">@</div>
-        <input type="text" id="email-domain-user" placeholder="도메인">
-        <select name="email-domain" id="email-domain" onchange="if (this.value) document.getElementById('email-domain-user').value=this.value">
+        <input type="text" id="emailDomain" placeholder="도메인">
+        <select id="domain" name="domain" onchange="if (this.value) document.getElementById('email-domain-user').value=this.value">
             <option value="">직접선택</option>
             <option value="gmail.com">gmail.com</option>
             <option value="naver.com">naver.com</option>
         </select>
     </div>
     <div class="form-control">
-        <input type="text" id="verification-code" name="verification-code" placeholder="인증번호" required>
-        <button class="btn-check">인증번호 전송</button>
+        <input type="text" id="authNumber" name="authNumber" placeholder="인증번호" required>
+        <button class="btn-check" id="btnEmail" name="btnemail">인증번호 전송</button>
     </div>
     <div class="form-control">
-        <button class="btn-find-id">아이디 찾기</button>
+        <button class="btn-find-id" id="signupButton" name="signupButton">아이디 찾기</button>
     </div>
     <div class="footer-links">
         <a href="/user/login">로그인</a> | <a href="/user/searchPassword">비밀번호 찾기</a>
     </div>
 </div>
 <script>
-    document.getElementById('email-domain').addEventListener('change', function() {
-        document.getElementById('email-domain-user').value = this.value;
+    document.getElementById('domain').addEventListener('change', function() {
+        document.getElementById('emailDomain').value = this.value;
     });
 </script>
+<script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/js/searchUserId.js"></script>
 </body>
 </html>

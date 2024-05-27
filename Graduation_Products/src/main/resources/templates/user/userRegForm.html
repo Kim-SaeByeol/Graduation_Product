@@ -471,113 +471,139 @@
         });
 
         $("#btnEmail").on("click", function () {
-            emailExists();
+            useremailAuthNumber();
         });
+
+        $("#btnNick").on("click", function () {
+                nickExists();
+        });
+
 
         $("#registration-form").on("submit", function (event) {
-            event.preventDefault();
-            doSubmit();
+                event.preventDefault();
+                doSubmit();
+            });
         });
-    });
 
-    let userIdCheck = "Y";
-    let emailAuthNumber = "";
+        let userIdCheck = "Y";
+        let emailAuthNumber = "";
+        let userNickCheck = "Y";
 
-    function userIdExists() {
-        const userId = $("input[name='userId']").val();
+        function userIdExists() {
+            const userId = $("input[name='userId']").val();
 
-        if (userId === "") {
-            alert("아이디를 입력하세요.");
-            return;
-        }
+            if (userId === "") {
+                alert("아이디를 입력하세요.");
+                return;
+            }
 
-        $.ajax({
-            url: "/user/getUserIdExists",
-            type: "post",
-            dataType: "JSON",
-            data: { userId: userId },
-            success: function (json) {
-                if (json.existsIdYn === "Y") {
-                    alert("이미 가입된 아이디가 존재합니다.");
-                } else {
-                    alert("가입 가능한 아이디입니다.");
-                    userIdCheck = "N";
+            $.ajax({
+                url: "/user/getUserIdExists",
+                type: "post",
+                dataType: "JSON",
+                data: {userId: userId},
+                success: function (json) {
+                    if (json.existsIdYn === "Y") {
+                        alert("이미 가입된 아이디가 존재합니다.");
+                    } else {
+                        alert("가입 가능한 아이디입니다.");
+                        userIdCheck = "N";
+                    }
                 }
-            }
-        });
-    }
-
-    function emailExists() {
-        const email = $("input[name='email']").val();
-
-        if (email === "") {
-            alert("이메일을 입력하세요.");
-            return;
+            });
         }
 
-        $.ajax({
-            url: "/user/getUserEmailExists",
-            type: "post",
-            dataType: "JSON",
-            data: { email: email },
-            success: function (json) {
-                if (json.existsYn === "Y") {
-                    alert("이미 가입된 이메일 주소가 존재합니다.");
-                } else {
-                    alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하세요.");
-                    emailAuthNumber = json.OTP;
+        function nickExists() {
+            const nick = $("input[name='nick']").val();
+
+            if (nick === "") {
+                alert("별명을 입력하세요.");
+                return;
+            }
+
+            $.ajax({
+                url: "/user/getNickExists",
+                type: "post",
+                dataType: "JSON",
+                data: {nick: nick},
+                success: function (json) {
+                    if (json.existsIdYn === "Y") {
+                        alert("이미 가입된 별명이 존재합니다.");
+                    } else {
+                        alert("가입 가능한 별명입니다.");
+                        userNickCheck = "N";
+                    }
                 }
+            });
+        }
+
+        function useremailAuthNumber() {
+            const email = $("input[name='email']").val();
+
+            if (email === "") {
+                alert("이메일을 입력하세요.");
+                return;
             }
-        });
-    }
 
-    function kakaoPost() {
-        new daum.Postcode({
-            oncomplete: function (data) {
-                let address = "(" + data.zonecode + ") " + data.address;
-                $("input[name='addr1']").val(address);
-            }
-        }).open();
-    }
-
-    function doSubmit() {
-        const form = $("#registration-form")[0];
-
-        if (form.checkValidity() === false) {
-            form.classList.add('was-validated');
-            return;
-        }
-
-        if (userIdCheck !== "N") {
-            alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입해주세요.");
-            return;
-        }
-
-        const authNumber = $("input[name='authNumber']").val();
-        const email = $("input[name='email']").val(); // 이메일 주소 가져오기
-
-        if (authNumber != emailAuthNumber) {
-            alert("이메일 인증번호가 일치하지 않습니다.");
-            $("input[name='authNumber']").focus();
-            return;
-        }
-
-        // 이메일 인증이 성공한 경우에만 회원가입 요청을 서버에 보냄
-        $.ajax({
-            url: "/user/insertUserInfo",
-            type: "post",
-            dataType: "JSON",
-            data: $("#registration-form").serialize(),
-            success: function (json) {
-                if (json.result === 1) {
-                    alert(json.msg);
-                    location.href = "/user/login";
-                } else {
-                    alert(json.msg);
+            $.ajax({
+                url: "/user/UserEmailAuthNumber",
+                type: "post",
+                dataType: "JSON",
+                data: {email: email},
+                success: function (json) {
+                    if (json.existsYn === "Y") {
+                        alert("이미 가입된 이메일 주소가 존재합니다.");
+                    } else {
+                        alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하세요.");
+                        emailAuthNumber = json.authNumber;
+                    }
                 }
+            });
+        }
+
+        function doSubmit() {
+            const form = $("#registration-form")[0];
+
+            if (form.checkValidity() === false) {
+                form.classList.add('was-validated');
+                return;
             }
-        });
-    }
+
+            if (userIdCheck !== "N") {
+                alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입해주세요.");
+                return;
+            }
+            if (userNickCheck !== "N") {
+                alert("별명 중복 체크 및 중복되지 않은 별명으로 가입해주세요.");
+                return;
+            }
+
+
+            const authNumber = $("input[name='authNumber']").val();
+            const email = $("input[name='email']").val(); // 이메일 주소 가져오기
+
+            if (authNumber != emailAuthNumber) {
+                alert("이메일 인증번호가 일치하지 않습니다.");
+                $("input[name='authNumber']").focus();
+                return;
+            }
+
+            // 이메일 인증이 성공한 경우에만 회원가입 요청을 서버에 보냄
+            $.ajax({
+                url: "/user/insertUserInfo",
+                type: "post",
+                dataType: "JSON",
+                data: $("#registration-form").serialize(),
+                success: function (json) {
+                    if (json.res === 1) {
+                        alert(json.msg);
+                        location.href = "/user/login";
+                    } else {
+                        alert(json.msg);
+                    }
+                }
+            });
+        }
 </script>
 
 

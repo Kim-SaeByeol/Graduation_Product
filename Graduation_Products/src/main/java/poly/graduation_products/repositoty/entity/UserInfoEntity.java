@@ -13,6 +13,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 @Builder
 @Getter
+@Setter
 @Cacheable
 @Entity
 public class UserInfoEntity extends BaseTimeEntity{
@@ -34,7 +35,7 @@ public class UserInfoEntity extends BaseTimeEntity{
     private String userId;
 
     @NonNull
-    @Column(name = "USER_PASSWORD", length = 50, nullable = false)
+    @Column(name = "USER_PASSWORD", length = 255, nullable = false)
     private String password;
 
     @NonNull

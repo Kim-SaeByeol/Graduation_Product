@@ -14,8 +14,7 @@ public class IndexController {
 
     @GetMapping(value = "index")
     public String index() {
-        log.info(this.getClass().getName() + ".index Start");
-        log.info(this.getClass().getName() + ".index end");
+        log.info(this.getClass().getName() + "메인 페이지");
         // main 메서드 로직
         return "index/index";  // 이 부분을 "Main/main"에서 "Main/main.html"로 수정
     }

@@ -32,6 +32,7 @@ public class UserInfoController {
      */
     @GetMapping(value = "/login")
     public String login() {
+        log.info(this.getClass().getName() + "로그인 페이지");
         return "user/login";
     }
 
@@ -40,6 +41,7 @@ public class UserInfoController {
      */
     @GetMapping(value = "/userRegForm")
     public String userRegForm() {
+        log.info(this.getClass().getName() +"회원가입 페이지");
         return "/user/userRegForm";
     }
 
@@ -48,6 +50,7 @@ public class UserInfoController {
      */
     @GetMapping(value = "/searchUserId")
     public String searchUserId() {
+        log.info(this.getClass().getName() +"아이디 찾기 페이지");
         return "user/searchUserId";
     }
 
@@ -56,6 +59,7 @@ public class UserInfoController {
      */
     @GetMapping(value = "/searchPassword")
     public String searchPassword() {
+        log.info(this.getClass().getName() +"비밀번호 찾기 페이지");
         return "user/searchPassword";
     }
 
@@ -64,6 +68,7 @@ public class UserInfoController {
      */
     @GetMapping(value = "/newPassword")
     public String newPassword() {
+        log.info(this.getClass().getName() +"비밀번호 재설정 페이지");
         return "user/newPassword";
     }
 
@@ -154,8 +159,8 @@ public class UserInfoController {
         String userId = CmmUtil.nvl(request.getParameter("userId"));
         String password = CmmUtil.nvl(EncryptUtil.encHashSHA256(request.getParameter("password")));
         String email = CmmUtil.nvl(request.getParameter("email"));
-        String nickname = CmmUtil.nvl(request.getParameter("nickname"));
-        String userName = CmmUtil.nvl(request.getParameter("userName"));
+        String nickname = CmmUtil.nvl(request.getParameter("nick"));
+        String userName = CmmUtil.nvl(request.getParameter("name"));
 
         log.info("userId : " + userId);
         log.info("password : " + password);
@@ -201,7 +206,7 @@ public class UserInfoController {
      * 로그인
      */
     @ResponseBody
-    @PostMapping(value = "loginProc")
+    @PostMapping(value = "loginProc", produces = "application/json; charset=UTF-8")
     public int getLogin(HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info("controller 로그인 실행");
@@ -232,6 +237,8 @@ public class UserInfoController {
             e.printStackTrace();
 
         }
+
+        log.info("res : " + res);
 
         log.info("controller 로그인 종료");
 
@@ -273,7 +280,7 @@ public class UserInfoController {
 
         String msg = "";
         String userId = CmmUtil.nvl(request.getParameter("userId"));
-        String userName = CmmUtil.nvl(request.getParameter("name"));
+        String userName = CmmUtil.nvl(request.getParameter("userName"));
         String email = CmmUtil.nvl(request.getParameter("email"));
 
         log.info("userId : " + userId);
@@ -289,9 +296,32 @@ public class UserInfoController {
         return res;
     }
 
+    /**
+     * 회원가입 이메일 인증번호
+     */
+    @ResponseBody
+    @PostMapping(value = "UserEmailAuthNumber")
+    public UserInfoDTO UserEmailAuthNumber(HttpServletRequest request) throws Exception {
+
+        log.info(this.getClass().getName() + "이메일 중복체크 실행");
+
+
+        String email = CmmUtil.nvl(request.getParameter("email")); // 이메일
+
+        log.info("email : " + email);
+
+        //이메일을 통해 중복된 이메일인지 조회
+        UserInfoDTO rDTO = Optional.ofNullable(userInfoService.UserEmailAuthNumber(email))
+                .orElseGet(() -> UserInfoDTO.builder().build());
+
+        log.info("리턴 값 : " + rDTO);
+        log.info(this.getClass().getName() + "이메일 중복체크 종료");
+
+        return rDTO;
+    }
 
     /**
-     * 이메일 인증번호
+     * 아이디 찾기 이메일 인증번호
      */
     @ResponseBody
     @PostMapping(value = "getEmailAuthNumber")
@@ -318,49 +348,24 @@ public class UserInfoController {
      * 비밀번호 재설정
      */
     @ResponseBody
-    @PostMapping(value = "newPassword", produces = "application/json; charset=UTF-8")
-    public MsgDTO newPassword(HttpServletRequest request, HttpSession session) throws Exception {
+    @PostMapping("newPassword")
+    public int newPassword(HttpServletRequest request) throws Exception {
+
         log.info(this.getClass().getName() + "비밀번호 재설정 실행");
 
-        String msg = "";
-        MsgDTO dto;
 
-        // 세션에서 userId 받아오기
-        String userId = (String) session.getAttribute("NEW_PASSWORD_USER_ID");
+        String userId = request.getParameter("userId");
+        String newpassword = CmmUtil.nvl(EncryptUtil.encHashSHA256(request.getParameter("password")));
 
-        if (userId == null || userId.isEmpty()) {
-            dto = MsgDTO.builder().msg("session").build(); // 비밀번호를 찾지 못한 경우
-            return dto; // 클라이언트로 바로 JSON 반환
-        }
+        log.info("userID : " + userId);
+        log.info("newpassword : " + newpassword);
 
-        // 새 비밀번호 받아오기
-        String password = CmmUtil.nvl(request.getParameter("password"));
+        int res = userInfoService.newPassword(userId, newpassword);
 
-        log.info("Received userId: " + userId);
-        log.info("Received password: " + password);
+        log.info("res : " + res);
 
-        // 신규 비밀번호를 해시로 암호화
-        String hashedPassword = EncryptUtil.encHashSHA256(password);
-
-        // 서비스로 DTO 전달
-        String res = userInfoService.newPassword(userId, hashedPassword);
-        if (res == "success") {
-
-            // 비밀번호 재생성 후 세션 삭제
-            session.removeAttribute("NEW_PASSWORD_USER_ID");
-
-            msg = "비밀번호가 재설정되었습니다.";
-
-            dto = MsgDTO.builder().msg("success").build(); // 성공적으로 비밀번호를 재설정한 경우
-
-            log.info("dto : " + dto);
-            log.info(this.getClass().getName() + "비밀번호 재설정 종료");
-            return dto;
-        } else {
-            dto = MsgDTO.builder().msg("false").build(); // 성공적으로 비밀번호를 재설정한 경우
-            log.info(this.getClass().getName() + "비밀번호 재설정 종료");
-            return dto;
-        }
+        log.info(this.getClass().getName() + "비밀번호 재설정 종료");
+        return res;
     }
 
 }

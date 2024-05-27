@@ -28,7 +28,10 @@ public interface IUserInfoService {
     String searchUserId(final String userName,
                             final String email) throws Exception;
 
-    //이메일 인증번호 받기
+    // 이메일이 없을 경우 이메일 인증번호 받기
+    UserInfoDTO UserEmailAuthNumber(final String email) throws Exception;
+
+    //이메일이 있을 경우 이메일 인증번호 받기
     UserInfoDTO emailAuthNumber(final String email) throws Exception;
 
     // 비밀번호 찾기
@@ -37,7 +40,7 @@ public interface IUserInfoService {
                        final String email) throws Exception;
 
     //     비밀번호 재설정
-    String  newPassword(final String userId, final String newPassword) throws Exception;
+    int newPassword(final String userId, final String newPassword) throws Exception;
 
 
 
