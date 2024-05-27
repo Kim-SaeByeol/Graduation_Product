@@ -1,4 +1,4 @@
-package poly.graduation_products.repositoty.entity;
+package poly.graduation_products.repository.entity;
 
 
 import jakarta.persistence.*;

@@ -2,11 +2,10 @@ package poly.graduation_products.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import poly.graduation_products.repositoty.entity.Role;
+import poly.graduation_products.repository.entity.Role;
 import poly.graduation_products.service.impl.CustomOAuth2UserService;
 
 

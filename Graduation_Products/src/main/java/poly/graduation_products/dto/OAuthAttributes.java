@@ -3,9 +3,9 @@ package poly.graduation_products.dto;
 import lombok.Getter;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import poly.graduation_products.repositoty.entity.Provider;
-import poly.graduation_products.repositoty.entity.Role;
-import poly.graduation_products.repositoty.entity.SocialLoginEntity;
+import poly.graduation_products.repository.entity.Provider;
+import poly.graduation_products.repository.entity.Role;
+import poly.graduation_products.repository.entity.SocialLoginEntity;
 
 import java.util.Map;
 

@@ -1,8 +1,8 @@
-package poly.graduation_products.repositoty;
+package poly.graduation_products.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import poly.graduation_products.repositoty.entity.SocialLoginEntity;
+import poly.graduation_products.repository.entity.SocialLoginEntity;
 
 import java.util.Optional;
 

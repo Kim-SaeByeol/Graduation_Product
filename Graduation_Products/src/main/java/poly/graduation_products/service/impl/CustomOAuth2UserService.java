@@ -12,9 +12,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import poly.graduation_products.dto.OAuthAttributes;
-import poly.graduation_products.dto.SessionUser;
-import poly.graduation_products.repositoty.SocialLoginRepository;
-import poly.graduation_products.repositoty.entity.SocialLoginEntity;
+import poly.graduation_products.repository.SocialLoginRepository;
+import poly.graduation_products.repository.entity.SocialLoginEntity;
 
 import java.util.Collections;
 

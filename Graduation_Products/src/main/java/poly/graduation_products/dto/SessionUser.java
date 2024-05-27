@@ -1,7 +1,7 @@
 package poly.graduation_products.dto;
 
 import lombok.Getter;
-import poly.graduation_products.repositoty.entity.SocialLoginEntity;
+import poly.graduation_products.repository.entity.SocialLoginEntity;
 
 import java.io.Serializable;
 
