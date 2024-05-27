@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import poly.graduation_products.repositoty.UserInfoRepository;
+import poly.graduation_products.repositoty.entity.UserInfoEntity;
 import poly.graduation_products.service.IMailService;
 import poly.graduation_products.util.CmmUtil;
 import poly.graduation_products.util.EncryptUtil;
@@ -25,7 +27,7 @@ import java.util.Optional;
 public class UserInfoController {
 
     private final IUserInfoService userInfoService;
-    private final IMailService mailService;
+    private final UserInfoRepository userInfoRepository;
 
     /**
      * 로그인
@@ -229,7 +231,15 @@ public class UserInfoController {
             res = userInfoService.Login(userId, password);
 
             if (res == 1) {
-                session.setAttribute("SS_USER", userId);
+                session.setAttribute("SS_USER_ID", userId);
+
+                // 세션에 유저의 별명 혹은 이름을 같이 저장.
+                Optional<UserInfoEntity> optionalUserInfo = userInfoRepository.findByUserId(userId);
+                String name = optionalUserInfo.map(UserInfoEntity::getNickname) // nickname 가져오기
+                        .orElseGet(() -> optionalUserInfo.map(UserInfoEntity::getUserName) // nickname 없으면 userName
+                                .orElse(userId)); // 둘 다 없으면 아이디를 사용함.
+
+                session.setAttribute("SS_USER_NAME", name); // 세션에 이름 저장
             }
 
         } catch (Exception e) {
@@ -244,6 +254,8 @@ public class UserInfoController {
 
         return res;
     }
+
+
 
     /**
      * 아이디 찾기
@@ -368,4 +380,19 @@ public class UserInfoController {
         return res;
     }
 
+    /**
+     * 로그아웃
+     */
+    @PostMapping("logout")
+    @ResponseBody
+    public int logout(HttpSession session) {
+        try {
+            // 특정 세션 속성만 제거
+            session.removeAttribute("SS_USER_ID");
+            session.removeAttribute("SS_USER_NAME");
+            return 1;  // 로그아웃 성공 응답
+        } catch (Exception e) {
+            return 0;  // 로그아웃 실패 응답
+        }
+    }
 }
