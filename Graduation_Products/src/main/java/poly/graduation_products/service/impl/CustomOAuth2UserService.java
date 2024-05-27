@@ -33,26 +33,18 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-        // 로그인 진행 중인 서비스를 구분합니다 (구글, 네이버, 카카오 등).
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
                 .getUserInfoEndpoint().getUserNameAttributeName();
-
         String accessToken = userRequest.getAccessToken().getTokenValue();
 
-        // OAuth2User의 attribute를 담을 클래스를 초기화합니다.
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes(), accessToken);
-
         log.info("attributes 값: " + attributes);
 
-        // 사용자 정보를 저장하거나 업데이트하고 세션에 사용자 정보를 저장합니다.
         SocialLoginEntity user = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(user));
+        updateSession(user);
 
         log.info(this.getClass().getName() + ".loadUser 완료");
-
-        log.info("attrinutes 값이 잇나 없나 : " + attributes.getAttributes());
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
@@ -67,10 +59,18 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .map(entity -> entity.update(attributes.getName(), attributes.getNickname(), attributes.getPicture(), attributes.getAccessToken()))
                 .orElse(attributes.toEntity());
 
-        log.info("user 의 값은  : " + user);
-
+        log.info("Updated or saved user: " + user);
         log.info(this.getClass().getName() + ".saveOrUpdate End");
 
         return socialLoginRepository.save(user);
+    }
+
+    private void updateSession(SocialLoginEntity user) {
+        httpSession.setAttribute("SS_USER_ID", user.getAccessToken());
+        String displayName = user.getNickname() != null ? user.getNickname() : user.getName();
+        httpSession.setAttribute("SS_USER_NAME", displayName);
+
+        log.info("SS_USER_ID : " + user.getAccessToken());
+        log.info("SS_USER_NAME : " + displayName);
     }
 }
