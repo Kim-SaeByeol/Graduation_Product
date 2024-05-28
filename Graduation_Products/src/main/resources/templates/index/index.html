@@ -121,7 +121,6 @@
                 </div>
               </div>
 
-
               <div class="swiper-slide">
                 <img class="contents-backimg img-pc" src="/images/img_mainvisual_03.png" alt="PC 비주얼 이미지">
                 <img class="contents-backimg img-mobile" src="/images/img_mainvisual_mobile_03.png" alt="모바일 비주얼 이미지">
@@ -133,7 +132,6 @@
                   <a class="btnset btnset-line btnset-round" href="javascript:void(0)">자세히보기</a>
                 </div>
               </div>
-
 
               <div class="swiper-slide">
                 <img class="contents-backimg img-pc" src="/images/img_mainvisual_03.png" alt="PC 비주얼 이미지">
@@ -292,54 +290,18 @@
           </div>
           <div class="swiper contents-swiper">
             <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="/images/img_basic_N42_1.png" alt="스와이퍼 이미지">
-                  </figure>
+
+
+              <div class="swiper-slide" th:each="dto : ${yList}">
+
+              <a href="javascript:void(0);" class="cardset cardset-shopping">
+                    <iframe class="cardset-figure" id="ytplayer" type="text/html" width="100%" height="100%"
+                            th:src="'https://www.youtube.com/embed/'+${dto.videoId()}"
+                            frameborder="0" allowfullscreen></iframe>
                   <div class="cardset-body">
-                    <span class="cardset-name"> 컨텐츠 프로필 명 </span>
-                    <h2 class="cardset-tit"> 영상 제목 </h2>
-                    <p class="cardset-desc"> 관련 태그 </small>
-                    </p>
-                  </div>
-                </a>
-              </div>
-              <div class="swiper-slide">
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="/images/img_basic_N42_2.png" alt="스와이퍼 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name"> 컨텐츠 프로필 명 </span>
-                    <h2 class="cardset-tit"> 영상 제목 </h2>
-                    <p class="cardset-desc"> 관련 태그 </small>
-                    </p>
-                  </div>
-                </a>
-              </div>
-              <div class="swiper-slide">
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="/images/img_basic_N42_3.png" alt="스와이퍼 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name"> 컨텐츠 프로필 명 </span>
-                    <h2 class="cardset-tit"> 영상 제목 </h2>
-                    <p class="cardset-desc"> 관련 태그 </small>
-                    </p>
-                  </div>
-                </a>
-              </div>
-              <div class="swiper-slide">
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="/images/img_basic_N42_4.png" alt="스와이퍼 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name"> 컨텐츠 프로필 명 </span>
-                    <h2 class="cardset-tit"> 영상 제목 </h2>
-                    <p class="cardset-desc"> 관련 태그 </small>
+                    <span class="cardset-name" th:text="${dto.channelTitle}">컨텐츠 프로필 명</span>
+                    <h2 class="cardset-tit" th:text="${dto.videoTitle}">영상 제목</h2>
+                    <p class="cardset-desc" th:text="${dto.videoPublished}">게시 날짜</p>
                     </p>
                   </div>
                 </a>
