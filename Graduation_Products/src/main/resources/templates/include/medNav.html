@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<header th:fragment="medNav">
+
+    <div class="contents-left">
+        <div class="contents-filter-body">
+            <div class="accordset accordset-plus">
+                <div class="accordset-item">
+                    <a href="/medicine/otcDrugs" class="accordset-button btn">일반의약품</a>
+                </div>
+                <div class="accordset-item">
+                    <a href="/medicine/medDosage" class="accordset-button btn">의약품 복용법</a>
+                </div>
+                <div class="accordset-item">
+                    <a href="/medicine/topicalUsage" class="accordset-button btn">외용약 사용법</a>
+                </div>
+                <div class="accordset-item">
+                    <a href="/medicine/medSearch" class="accordset-button btn">의약품 상세검색</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</header>
+
+</body>
+</html>

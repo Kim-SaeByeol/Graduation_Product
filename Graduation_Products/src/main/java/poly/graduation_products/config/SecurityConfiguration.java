@@ -29,7 +29,7 @@ public class SecurityConfiguration{
                         .requestMatchers("/api/v1/**").hasRole(Role.USER.name())
                         .anyRequest().authenticated()
                 )
-                .logout(logout -> logout.logoutSuccessUrl("/")) //로그아웃 성공하면 해당 주소로 이동
+                .logout(logout -> logout.logoutSuccessUrl("/index/index")) //로그아웃 성공하면 해당 주소로 이동
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/user/login") // 사용자 정의 로그인 페이지 URL
                         .defaultSuccessUrl("/index/index") // Login 성공 후 이동할 URL
