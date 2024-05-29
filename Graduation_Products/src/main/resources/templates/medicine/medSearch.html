@@ -15,11 +15,192 @@
   <meta property="og:image" content="https://웹사이트/images/opengraph.png">
   <meta property="og:url" content="https://웹사이트">
   <title>건강게시판 | 졸작_게시판</title>
-  <link rel="stylesheet" href="../resources/css/setting.css">
-  <link rel="stylesheet" href="../resources/css/plugin.css">
-  <link rel="stylesheet" href="../resources/css/template.css">
-  <link rel="stylesheet" href="../resources/css/common.css">
-  <link rel="stylesheet" href="../resources/css/style.css">
+  <link rel="stylesheet" href="/css/setting.css">
+  <link rel="stylesheet" href="/css/plugin.css">
+  <link rel="stylesheet" href="/css/template.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    section.notice {
+      padding: 80px 0;
+    }
+
+    .page-title {
+      margin-bottom: 60px;
+    }
+    .page-title h3 {
+      font-size: 28px;
+      color: #333333;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    #board-search .search-window {
+      padding: 15px 0;
+      background-color: #f9f7f9;
+    }
+    #board-search .search-window .search-wrap {
+      position: relative;
+      /*   padding-right: 124px; */
+      margin: 0 auto;
+      width: 80%;
+      max-width: 564px;
+    }
+    #board-search .search-window .search-wrap input {
+      height: 40px;
+      width: 100%;
+      font-size: 14px;
+      padding: 7px 14px;
+      border: 1px solid #ccc;
+    }
+    #board-search .search-window .search-wrap input:focus {
+      border-color: #333;
+      outline: 0;
+      border-width: 1px;
+    }
+    #board-search .search-window .search-wrap .btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 108px;
+      padding: 0;
+      font-size: 16px;
+    }
+
+    .board-table {
+      font-size: 13px;
+      width: 100%;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .board-table a {
+      color: #333;
+      display: inline-block;
+      line-height: 1.4;
+      word-break: break-all;
+      vertical-align: middle;
+    }
+    .board-table a:hover {
+      text-decoration: underline;
+    }
+    .board-table th {
+      text-align: center;
+    }
+
+    .board-table .th-num {
+      width: 100px;
+      text-align: center;
+    }
+
+    .board-table .th-date {
+      width: 200px;
+    }
+
+    .board-table th, .board-table td {
+      padding: 14px 0;
+    }
+
+    .board-table tbody td {
+      border-top: 1px solid #e7e7e7;
+      text-align: center;
+    }
+
+    .board-table tbody th {
+      padding-left: 28px;
+      padding-right: 14px;
+      border-top: 1px solid #e7e7e7;
+      text-align: left;
+    }
+
+    .board-table tbody th p{
+      display: none;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0 30px;
+      font-size: 15px;
+      font-weight: 400;
+      background: transparent;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      -ms-touch-action: manipulation;
+      touch-action: manipulation;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      border: 1px solid transparent;
+      text-transform: uppercase;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0;
+      -webkit-transition: all 0.3s;
+      -moz-transition: all 0.3s;
+      -ms-transition: all 0.3s;
+      -o-transition: all 0.3s;
+      transition: all 0.3s;
+    }
+
+    .btn-dark {
+      background: #555;
+      color: #fff;
+    }
+
+    .btn-dark:hover, .btn-dark:focus {
+      background: #373737;
+      border-color: #373737;
+      color: #fff;
+    }
+
+    .btn-dark {
+      background: #555;
+      color: #fff;
+    }
+
+    .btn-dark:hover, .btn-dark:focus {
+      background: #373737;
+      border-color: #373737;
+      color: #fff;
+    }
+
+    /* reset */
+
+    * {
+      list-style: none;
+      text-decoration: none;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .clearfix:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    .container {
+      width: 1100px;
+      margin: 0 auto;
+    }
+    .blind {
+      position: absolute;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      margin: -1px;
+      width: 1px;
+      height: 1px;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -29,7 +210,7 @@
       <div class="header-left">
         <h1 class="header-title">
           <a href="javascript:void(0)">
-            <img src="../resources/images/img_logo_white.png" alt="로고">
+            <img src="/images/img_logo_white.png" alt="로고">
           </a>
         </h1>
       </div>
@@ -173,13 +354,13 @@
       <div class="header-right">
         <div class="header-utils">
           <button class="btn-allmenu header-utils-btn">
-            <img src="../resources/icons/ico_menu_white.svg" alt="PC메뉴">
+            <img src="/icons/ico_menu_white.svg" alt="PC메뉴">
           </button>
           <button class="btn-momenu header-utils-btn">
-            <img src="../resources/icons/ico_menu_white.svg" alt="모바일메뉴">
+            <img src="/icons/ico_menu_white.svg" alt="모바일메뉴">
           </button>
           <button class="btn-moclose header-utils-btn">
-            <img src="../resources/icons/ico_close_white.svg" alt="닫기">
+            <img src="/icons/ico_close_white.svg" alt="닫기">
           </button>
         </div>
       </div>
@@ -189,7 +370,7 @@
         <div class="fullmenu-head">
           <h4 class="fullmenu-title">
             <a href="javascript:void(0)">
-              <img src="../resources/images/img_logo_white.png" alt="로고">
+              <img src="/images/img_logo_white.png" alt="로고">
             </a>
           </h4>
           <ul class="fullmenu-member">
@@ -330,7 +511,7 @@
         </ul>
       </div>
       <button class="fullmenu-close">
-        <img src="../resources/icons/ico_close_white.svg" alt="닫기">
+        <img src="/icons/ico_close_white.svg" alt="닫기">
       </button>
     </div>
   </div>
@@ -343,7 +524,7 @@
           <div class="textset">
             <h2 class="textset-tit">전체 상품</h2>
             <button class="contents-btn btn-filter" type="button">
-              <img src="../resources/icons/ico_filter_black.svg" alt="모바일 필터 아이콘">
+              <img src="/icons/ico_filter_black.svg" alt="모바일 필터 아이콘">
             </button>
           </div>
           <div class="contents-body">
@@ -351,7 +532,7 @@
               <div class="contents-filter-header">
                 <strong>필터</strong>
                 <button class="contents-btn btn-close">
-                  <img src="../resources/icons/ico_close_black.svg" alt="닫기 아이콘">
+                  <img src="/icons/ico_close_black.svg" alt="닫기 아이콘">
                 </button>
               </div>
               <div class="contents-filter-body">
@@ -517,7 +698,7 @@
               <div class="contents-filter-footer">
                 <span>필터초기화</span>
                 <button class="contents-btn btn-refresh">
-                  <img src="../resources/icons/ico_refresh_black.svg" alt="닫기 아이콘">
+                  <img src="/icons/ico_refresh_black.svg" alt="닫기 아이콘">
                 </button>
               </div>
             </div>
@@ -573,107 +754,50 @@
                   </div>
                 </div>
               </div>
-              <div class="contents-list">
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="../resources/images/img_basic_N42_1.png" alt="카드 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name">템하피부</span>
-                    <h2 class="cardset-tit"> 민감 피부 마스크 시트(피부진정) </h2>
-                    <p class="cardset-desc">32,000<small>원</small>
-                    </p>
+
+              <section class="notice">
+                <div class="page-title">
+                  <div class="container">
+                    <!--                <h3>공지사항</h3>-->
                   </div>
-                </a>
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="../resources/images/img_basic_N42_2.png" alt="카드 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name">템하피부</span>
-                    <h2 class="cardset-tit"> 시카블라스트 리페어 크림 </h2>
-                    <p class="cardset-desc">12,000<small>원</small>
-                    </p>
+                </div>
+
+                <!-- board seach area -->
+                <div id="board-search">
+                  <div class="container">
+                    <div class="search-window">
+                      <form action="">
+                        <div class="search-wrap">
+                          <label for="search" class="blind">공지사항 내용 검색</label>
+                          <input id="search" type="search" name="search" placeholder="검색어를 입력해주세요." value="">
+                          <button type="submit" class="btn btn-dark" onclick="myFunction()">검색</button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
-                </a>
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="../resources/images/img_basic_N42_3.png" alt="카드 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name">템하피부</span>
-                    <h2 class="cardset-tit"> 딥 클린징 포밍 크림 </h2>
-                    <p class="cardset-desc">20,000<small>원</small>
-                    </p>
+                </div>
+
+                <!-- board list area -->
+                <div id="board-list">
+                  <div class="container">
+                    <table class="board-table">
+                      <thead>
+                      <tr>
+                        <th scope="col" class="th-num">번호</th>
+                        <th scope="col" class="th-date">제품명</th>
+                        <th scope="col" class="th-date">업체명</th>
+                        <th scope="col" class="th-date">제품기준코드</th>
+                      </tr>
+                      </thead>
+                      <tbody id="medicineTableBody">
+                      <!-- 초기에는 비어있게 두고, Ajax로 데이터 채우기 -->
+                      </tbody>
+                    </table>
                   </div>
-                </a>
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="../resources/images/img_basic_N42_1.png" alt="카드 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name">템하피부</span>
-                    <h2 class="cardset-tit"> 민감 피부 마스크 시트(피부진정) </h2>
-                    <p class="cardset-desc">32,000<small>원</small>
-                    </p>
-                  </div>
-                </a>
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="../resources/images/img_basic_N42_2.png" alt="카드 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name">템하피부</span>
-                    <h2 class="cardset-tit"> 시카블라스트 리페어 크림 </h2>
-                    <p class="cardset-desc">12,000<small>원</small>
-                    </p>
-                  </div>
-                </a>
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="../resources/images/img_basic_N42_3.png" alt="카드 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name">템하피부</span>
-                    <h2 class="cardset-tit"> 딥 클린징 포밍 크림 </h2>
-                    <p class="cardset-desc">20,000<small>원</small>
-                    </p>
-                  </div>
-                </a>
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="../resources/images/img_basic_N42_1.png" alt="카드 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name">템하피부</span>
-                    <h2 class="cardset-tit"> 민감 피부 마스크 시트(피부진정) </h2>
-                    <p class="cardset-desc">32,000<small>원</small>
-                    </p>
-                  </div>
-                </a>
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="../resources/images/img_basic_N42_2.png" alt="카드 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name">템하피부</span>
-                    <h2 class="cardset-tit"> 시카블라스트 리페어 크림 </h2>
-                    <p class="cardset-desc">12,000<small>원</small>
-                    </p>
-                  </div>
-                </a>
-                <a href="javascript:void(0);" class="cardset cardset-shopping">
-                  <figure class="cardset-figure">
-                    <img class="cardset-img" src="../resources/images/img_basic_N42_3.png" alt="카드 이미지">
-                  </figure>
-                  <div class="cardset-body">
-                    <span class="cardset-name">템하피부</span>
-                    <h2 class="cardset-tit"> 딥 클린징 포밍 크림 </h2>
-                    <p class="cardset-desc">20,000<small>원</small>
-                    </p>
-                  </div>
-                </a>
-              </div>
+                </div>
+              </section>
+
+
               <nav class="pagiset pagiset-line">
                 <div class="pagiset-ctrl">
                   <a class="pagiset-link pagiset-first" href="javascript:void(0)">
@@ -719,9 +843,9 @@
     </div>
   </div>
   <!-- [E]basic-N55 -->
-  <script src="../resources/js/setting.js"></script>
-  <script src="../resources/js/plugin.js"></script>
-  <script src="../resources/js/template.js"></script>
-  <script src="../resources/js/common.js"></script>
-  <script src="../resources/js/script.js"></script>
+  <script src="/js/setting.js"></script>
+  <script src="/js/plugin.js"></script>
+  <script src="/js/template.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/script.js"></script>
 </body>

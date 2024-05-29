@@ -1,16 +1,30 @@
 package poly.graduation_products.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import poly.graduation_products.dto.MedicineDTO;
+import poly.graduation_products.service.IMedicineService;
+import poly.graduation_products.service.impl.MedicineService;
+import poly.graduation_products.util.CmmUtil;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping(value = "/medicine")
 @Controller
 public class MedicineController {
+
+    private final MedicineService medicineService;
+
 
     // 일반 의약품
     @GetMapping(value = "otcDrugs")
@@ -48,6 +62,24 @@ public class MedicineController {
         return "medicine/medSearch";
     }
 
+    @ResponseBody
+    @PostMapping("medSearch")
+    public List<MedicineDTO> medSearch(HttpServletRequest request, HttpSession session) throws Exception {
+        log.info(this.getClass().getName() + ".searchMedicine Start (의약품 상세 조회)");
 
+        String itemName = CmmUtil.nvl(request.getParameter("search"));
+        log.info("itemName : " + itemName);
+
+        MedicineDTO pDTO = MedicineDTO.builder()
+                .itemName(itemName)
+                .build();
+
+        List<MedicineDTO> dto = medicineService.fetchMedicineInfo(pDTO);
+
+        log.info("dto : " + dto);
+        log.info(this.getClass().getName() + ".searchMedicine End (의약품 상세 조회)");
+
+        return dto;
+    }
 
 }
