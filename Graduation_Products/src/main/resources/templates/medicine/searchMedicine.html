@@ -37,74 +37,8 @@
 
 <body data-spy="scroll" data-target=".navbar-collapse">
 
+<th:block th:replace="include/header-black :: header-black"></th:block>
 
-<!--    &lt;!&ndash; Preloader &ndash;&gt;-->
-<!--    <div id="loading">-->
-<!--        <div id="loading-center">-->
-<!--            <div id="loading-center-absolute">-->
-<!--                <div class="object" id="object_one"></div>-->
-<!--                <div class="object" id="object_two"></div>-->
-<!--                <div class="object" id="object_three"></div>-->
-<!--                <div class="object" id="object_four"></div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
-
-<!--    <div class="culmn">-->
-<!--        <nav class="navbar navbar-default bootsnav navbar-fixed">-->
-<!--            <div class="navbar-top bg-grey fix">-->
-<!--                <div class="container">-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-md-6">-->
-
-<!--                        </div>-->
-<!--                        <div class="col-md-6">-->
-<!--                            <div class="navbar-socail text-right sm-text-center">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="container">-->
-<!--                <div class="attr-nav">-->
-<!--                    <div class="auth-links">-->
-<!--                        &lt;!&ndash; 세션에 SS_USER_ID가 존재하면 (로그인 상태) &ndash;&gt;-->
-<!--                        <div th:if="${session.SS_USER_ID != null}">-->
-<!--                            <a href="javascript:void(0)" id="btnLogOut">로그아웃</a>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash; 세션에 SS_USER_ID가 존재하지 않으면 (로그아웃 상태) &ndash;&gt;-->
-<!--                        <div th:unless="${session.SS_USER_ID != null}">-->
-<!--                            <a href="/user/login">로그인</a>-->
-<!--                            <a> | </a>-->
-<!--                            <a href="/user/userRegForm">회원가입</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="navbar-header">-->
-<!--                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">-->
-<!--                        <i class="fa fa-bars"></i>-->
-<!--                    </button>-->
-<!--                    <a class="navbar-brand" href="/index/index">-->
-<!--                        <img src="assets/images/logo.png" class="logo" alt="">-->
-<!--                    </a>-->
-
-<!--                </div>-->
-
-<!--                <div class="collapse navbar-collapse" id="navbar-menu">-->
-<!--                    <ul class="nav navbar-nav navbar-right">-->
-<!--                        <li><a href="#home">건강관리 정보</a></li>-->
-<!--                        <li><a href="#features">의약품 정보</a></li>-->
-<!--                        <li><a href="#business">자유게시판</a></li>-->
-<!--                        <li><a href="#work">마이페이지</a></li>-->
-<!--                        <li><a href="#test">고객센터</a></li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </nav>-->
-<!--    </div>-->
 
     <section class="notice">
         <div class="page-title">
