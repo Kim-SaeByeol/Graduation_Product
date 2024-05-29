@@ -22,7 +22,7 @@ public class SecurityConfiguration{
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/", "/index/**", "/user/**", "/board/**",
+                        .requestMatchers("/**", "/index/**", "/user/**", "/board/**",
                                 "/customerSvc/**", "/mail/**", "/medicine/**",
                                 "/gallery/**", "/css/**", "/images/**", "/js/**",
                                 "/icon/**", "/h2-console/**").permitAll()

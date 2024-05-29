@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>건강 게시판</title>
+    <link rel="stylesheet" href="/css/setting.css">
+    <link rel="stylesheet" href="/css/plugin.css">
+    <link rel="stylesheet" href="/css/template.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<th:block th:replace="include/header-black :: header-black"></th:block>
+
+<!-- [E]basic-N56 -->
+<main class="th-layout-main ">
+
+    <!-- [S]basic-N50 -->
+    <div class="basic-N50" data-bid="EnLWBDAtbi">
+        <div class="contents-inner">
+            <div class="contents-container container-md">
+                <div class="textset">
+                    <h2 class="textset-tit">게시판</h2>
+                </div>
+                <div class="contents-body">
+                    <div class="contents-left">
+                        <div class="contents-filter-body">
+                            <div class="accordset accordset-plus">
+                                <div class="accordset-item">
+                                    <a href="/board/noticeBorad" class="accordset-button btn">공지사항</a>
+                                </div>
+                                <div class="accordset-item">
+                                    <a href="/board/healthBoard" class="accordset-button btn">건강 게시판</a>
+                                </div>
+                                <div class="accordset-item">
+                                    <a href="/board/questionBorad" class="accordset-button btn">질문 게시판</a>
+                                </div>
+                                <div class="accordset-item">
+                                    <a href="/board/freeBorad" class="accordset-button btn">자유 게시판</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contents-right">
+
+
+                        <div class="contents-sort">
+                            <p class="contents-sort-total"> 총 <span>1010</span>개의 게시글이 있습니다. </p>
+                            <div class="contents-sort-sel">
+                                <div class="tabset tabset-text">
+                                    <ul class="tabset-list">
+                                        <li class="tabset-item">
+                                            <span>홈 > 게시판 > 건강게시판</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="basic-N22" data-bid="ehlWDfF3Zv">
+                            <div class="contents-inner">
+                                <div class="contents-container container-md">
+                                    <div class="textset">
+                                        <h2 class="textset-tit">건강 게시판</h2>
+                                    </div>
+
+                                    <!--                   검색-->
+                                    <div class="contents-form">
+                                        <div class="selectset selectset-round selectset-lg">
+                                            <button class="selectset-toggle btn" type="button">
+                                                <span>전체</span>
+                                            </button>
+                                            <ul class="selectset-list">
+                                                <li class="selectset-item">
+                                                    <button class="selectset-link btn" type="button" data-value="전체">
+                                                        <span>제목</span>
+                                                    </button>
+                                                </li>
+                                                <li class="selectset-item">
+                                                    <button class="selectset-link btn" type="button" data-value="선택1">
+                                                        <span>내용</span>
+                                                    </button>
+                                                </li>
+                                                <li class="selectset-item">
+                                                    <button class="selectset-link btn" type="button" data-value="선택1">
+                                                        <span>작성자</span>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="inputset inputset-lg">
+                                            <button class="inputset-icon icon-right icon-search btn" type="button" aria-label="아이콘"></button>
+                                            <input type="text" class="inputset-input form-control" placeholder="검색어를 입력해주세요." aria-label="내용">
+                                        </div>
+                                    </div>
+
+                                    <div class="contents-group" >
+                                        <a class="cardset cardset-inner cardset-hover cardset-border" th:each="dto : ${rList}">
+                                            <div class="cardset-cont" th:href="@{'/notice/noticeInfo?nSeq=' + ${dto.noticeSeq}}">
+                                                <h2 class="cardset-tit" th:text="${dto.title}">제목</h2>
+                                                <p class="cardset-desc" th:text="${dto.contents.length() > 45 ? #strings.substring(dto.contents, 0, 45) + '...' : dto.contents}">내용 최대 45글자 제한</p>
+                                                <span class="cardset-txt" th:text="${dto.regDt}"></span>
+                                                <br>
+                                                <span class="cardset-txt" th:text="${dto.userId}"></span>
+                                            </div>
+                                        </a>
+                                    </div>
+
+
+
+
+
+                                    <nav class="pagiset pagiset-line" >
+
+                                        <div class="pagiset-ctrl">
+                                            <a class="pagiset-link pagiset-first" th:href="@{/notice/noticeList?page=1}">
+                                                <span class="visually-hidden">처음</span>
+                                            </a>
+                                        </div>
+                                        <div class="pagiset-ctrl" th:if="${currentPage > 1}">
+                                            <a class="pagiset-link pagiset-prev" th:href="@{/notice/noticeList(page=${currentPage - 1})}">
+                                                <span class="visually-hidden">이전</span>
+                                            </a>
+                                        </div>
+
+
+                                        <div class="pagiset-list pagination">
+                                            <a class="pagiset-link active-fill" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:href="@{/notice/noticeList(page=${pageNumber})}" th:class="${pageNumber == currentPage ? 'pagiset-link active-fill' : 'pagiset-link'}" th:text="${pageNumber}"></a>
+                                        </div>
+
+
+                                        <div class="pagiset-ctrl" th:if="${currentPage < totalPages}">
+                                            <a class="pagiset-link pagiset-next" th:href="@{/notice/noticeList(page=${currentPage + 1})}">
+                                                <span class="visually-hidden">다음</span>
+                                            </a>
+                                        </div>
+                                        <div class="pagiset-ctrl">
+                                            <a class="pagiset-link pagiset-last" th:href="@{/notice/noticeList(page=${totalPages})}">
+                                                <span class="visually-hidden">마지막</span>
+                                            </a>
+                                        </div>
+                                    </nav>
+
+                                    <button class="btnset" type="button" style="float: right;">등록하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contents-dim"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- [E]basic-N50 -->
+</main>
+
+<th:block th:replace="include/footer :: footer"></th:block>
+
+<!-- [E]basic-N55 -->
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/template.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/script.js"></script>
+</body>

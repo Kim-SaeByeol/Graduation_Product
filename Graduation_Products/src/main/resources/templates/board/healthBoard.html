@@ -68,6 +68,8 @@
                   <div class="textset">
                     <h2 class="textset-tit">건강 게시판</h2>
                   </div>
+
+                  <!--                   검색-->
                   <div class="contents-form">
                     <div class="selectset selectset-round selectset-lg">
                       <button class="selectset-toggle btn" type="button">
@@ -96,50 +98,28 @@
                       <input type="text" class="inputset-input form-control" placeholder="검색어를 입력해주세요." aria-label="내용">
                     </div>
                   </div>
-                  <div class="contents-group">
-                    <a href="javascript:void(0);" class="cardset cardset-inner cardset-hover cardset-border">
-                      <div class="cardset-cont">
-                        <h2 class="cardset-tit">제목</h2>
-                        <p class="cardset-desc"> 내용 최대 45글자 제한 </p>
-                        <span class="cardset-txt">2023. 01. 01 <br> 작성자</span>
-                      </div>
-                    </a>
-                    <a href="javascript:void(0);" class="cardset cardset-inner cardset-hover cardset-border">
-                      <div class="cardset-cont">
-                        <h2 class="cardset-tit">제목</h2>
-                        <p class="cardset-desc"> 내용 최대 45글자 제한 </p>
-                        <span class="cardset-txt">2023. 01. 01 <br> 작성자</span>
-                      </div>
-                    </a>
-                    <a href="javascript:void(0);" class="cardset cardset-inner cardset-hover cardset-border">
-                      <div class="cardset-cont">
-                        <h2 class="cardset-tit">제목</h2>
-                        <p class="cardset-desc"> 내용 최대 45글자 제한 </p>
-                        <span class="cardset-txt">2023. 01. 01 <br> 작성자</span>
-                      </div>
-                    </a>
-                    <a href="javascript:void(0);" class="cardset cardset-inner cardset-hover cardset-border">
-                      <div class="cardset-cont">
-                        <h2 class="cardset-tit">제목</h2>
-                        <p class="cardset-desc"> 내용 최대 45글자 제한 </p>
-                        <span class="cardset-txt">2023. 01. 01 <br> 작성자</span>
-                      </div>
-                    </a>
-                    <a href="javascript:void(0);" class="cardset cardset-inner cardset-hover cardset-border">
-                      <div class="cardset-cont">
-                        <h2 class="cardset-tit">제목</h2>
-                        <p class="cardset-desc"> 내용 최대 45글자 제한 </p>
-                        <span class="cardset-txt">2023. 01. 01 <br> 작성자</span>
-                      </div>
-                    </a>
-                    <a href="javascript:void(0);" class="cardset cardset-inner cardset-hover cardset-border">
-                      <div class="cardset-cont">
-                        <h2 class="cardset-tit">제목</h2>
-                        <p class="cardset-desc"> 내용 최대 45글자 제한 </p>
-                        <span class="cardset-txt">2023. 01. 01 <br> 작성자</span>
-                      </div>
-                    </a>
-                  </div>
+
+
+<!--                  <div class="contents-group">-->
+<!--                    <a href="javascript:void(0);" class="cardset cardset-inner cardset-hover cardset-border">-->
+<!--                      <div class="cardset-cont">-->
+<!--                        <h2 class="cardset-tit">제목</h2>-->
+<!--                        <p class="cardset-desc"> 내용 최대 45글자 제한 </p>-->
+<!--                        <span class="cardset-txt">2023. 01. 01 <br> 작성자</span>-->
+<!--                      </div>-->
+<!--                    </a>-->
+
+                    <div class="contents-group" th:each="dto : ${rList}">
+                      <a href="javascript:void(0);" class="cardset cardset-inner cardset-hover cardset-border"
+                         th:href="@{'/notice/noticeInfo?nSeq=' + ${dto.noticeSeq}}">
+                        <div class="cardset-cont">
+                          <h2 class="cardset-tit" th:text="${dto.title}">제목</h2>
+                          <!-- Assuming you have a field for description limited to 45 characters -->
+                          <p class="cardset-desc" th:text="${#strings.substring(dto.contents, 0, 45)} + (dto.contents.length() > 45 ? '...' : '')">내용 최대 45글자 제한</p>
+                          <span class="cardset-txt" th:text="${dto.regDt} + ' <br> ' + ${dto.userId}">2023. 01. 01 <br> 작성자</span>
+                        </div>
+                      </a>
+                    </div>
 
 
 

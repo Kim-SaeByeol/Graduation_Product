@@ -239,3 +239,12 @@
  .basic-N36 .cardset { width: 100%; }
  .basic-N36 .cardset+.cardset { margin-top: 0; }
 }
+
+/* basic-N24 [YtLWDGAodp] */
+.basic-N24 .contents-container { padding: 10rem 1.6rem; background-color: var(--highlight-bg); border-radius: 2rem; }
+.basic-N24 .contents-inner { padding: 8rem 1.6rem; }
+.basic-N24 .form-group { max-width: 96rem; margin: 0 auto; }
+@media (max-width: 992px) {
+ .basic-N24 .contents-inner { padding: 5rem 1.6rem; }
+ .basic-N24 .contents-container { padding: 8rem 1.6rem; }
+}

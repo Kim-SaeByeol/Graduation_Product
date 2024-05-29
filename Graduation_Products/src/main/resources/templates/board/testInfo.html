@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세보기</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header, footer {
+            background-color: #f8f9fa;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+        }
+        .container {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .content {
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            position: relative;
+        }
+        .post-details h2 {
+            margin-top: 0;
+        }
+        .post-meta {
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .post-content {
+            margin-top: 20px;
+        }
+        .comments-section {
+            margin-top: 40px;
+        }
+        .comments-section h3 {
+            display: flex;
+            align-items: center;
+        }
+        .comment-count {
+            font-size: 0.9em;
+            color: #888;
+            margin-left: 10px;
+        }
+        .comment {
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .comment-content {
+            flex-grow: 1;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+        .button-container button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .edit-button {
+            background-color: #007bff;
+        }
+        .delete-button {
+            background-color: #dc3545;
+        }
+        .post-button-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>헤더 영역</h1>
+</header>
+
+<div class="container">
+    <div class="content">
+        <div class="post-button-container">
+            <button class="edit-button" onclick="editPost()">수정</button>
+            <button class="delete-button" onclick="deletePost()">삭제</button>
+        </div>
+        <div class="post-details">
+            <h2 id="post-title">게시글 제목</h2>
+            <div class="post-meta">
+                작성자: <span id="post-author">작성자 이름</span> |
+                작성일: <span id="post-date">작성일</span> |
+                수정일: <span id="post-update-date">수정일</span>
+            </div>
+            <div class="post-content">
+                <p id="post-content">여기에 게시글 내용이 표시됩니다.</p>
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <h3>댓글 <span class="comment-count">(2)</span></h3> <!-- 댓글 수를 여기에 표시 -->
+            <div class="comment" id="comment-1">
+                <div class="comment-content">
+                    <p><strong>댓글 작성자 1</strong> (작성일: 댓글 작성일)</p>
+                    <p>댓글 내용 1</p>
+                </div>
+                <div class="button-container">
+                    <button class="edit-button" onclick="editComment(1)">수정</button>
+                    <button class="delete-button" onclick="deleteComment(1)">삭제</button>
+                </div>
+            </div>
+            <div class="comment" id="comment-2">
+                <div class="comment-content">
+                    <p><strong>댓글 작성자 2</strong> (작성일: 댓글 작성일)</p>
+                    <p>댓글 내용 2</p>
+                </div>
+                <div class="button-container">
+                    <button class="edit-button" onclick="editComment(2)">수정</button>
+                    <button class="delete-button" onclick="deleteComment(2)">삭제</button>
+                </div>
+            </div>
+            <!-- 더 많은 댓글들 -->
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>꼬리글 영역</p>
+</footer>
+
+<script>
+    function editPost() {
+        // 게시글 수정 버튼 클릭 시 동작하는 함수
+        alert("게시글을 수정합니다.");
+    }
+
+    function deletePost() {
+        // 게시글 삭제 버튼 클릭 시 동작하는 함수
+        if (confirm("정말 이 게시글을 삭제하시겠습니까?")) {
+            alert("게시글이 삭제되었습니다.");
+        }
+    }
+
+    function editComment(commentId) {
+        // 댓글 수정 버튼 클릭 시 동작하는 함수
+        alert("댓글 " + commentId + "을 수정합니다.");
+    }
+
+    function deleteComment(commentId) {
+        // 댓글 삭제 버튼 클릭 시 동작하는 함수
+        if (confirm("정말 이 댓글을 삭제하시겠습니까?")) {
+            alert("댓글 " + commentId + "이 삭제되었습니다.");
+        }
+    }
+</script>
+</body>
+</html>

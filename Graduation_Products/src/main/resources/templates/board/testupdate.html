@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+    <link rel="stylesheet" href="/css/setting.css">
+    <link rel="stylesheet" href="/css/plugin.css">
+    <link rel="stylesheet" href="/css/template.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+
+<th:block th:replace="include/header-black :: header-black"></th:block>
+
+<div class="basic-N24" data-bid="YtLWDGAodp" style="margin:30px 10px 40px">
+    <div class="contents-inner">
+        <div class="contents-container container-md">
+            <div class="form-group">
+                <div class="textset">
+                    <h2 class="textset-tit">글쓰기</h2>
+                </div>
+                <div class="inputset inputset-lg inputset-label">
+                    <label>
+                        <h6 class="inputset-tit">제목</h6>
+                        <input type="text" class="inputset-input form-control" placeholder="제목을 입력해주세요." aria-label="내용" required="">
+                    </label>
+                </div>
+                <div class="inputset inputset-lg inputset-label">
+                    <label>
+                        <h6 class="inputset-tit">내용</h6>
+                        <textarea class="inputset-textarea textarea-keyup form-control" placeholder="내용을 입력해주세요." required=""></textarea>
+                        <div class="inputset-langth">
+                            <span class="inputset-count">0</span>
+                            <span class="inputset-total">/5000</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="form-btn">
+                    <button class="btnset" type="button">제출하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/template.js"></script>
+<script src="/js/common.js"></script>
+<script src="/js/script.js"></script>
+</body>
+</html>

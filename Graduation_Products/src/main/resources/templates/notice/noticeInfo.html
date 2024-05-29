@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%; /* 조금 줄였습니다 */
+            margin: 20px auto;
+            text-align: left; /* 열 가운데 정렬 */
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            color: black;
+        }
+
+        th {
+            background-color: #007bff;
+            width: 20%; /* 열의 크기를 줄였습니다 */
+            color: white;
+        }
+
+        .btn-group {
+            margin-top: 20px;
+            text-align: center; /* 버튼 가운데 정렬 */
+        }
+
+        .btn-group button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-right: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-group button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 수정된 스타일 */
+        #btnDelete {
+            background-color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const session_user_id = [[${session.SS_USER_ID}]];
+        const user_id = [[${rDTO.userId}]];
+        const nSeq = [[${rDTO.noticeSeq}]];
+
+        $(document).ready(function () {
+            $("#btnEdit, #btnList").on("click", function () {
+                const id = $(this).attr('id');
+                if (id === "btnEdit") {
+                    doEdit();
+                } else if (id === "btnList") {
+                    location.href = "/notice/noticeList";
+                }
+            });
+
+            $("#btnDelete").on("click", function () {
+                doDelete();
+            })
+        })
+
+        function doEdit() {
+            if (session_user_id === user_id) {
+                location.href = "/notice/noticeEditInfo?nSeq=" + nSeq;
+            } else if (session_user_id === "") {
+                alert("로그인 후 이용해주세요.");
+            } else {
+                alert("본인이 작성한 글만 수정 가능합니다.");
+            }
+        }
+
+        function doDelete() {
+            if (session_user_id === user_id) {
+                if (confirm("작성한 글을 삭제하시겠습니까?")) {
+                    $.ajax({
+                            url: "/notice/noticeDelete",
+                            type: "post",
+                            dataType: "JSON",
+                            data: {"nSeq": nSeq},
+                            success: function (json) {
+                                alert(json.msg);
+                                location.href = "/notice/noticeList";
+                            }
+                        }
+                    )
+                }
+            } else if (session_user_id === "") {
+                alert("로그인 후 이용해주세요.");
+            } else {
+                alert("본인이 작성한 글만 삭제 가능합니다.");
+            }
+        }
+        /*]]>*/
+    </script>
+</head>
+<body>
+<br/>
+<br/>
+<br/>
+<br/>
+<table>
+    <tr>
+        <th style="width: 20%;">제목</th>
+        <td th:text="${rDTO.title}"></td>
+    </tr>
+    <tr>
+        <th style="width: 20%;">작성일</th>
+        <td th:text="${rDTO.regDt}"></td>
+    </tr>
+    <tr>
+        <th style="width: 20%;">조회수</th>
+        <td th:text="${rDTO.readCnt}"></td>
+    </tr>
+    <tr>
+        <th style="width: 20%;">내용</th>
+        <td th:text="${rDTO.contents}"></td>
+    </tr>
+</table>
+<div class="btn-group">
+    <button id="btnEdit" type="button">수정</button>
+    <button id="btnDelete" type="button">삭제</button>
+    <button id="btnList" type="button">목록</button>
+</div>
+</body>
+</html>
