@@ -394,4 +394,9 @@ public class UserInfoController {
             return 0;  // 로그아웃 실패 응답
         }
     }
-}
+
+    @GetMapping("testMyPage")
+    public String testMyPage() {
+        log.info(this.getClass().getName() + "로그인 페이지");
+        return "user/testMyPage";
+    }}

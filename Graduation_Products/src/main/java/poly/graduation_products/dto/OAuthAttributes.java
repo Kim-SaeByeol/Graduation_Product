@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import poly.graduation_products.repository.entity.Provider;
 import poly.graduation_products.repository.entity.Role;
 import poly.graduation_products.repository.entity.SocialLoginEntity;
+import poly.graduation_products.util.EncryptUtil;
 
 import java.util.Map;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 public class OAuthAttributes {
     private Map<String, Object> attributes;  // OAuth2 서비스로부터 받은 사용자 정보를 저장하는 맵
     private String nameAttributeKey;  // 사용자의 고유 식별자 키 이름
-    private String name;  // 사용자의 이름
+    private String userName;  // 사용자의 이름
     private String nickname;  // 사용자의 별명 (추가)
     private String email;  // 사용자의 이메일 주소
     private String picture;  // 사용자의 프로필 이미지 URL
@@ -22,10 +23,10 @@ public class OAuthAttributes {
     private String provider;  // 소셜 플랫폼
 
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String nickname, String email, String picture, String accessToken, String provider) {
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String userName, String nickname, String email, String picture, String accessToken, String provider) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
-        this.name = name;
+        this.userName = userName;
         this.nickname = nickname;
         this.email = email;
         this.picture = picture;
@@ -33,14 +34,14 @@ public class OAuthAttributes {
         this.provider = provider;
     }
 
-    public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes, String accessToken) {
+    public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes, String accessToken) throws Exception {
         switch (registrationId.toUpperCase()) {
             case "GOOGLE":
-                return ofGoogle(userNameAttributeName, attributes, accessToken);
+                return ofGoogle(userNameAttributeName, attributes, EncryptUtil.encHashSHA256(accessToken));
             case "NAVER":
-                return ofNaver("id", attributes, accessToken);
+                return ofNaver("id", attributes, EncryptUtil.encHashSHA256(accessToken));
             case "KAKAO":
-                return ofKakao(userNameAttributeName, attributes, accessToken);
+                return ofKakao(userNameAttributeName, attributes, EncryptUtil.encHashSHA256(accessToken));
             default:
                 throw new IllegalArgumentException("Unsupported registrationId: " + registrationId);
         }
@@ -49,7 +50,7 @@ public class OAuthAttributes {
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes, String accessToken) {
         return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
+                .userName((String) attributes.get("name"))
                 .nickname((String) attributes.get("nickname"))
                 .email((String) attributes.get("email"))
                 .picture((String) attributes.get("picture"))
@@ -73,7 +74,7 @@ public class OAuthAttributes {
         log.info("response : " + response);
 
         return OAuthAttributes.builder()
-                .name((String) response.get("name"))
+                .userName((String) response.get("name"))
                 .nickname((String) response.get("nickname"))
                 .email((String) response.get("email"))
                 .picture((String) response.get("profile_image"))
@@ -92,7 +93,7 @@ public class OAuthAttributes {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
         return OAuthAttributes.builder()
-                .name((String) profile.get("nickname"))
+                .userName((String) profile.get("nickname"))
                 .nickname((String) profile.get("nickname"))
                 .email((String) kakaoAccount.get("email"))
                 .picture((String) profile.get("thumbnail_image_url"))
@@ -107,7 +108,7 @@ public class OAuthAttributes {
     // DTO 정보를 Entity에 넘김
     public SocialLoginEntity toEntity() {
         return SocialLoginEntity.builder()
-                .name(name)
+                .name(userName)
                 .email(email)
                 .picture(picture)
                 .nickname(nickname)

@@ -37,7 +37,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .getUserInfoEndpoint().getUserNameAttributeName();
         String accessToken = userRequest.getAccessToken().getTokenValue();
 
-        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes(), accessToken);
+        OAuthAttributes attributes = null;
+        try {
+            attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes(), accessToken);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         log.info("attributes 값: " + attributes);
 
         SocialLoginEntity user = saveOrUpdate(attributes);
@@ -55,7 +60,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         log.info(this.getClass().getName() + ".saveOrUpdate Start");
 
         SocialLoginEntity user = socialLoginRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(), attributes.getNickname(), attributes.getPicture(), attributes.getAccessToken()))
+                .map(entity -> entity.update(attributes.getUserName(), attributes.getNickname(), attributes.getPicture(), attributes.getAccessToken()))
                 .orElse(attributes.toEntity());
 
         log.info("Updated or saved user: " + user);

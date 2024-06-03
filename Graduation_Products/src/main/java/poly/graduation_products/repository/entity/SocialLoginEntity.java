@@ -18,7 +18,7 @@ public class SocialLoginEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column
     private String email;
 
     @Column

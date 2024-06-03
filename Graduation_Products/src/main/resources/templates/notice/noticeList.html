@@ -100,20 +100,16 @@
                                     </div>
 
                                     <div class="contents-group" >
-                                        <a class="cardset cardset-inner cardset-hover cardset-border" th:each="dto : ${rList}">
-                                            <div class="cardset-cont" th:href="@{'/notice/noticeInfo?nSeq=' + ${dto.noticeSeq}}">
+                                        <a th:href="@{'/notice/noticeInfo?nSeq=' + ${dto.noticeSeq}}" class="cardset cardset-inner cardset-hover cardset-border" th:each="dto : ${rList}">
+                                            <div class="cardset-cont">
                                                 <h2 class="cardset-tit" th:text="${dto.title}">제목</h2>
-                                                <p class="cardset-desc" th:text="${dto.contents.length() > 45 ? #strings.substring(dto.contents, 0, 45) + '...' : dto.contents}">내용 최대 45글자 제한</p>
+                                                <p class="cardset-desc" th:utext="${dto.contents.length() > 45 ? #strings.substring(dto.contents, 0, 45) + '...' : dto.contents}">내용 최대 45글자 제한</p>
                                                 <span class="cardset-txt" th:text="${dto.regDt}"></span>
                                                 <br>
-                                                <span class="cardset-txt" th:text="${dto.userId}"></span>
+                                                <span class="cardset-txt" th:text="${dto.userName}"></span>
                                             </div>
                                         </a>
                                     </div>
-
-
-
-
 
                                     <nav class="pagiset pagiset-line" >
 
@@ -146,7 +142,7 @@
                                         </div>
                                     </nav>
 
-                                    <button class="btnset" type="button" style="float: right;">등록하기</button>
+                                    <a class="btnset" type="button" href="/notice/noticeReg" style="float: right;">등록하기</a>
                                 </div>
                             </div>
                         </div>

@@ -37,7 +37,7 @@
                     <div class="inputset inputset-lg inputset-label">
                         <label>
                             <h6 class="inputset-tit">내용</h6>
-                            <textarea name="content" id="content" class="inputset-input form-control" placeholder="내용을 입력해주세요." aria-label="내용" required style="height: 300px;"></textarea><br>
+                            <textarea name="contents" id="contents" class="inputset-input form-control" placeholder="내용을 입력해주세요." aria-label="내용" required style="height: 300px;"></textarea><br>
                             <div class="inputset-langth">
                                 <span class="inputset-count">0</span>
                                 <span class="inputset-total">/5000</span>
@@ -46,6 +46,8 @@
                     </div>
                     <div class="form-btn">
                         <button id="btnSend" type="submit" class="btnset">등록</button>
+                        <button type="reset" class="btnset">다시 작성</button>
+
                     </div>
                 </div>
             </form>
@@ -59,7 +61,7 @@
 <script>
     let myEditor; // 전역 변수로 에디터 인스턴스 저장
 
-    ClassicEditor.create(document.querySelector('#content'), {
+    ClassicEditor.create(document.querySelector('#contents'), {
         language: 'ko'
     }).then(editor => {
         myEditor = editor; // 에디터 인스턴스 저장
@@ -71,35 +73,69 @@
         console.error(error);
     });
 
-    $(document).ready(function() {
-        $('#f').on('submit', function(e) {
-            e.preventDefault(); // 기본 폼 제출 방지
+    $(document).ready(function () {
+        // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+        $("#btnSend").on("click", function () {
+            doSubmit(); // 공지사항 등록하기 실행
+        })
+    })
 
-            // 에디터에서 데이터 가져오기
-            const editorData = myEditor.getData();
+    //글자 길이 바이트 단위로 체크하기(바이트값 전달)
+    function calBytes(str) {
+        let tcount = 0;
+        let tmpStr = String(str);
+        let strCnt = tmpStr.length;
+        let onechar;
+        for (let i = 0; i < strCnt; i++) {
+            onechar = tmpStr.charAt(i);
+            if (escape(onechar).length > 4) {
+                tcount += 2;
+            } else {
+                tcount += 1;
+            }
+        }
+        return tcount;
+    }
 
-            // 폼 데이터 생성 및 에디터 데이터 추가
-            const formData = new FormData(this);
-            formData.set('content', editorData); // 'editorId' 대신 'editorData' 사용
+    // 공지사항 저장하기
+    function doSubmit() {
 
-            // AJAX 요청
-            $.ajax({
-                url: '/board/testInsert', // 서버 주소
-                type: 'POST', // 요청 방식
-                data: formData, // 데이터
-                processData: false, // FormData 오브젝트 직렬화 방지
-                contentType: false, // 콘텐츠 타입 자동 설정 방지
-                success: function(response) {
-                    console.log('성공:', response);
-                    alert('등록되었습니다!');
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('에러 발생:', textStatus, errorThrown);
-                    alert('등록에 실패했습니다.');
-                }
-            });
+        let f = document.getElementById("f"); // form 태그
+
+        if (f.title.value === "") {
+            alert("제목을 입력하시기 바랍니다.");
+            f.title.focus();
+            return;
+        }
+        if (calBytes(f.title.value) > 200) {
+            alert("최대 200Bytes까지 입력 가능합니다.");
+            f.title.focus();
+            return;
+        }
+        if (f.contents.value === "") {
+            alert("내용을 입력하시기 바랍니다.");
+            f.contents.focus();
+            return;
+        }
+        if (calBytes(f.contents.value) > 4000) {
+            alert("최대 4000Bytes까지 입력 가능합니다.");
+            f.contents.focus();
+            return;
+        }
+
+        // Ajax 호출해서 글 등록하기
+        $.ajax({
+            url: "/notice/noticeInsert",
+            type: "post", // 전송방식은 Post
+            // contentType: "application/json",
+            dataType: "JSON", // 전송 결과는 JSON으로 받기
+            data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+            success: function (json) { // /notice/noticeInsert 호출이 성공했다면..
+                alert(json.msg); // 메시지 띄우기
+                location.href = "/notice/noticeList"; // 공지사항 리스트 이동
+            }
         });
-    });
+    }
 </script>
 
 

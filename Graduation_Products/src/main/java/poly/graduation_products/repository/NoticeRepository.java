@@ -5,8 +5,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import poly.graduation_products.repository.entity.NoticeEntity;
+import poly.graduation_products.repository.entity.UserInfoEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NoticeRepository extends JpaRepository<NoticeEntity, Long> {
@@ -32,5 +34,7 @@ public interface NoticeRepository extends JpaRepository<NoticeEntity, Long> {
     @Query(value = "UPDATE NOTICE A SET A.READ_CNT = IFNULL(A.READ_CNT, 0) + 1 WHERE A.NOTICE_SEQ = ?1",
             nativeQuery = true)
     int updateReadCnt(Long noticeSeq);
+
+
 
 }

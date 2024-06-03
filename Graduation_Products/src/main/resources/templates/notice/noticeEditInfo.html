@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항 수정하기</title>
+    <link rel="stylesheet" href="/css/setting.css">
+    <link rel="stylesheet" href="/css/plugin.css">
+    <link rel="stylesheet" href="/css/template.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/translations/ko.js"></script>
     <style>
-        <style>
-        body {
+                body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 0 auto;
@@ -146,24 +152,67 @@
         }
     </script>
 </head>
+
+
 <body>
-<br/>
-<form name="f" id="f">
-    <input type="hidden" name="nSeq" th:value="${rDTO.noticeSeq}"/>
-    <table>
-        <tr>
-            <th>제목</th>
-            <td><input type="text" name="title" maxlength="100" th:value="${rDTO.title}" style="width: 95%"/></td>
-        </tr>
-        <tr>
-            <th>내용</th>
-            <td><textarea name="contents" style="width: 95%; height: 400px" th:text="${rDTO.contents}"></textarea></td>
-        </tr>
-    </table>
-    <div class="btn-group">
-        <button id="btnSend" type="button">수정</button>
-        <button type="reset">다시 작성</button>
+<th:block th:replace="include/header-black :: header-black"></th:block>
+
+<div class="basic-N24" data-bid="YtLWDGAodp" style="margin:30px 10px 40px">
+    <div class="contents-inner">
+        <div class="contents-container container-md">
+            <form name="f" id="f">
+                <input type="hidden" name="nSeq" th:value="${rDTO.noticeSeq}"/>
+                <div class="form-group">
+                    <div class="textset">
+                        <h2 class="textset-tit">글 수정</h2>
+                    </div>
+                    <div class="inputset inputset-lg inputset-label">
+                        <label>
+                            <h6 class="inputset-tit">제목</h6>
+                            <input type="text" name="title" class="inputset-input form-control" placeholder="제목을 입력해주세요." aria-label="제목" th:value="${rDTO.title}" required>
+                        </label>
+                    </div>
+                    <div class="inputset inputset-lg inputset-label">
+                        <label>
+                            <h6 class="inputset-tit">내용</h6>
+                            <textarea name="contents" id="contents" class="inputset-input form-control" placeholder="내용을 입력해주세요." aria-label="내용" th:text="${rDTO.contents}" required style="height: 300px;"></textarea><br>
+                            <div class="inputset-langth">
+                                <span class="inputset-count">0</span>
+                                <span class="inputset-total">/5000</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="form-btn">
+                        <button id="btnSend" type="submit" class="btnset">수정</button>
+                        <button type="reset" class="btnset">다시 작성</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-</form>
+</div>
+
+<script>
+    let myEditor; // 전역 변수로 에디터 인스턴스 저장
+
+    ClassicEditor.create(document.querySelector('#contents'), {
+        language: 'ko',
+        ckfinder: {
+            uploadUrl: '/image/upload',
+            withCredentials: true
+        }
+    }).then(editor => {
+        myEditor = editor; // 에디터 인스턴스 저장
+        editor.model.document.on('change:data', () => {
+            const contentLength = editor.getData().replace(/<[^>]*>/g, '').length; // HTML 태그 제거 후 텍스트 길이 측정
+            document.querySelector('.inputset-count').textContent = contentLength;
+        });
+    }).catch(error => {
+        console.error(error);
+    });
+
+
+</script>
+
 </body>
 </html>
