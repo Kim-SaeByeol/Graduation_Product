@@ -1,5 +1,5 @@
 package poly.graduation_products.repository.entity;
 
 public enum Provider {
-    GOOGLE, NAVER, KAKAO, LOCAL
+    GOOGLE, NAVER, KAKAO
 }

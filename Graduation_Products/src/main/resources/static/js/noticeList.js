@@ -32,7 +32,7 @@ function loadPage(page) {
     }
     $.ajax({
         type: 'POST',
-        url: '/medicine/Search',
+        url: '/notice/Search',
         data: { searchType: searchType, searchText: searchText, page: page },
         success: function (response) {
             // 성공 시 결과를 처리하는 함수 호출

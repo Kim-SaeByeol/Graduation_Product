@@ -32,7 +32,7 @@ public class SecurityConfiguration{
                 .logout(logout -> logout.logoutSuccessUrl("/index/index")) //로그아웃 성공하면 해당 주소로 이동
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/user/login") // 사용자 정의 로그인 페이지 URL
-                        .defaultSuccessUrl("/index/index") // Login 성공 후 이동할 URL
+                        .defaultSuccessUrl("/social/socialRegForm") // Login 성공 후 이동할 URL
                         .failureUrl("/user/login?error=true") // Login 실패 시 이동할 URL
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(customOAuth2UserService)   //로그인 성공 이후 사용자 정보를 가져오기 위한 코드

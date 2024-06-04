@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import poly.graduation_products.repository.UserInfoRepository;
+import poly.graduation_products.repository.entity.Role;
 import poly.graduation_products.service.IUserInfoService;
 import poly.graduation_products.repository.entity.UserInfoEntity;
 import poly.graduation_products.util.RandomUtil;
@@ -120,6 +121,7 @@ public class UserInfoService implements IUserInfoService {
                     .email(email)
                     .nickname(nickname)
                     .userName(userName)
+                    .role(Role.USER)
                     .build();
 
             userInfoRepository.save(pEntity);

@@ -85,6 +85,8 @@ public class NoticeController {
         model.addAttribute("dList", rList);
 
 
+
+
         // 로그 찍기(추후 찍은 로그를 통해 이 함수 호출이 끝났는지 파악하기 용이하다.)
         log.info(this.getClass().getName() + ".noticeList End!");
 
@@ -130,6 +132,7 @@ public class NoticeController {
 
         try {
             // 로그인된 사용자 아이디를 가져오기
+            // 로그인을 아직 구현하지 않았기에 공지사항 리스트에서 로그인 한 것처럼 Session 값을 저장함
             String userId = CmmUtil.nvl((String) session.getAttribute("SS_USER_ID"));
             String title = CmmUtil.nvl(request.getParameter("title")); // 제목
             String contents = CmmUtil.nvl(request.getParameter("contents")); // 내용
@@ -168,10 +171,9 @@ public class NoticeController {
             // 결과 메시지 전달하기
             dto = MsgDTO.builder().msg(msg).build();
 
-            log.info("msg : " + msg);
             log.info(this.getClass().getName() + ".noticeInsert End!");
         }
-        log.info("msg : " + msg);
+
         return dto;
     }
 
@@ -205,7 +207,6 @@ public class NoticeController {
         // 조회된 리스트 결과값 넣어주기
         model.addAttribute("rDTO", rDTO);
 
-        log.info("userName : " + rDTO.userName());
 
         log.info(this.getClass().getName() + ".noticeInfo End!");
 
@@ -346,7 +347,10 @@ public class NoticeController {
             dto = MsgDTO.builder().msg(msg).build();
 
             log.info(this.getClass().getName() + ".noticeDelete End!");
+
         }
+
         return dto;
     }
+
 }

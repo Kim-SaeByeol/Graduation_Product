@@ -14,6 +14,8 @@ public record UserInfoDTO (
         String userName,    //이름
         String userNickname,    //별명
 
+        String role,        // 권한
+
         //가상의 컬럼
         String existsIdYn,    //아이디 중복 방지
         String existsEmailYn,    //이메일 중복 방지
