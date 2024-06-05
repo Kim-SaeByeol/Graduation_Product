@@ -33,7 +33,7 @@ public class UserInfoController {
      */
     @GetMapping(value = "/login")
     public String login() {
-        log.info(this.getClass().getName() + "로그인 페이지");
+        log.info(this.getClass().getName() + "일반 로그인 페이지");
         return "user/login";
     }
 

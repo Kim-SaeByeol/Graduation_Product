@@ -281,7 +281,7 @@
             const authNumber = $("input[name='authNumber']").val();
             const email = $("input[name='email']").val(); // 이메일 주소 가져오기
 
-            if (authNumber != emailAuthNumber) {
+            if (authNumber != emailAuthNumber && emailAuthNumber != "") {
                 alert("이메일 인증번호가 일치하지 않습니다.");
                 $("input[name='authNumber']").focus();
                 return;

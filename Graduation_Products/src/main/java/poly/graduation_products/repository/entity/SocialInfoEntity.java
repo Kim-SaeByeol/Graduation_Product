@@ -20,8 +20,12 @@ public class SocialInfoEntity extends BaseTimeEntity implements Serializable {
     private Long socialId;
 
     @NonNull
-    @Column(name = "AUTH_TOKEN", nullable = false)
-    private String authToken;
+    @Column(name = "SOCIAL_EMAIL", nullable = false)
+    private String email;
+
+    @NonNull
+    @Column(name = "ACCESS_TOKEN", nullable = false)
+    private String accessToken;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "PROVIDER", nullable = false)

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import poly.graduation_products.config.S3Config;
 import poly.graduation_products.dto.MsgDTO;
 import poly.graduation_products.dto.NoticeDTO;
 import poly.graduation_products.service.INoticeService;
@@ -34,6 +35,8 @@ public class NoticeController {
 
     // @RequiredArgsConstructor 를 통해 메모리에 올라간 서비스 객체를 Controller에서 사용할 수 있게 주입함
     private final INoticeService noticeService;
+
+    private final S3Config s3Config;
 
     // 페이지 번호에 따른 공지사항 리스트 가져오기
     private List<NoticeDTO> getPagedList(List<NoticeDTO> allNotices, int page, int noticesPerPage) {
