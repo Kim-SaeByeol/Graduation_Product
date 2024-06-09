@@ -16,14 +16,14 @@ public class TagInfoEntity extends BaseTimeEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TAG_ID")
-    private Long tagId;
+    @Column(name = "TAG_SEQ")
+    private Long tagSEQ;     // 태그 순번
 
     @Enumerated(EnumType.STRING)
     @Column(name = "TAG_NAME")
-    private Tag tagName;
+    private Tag tagName;    // 태그 이름
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", insertable = false, updatable = false)
-    private UserInfoEntity userInfo;
+    @JoinColumn(name = "USER_SEQ", nullable = false)
+    private UserInfoEntity userInfo;    // 조인
 }

@@ -12,22 +12,18 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> 
         Optional<UserInfoEntity> findByUserId(String userId);
 
         // 이메일 찾기 (중복체크)
-        Optional<UserInfoEntity> findByEmail(String email);
+        Optional<UserInfoEntity> findByEmail(String userEmail);
 
         //별명 찾기 (중복체크)
         Optional<UserInfoEntity> findByNickname(String nickName);
 
-        // 아이디와 비밀번호 찾기 => 로그인
+        // 로그인 (아이디, 비밀번호)
         Optional<UserInfoEntity> findByUserIdAndPassword(String userId, String password);
 
-        // 아이디 찾기
-        Optional<UserInfoEntity> findByUserNameAndEmail(String email, String userName);
+        // 아이디 찾기(별명, 이메일)
+        Optional<UserInfoEntity> findByNicknameAndEmail(String nickName, String userEmail);
 
-        // 비밀번호 찾기
-        Optional<UserInfoEntity> findByUserIdAndUserNameAndEmail(String userId, String userName, String email);
-
-
-        void deleteByUserId(String userId);
-
+        // 비밀번호 찾기(아이디, 별명, 이메일)
+        Optional<UserInfoEntity> findByUserIdAndNicknameAndEmail(String userId, String nickName, String email);
 
 }

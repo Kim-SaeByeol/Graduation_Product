@@ -24,27 +24,24 @@ public class UserInfoService implements IUserInfoService {
 
 
     @Override
-    public String UserIdExists(String userId) throws Exception {
+    public int UserIdExists(String userId) throws Exception {
         log.info(this.getClass().getName() + "아이디 중복체크 시작");
 
-        String existsYn;
+        int res = 0;
 
         log.info("userId : " + userId);
 
         // 아이디 중복체크
         Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserId(userId);
 
-        if (rEntity.isPresent()) {
-            existsYn = "N";     // 중복이 아님
-
-        } else {
-            existsYn = "Y";     // 중복 임
+        if (!rEntity.isPresent()) {
+            res = 1;     // 중복이 아님
 
         }
+        log.info(this.getClass().getName() + "res : " + res);
         log.info(this.getClass().getName() + "아이디 중복체크 종료");
 
-
-        return existsYn;
+        return res;
     }
 
     @Override
@@ -72,28 +69,24 @@ public class UserInfoService implements IUserInfoService {
     }
 
     @Override
-    public String UserNickExists(String nickName) throws Exception {
+    public int UserNickExists(String nickName) throws Exception {
         log.info(this.getClass().getName() + "별명 중복체크 시작");
 
-        String existsYn;
+        int res = 0;
 
         log.info("nickName : " + nickName);
 
         // 닉네임 중복체크
         Optional<UserInfoEntity> rEntity = userInfoRepository.findByNickname(nickName);
 
-        if (rEntity.isPresent()) {
-            existsYn = "N";     // 중복이 아님
-
-        } else {
-            existsYn = "Y";     // 중복 임
-
+        if (!rEntity.isPresent()) {
+            res = 1;     // 중복이 아님
         }
 
         log.info(this.getClass().getName() + "별명 중복체크 종료");
 
 
-        return existsYn;
+        return res;
     }
 
     @Override
@@ -120,7 +113,7 @@ public class UserInfoService implements IUserInfoService {
                     .password(password)
                     .email(email)
                     .nickname(nickname)
-                    .userName(userName)
+                    .profilePath("https://cdn-icons-png.flaticon.com/512/848/848006.png")
                     .role(Role.USER)
                     .build();
 
@@ -167,15 +160,15 @@ public class UserInfoService implements IUserInfoService {
     }
 
     @Override
-    public String searchUserId(String userName, String email) throws Exception {
+    public String searchUserId(String nickName, String email) throws Exception {
 
         log.info(this.getClass().getName() + "아이디 찾기 실행");
 
-        log.info("userName : " + userName);
+        log.info("nickName : " + nickName);
         log.info("email : " + email);
 
         Optional<UserInfoEntity> rEntity = userInfoRepository
-                .findByUserNameAndEmail(userName, email);
+                .findByNicknameAndEmail(nickName, email);
 
         String userId = null;
 
@@ -237,7 +230,8 @@ public class UserInfoService implements IUserInfoService {
 
         log.info(this.getClass().getName() + "이메일 인증번호 발송 종료");
 
-        return rDTO;    }
+        return rDTO;
+    }
 
     @Override  //이메일이 있을 경우 인증번호 발생
     public UserInfoDTO emailAuthNumber(String email) throws Exception {
@@ -292,7 +286,7 @@ public class UserInfoService implements IUserInfoService {
 
 
     @Override
-    public int searchPassword(String userId, String userName, String email) throws Exception {
+    public int searchPassword(String userId, String nickName, String email) throws Exception {
 
         log.info(this.getClass().getName() + "비밀번호 찾기 실행");
         /**
@@ -303,9 +297,9 @@ public class UserInfoService implements IUserInfoService {
         int res = 0;
 
         Optional<UserInfoEntity> rEntity = userInfoRepository
-                .findByUserIdAndUserNameAndEmail(userId, userName, email);
+                .findByUserIdAndNicknameAndEmail(userId, nickName, email);
 
-        if (rEntity.isPresent()) {
+        if (rEntity.isPresent()) {      // 비밀번호 찾기 성공
             res = 1;
 
         }
@@ -314,44 +308,6 @@ public class UserInfoService implements IUserInfoService {
 
         return res;
     }
-
-//    @Override
-//    public String newPassword(String userId, String newPassword) throws Exception {
-//        log.info(this.getClass().getName() + "비밀번호 재설정 실행");
-//
-//        String res = "";
-//
-//        log.info("userId : " + userId);
-//
-//        Optional<UserInfoEntity> uEntity = userInfoRepository.findByUserId(userId);
-//
-//        if(uEntity.isPresent()) {
-//            UserInfoEntity rEntity = uEntity.get();
-//            log.info("rEntity : " + rEntity);
-//
-//            UserInfoEntity pEntity = UserInfoEntity.builder()
-//                    .userSeq(rEntity.getUserSeq())
-//                    .userId(rEntity.getUserId())
-//                    .password(newPassword)
-//                    .email(rEntity.getEmail())
-//                    .userName(rEntity.getUserName())
-//                    .nickname(rEntity.getNickname())
-//                    .build();
-//
-//            log.info("pEntity : " + pEntity);
-//
-//            userInfoRepository.save(pEntity);
-//
-//            res = "success";
-//
-//            log.info("비밀번호 업데이트!!");
-//        } else {
-//            log.info("비밀번호 업데이트 실행 안됨");
-//            res = "false";
-//        }
-//        log.info(this.getClass().getName() + "비밀번호 재설정 종료");
-//        return res;
-//    }
 
     @Override
     @Transactional
@@ -387,14 +343,5 @@ public class UserInfoService implements IUserInfoService {
         }
         log.info(this.getClass().getName() + ": 비밀번호 재설정 종료");
         return res;
-    }
-    @Override
-    public void updateUserInfo(String userId, String nickname) throws Exception {
-
-    }
-
-    @Override
-    public void deleteUserInfo(String userId) throws Exception {
-
     }
 }

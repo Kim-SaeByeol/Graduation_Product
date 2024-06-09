@@ -9,11 +9,11 @@ $(document).ready(function () {
     // 아이디 찾기 요청
     $('#signupButton').on('click', function (event) {
         event.preventDefault();
-        var userName = $("#name").val();
+        var nickName = $("#nickName").val();
         var email = $("#email").val();
         var domain = $("#emailDomain").val();
         var authNumber = $("#authNumber").val();
-        myFunction(userName, email, domain, authNumber);
+        myFunction(nickName, email, domain, authNumber);
     });
 
     function getEmailAuthNumber(email, domain) {
@@ -46,10 +46,10 @@ $(document).ready(function () {
         });
     }
 
-    function myFunction(userName, email, domain, authNumber) {
+    function myFunction(nickName, email, domain, authNumber) {
         let fullEmail = email + '@' + domain;
 
-        if (!userName) {
+        if (!nickName) {
             alert("이름을 입력하세요.");
             $("#name").focus();
             return;
@@ -71,14 +71,14 @@ $(document).ready(function () {
             url: "/user/searchUserId",
             type: "post",
             dataType: "JSON",
-            data: { email: fullEmail, name: userName },
+            data: { email: fullEmail, nickName: nickName },
             success: function (json) {
                 if (json) {
                     alert("사용자의 아이디는 [" + json.userId + "] 입니다.");
                     location.href = "/user/login";
                 } else {
                     alert("아이디 찾기에 실패하셨습니다.");
-                    $("#name").focus();
+                    $("#nickName").focus();
                 }
             }
         });

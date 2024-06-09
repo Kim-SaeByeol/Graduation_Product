@@ -11,10 +11,10 @@ public record UserInfoDTO (
         String userId,  //아이디
         String userPassword,    //비밀번호
         String email,   //이메일
-        String userName,    //이름
         String userNickname,    //별명
-
         String role,        // 권한
+        String profilePath, // 프로필 사진 경로
+
 
         //가상의 컬럼
         String existsIdYn,    //아이디 중복 방지

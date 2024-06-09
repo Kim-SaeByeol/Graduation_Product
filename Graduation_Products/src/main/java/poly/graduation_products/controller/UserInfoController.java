@@ -1,6 +1,7 @@
 package poly.graduation_products.controller;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import poly.graduation_products.dto.MsgDTO;
 import poly.graduation_products.dto.UserInfoDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -68,8 +69,19 @@ public class UserInfoController {
      * 비밀번호 재설정
      */
     @GetMapping(value = "/newPassword")
-    public String newPassword() {
+    public String newPassword(HttpSession session,  RedirectAttributes redirectAttributes) {
         log.info(this.getClass().getName() +"비밀번호 재설정 페이지");
+
+        String Check = (String) session.getAttribute("Check");
+        session.removeAttribute("Check");
+
+
+        if (Check == null) {
+            log.info("세션 값이 존재하지 않음 Check : " + Check);
+            return "redirect:/user/searchPassword";
+        }
+
+        log.info("세션 값이 존재함 Check : " + Check);
         return "user/newPassword";
     }
 
@@ -84,7 +96,7 @@ public class UserInfoController {
      */
     @ResponseBody
     @PostMapping(value = "getUserIdExists")
-    public String getUserIdExists(HttpServletRequest request) throws Exception {
+    public MsgDTO getUserIdExists(HttpServletRequest request) throws Exception {
 
         log.info("controller 아이디 중복체크 실행");
 
@@ -92,12 +104,26 @@ public class UserInfoController {
 
         log.info("userId : " + userId);
 
-        String existsYn = userInfoService.UserIdExists(userId);
+        int res = 0;
+        String msg = "";
 
-        log.info("existsYn : " + existsYn);
+        res = userInfoService.UserIdExists(userId);
+
+        if (res == 1) {
+            msg = "사용 가능한 아이디 입니다.";
+        } else {
+            msg = "사용 중인 아이디가 있습니다.";
+        }
+
+
+        MsgDTO rmsg = MsgDTO.builder()
+                .res(res)
+                .msg(msg)
+                .build();
+
         log.info("controller 아이디 중복체크 완료");
 
-        return "{\"exists\": \"" + existsYn + "\"}";
+        return rmsg;
 
     }
 
@@ -129,21 +155,35 @@ public class UserInfoController {
      */
     @ResponseBody
     @PostMapping(value = "getNickExists")
-    public String getNickExists(HttpServletRequest request) throws Exception {
+    public MsgDTO getNickExists(HttpServletRequest request) throws Exception {
 
         log.info(this.getClass().getName() + "별명 중복체크 실행");
+
+        int res = 0;
+        String msg = "";
 
         String nick = CmmUtil.nvl(request.getParameter("nick"));
 
         log.info("nick : " + nick);
 
-        String existsYn = userInfoService.UserNickExists(nick);
+        res = userInfoService.UserNickExists(nick);
 
-        log.info("existsYn : " + existsYn);
+        log.info("res : " + res);
 
-        log.info(this.getClass().getName() + "별명 중복체크 실행");
+       if(res == 1) {
+           msg = "가입 가능한 별명입니다.";
+        } else {
+           msg = "이미 가입된 별명이 존재합니다.";
+       }
 
-        return "{\"exists\": \"" + existsYn + "\"}";
+        MsgDTO rmsg = MsgDTO.builder()
+                .res(res)
+                .msg(msg)
+                .build();
+
+        log.info(this.getClass().getName() + "별명 중복체크 종료");
+
+        return rmsg;
     }
 
     /**
@@ -208,7 +248,7 @@ public class UserInfoController {
      */
     @ResponseBody
     @PostMapping(value = "loginProc", produces = "application/json; charset=UTF-8")
-    public int getLogin(HttpServletRequest request, HttpSession session) throws Exception {
+    public MsgDTO getLogin(HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info("controller 로그인 실행");
 
@@ -219,6 +259,7 @@ public class UserInfoController {
          * 1 => 로그인 실행
          */
         int res = 0;
+        String msg = "";
 
         String userId = CmmUtil.nvl(request.getParameter("userId"));
         String password = CmmUtil.nvl(EncryptUtil.encHashSHA256(request.getParameter("password")));
@@ -230,15 +271,16 @@ public class UserInfoController {
             res = userInfoService.Login(userId, password);
 
             if (res == 1) {
-                session.setAttribute("SS_USER_ID", userId);
-
                 // 세션에 유저의 별명 혹은 이름을 같이 저장.
                 Optional<UserInfoEntity> optionalUserInfo = userInfoRepository.findByUserId(userId);
-                String name = optionalUserInfo.map(UserInfoEntity::getNickname) // nickname 가져오기
-                        .orElseGet(() -> optionalUserInfo.map(UserInfoEntity::getUserName) // nickname 없으면 userName
-                                .orElse(userId)); // 둘 다 없으면 아이디를 사용함.
+                String nickname = optionalUserInfo.map(UserInfoEntity::getNickname) // nickname 가져오기
+                                .orElse(userId); // 만약 닉넹미이 없다면 아이디를 사용함.
 
-                session.setAttribute("SS_USER_NAME", name); // 세션에 이름 저장
+                session.setAttribute("SS_USER_NAME", nickname); // 세션에 이름 저장
+                msg = nickname + "님 어서오세요.";
+
+            } else {
+                msg = "로그인에 실패하셨습니다.";
             }
 
         } catch (Exception e) {
@@ -248,10 +290,16 @@ public class UserInfoController {
         }
 
         log.info("res : " + res);
+        log.info("msg : " + msg);
+
+        MsgDTO rmsg = MsgDTO.builder()
+                .res(res)
+                .msg(msg)
+                .build();
 
         log.info("controller 로그인 종료");
 
-        return res;
+        return rmsg;
     }
 
 
@@ -266,12 +314,12 @@ public class UserInfoController {
         log.info(this.getClass().getName() + "아이디 찾기 실행");
 
         String email = CmmUtil.nvl(request.getParameter("email"));
-        String userName = CmmUtil.nvl(request.getParameter("name"));
+        String nickName = CmmUtil.nvl(request.getParameter("nickName"));
 
         log.info("email : " + email);
-        log.info("userName : " + userName);
+        log.info("nickName : " + nickName);
 
-        String userId = userInfoService.searchUserId(userName, email);
+        String userId = userInfoService.searchUserId(nickName, email);
 
         log.info("userId : " + userId);
 
@@ -285,26 +333,39 @@ public class UserInfoController {
      */
     @ResponseBody
     @PostMapping(value = "searchPassword")
-    public int searchPassword(HttpServletRequest request) throws Exception {
+    public MsgDTO searchPassword(HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info(this.getClass().getName() + "비밀번호 찾기 실행");
 
         String msg = "";
         String userId = CmmUtil.nvl(request.getParameter("userId"));
-        String userName = CmmUtil.nvl(request.getParameter("userName"));
+        String nickName = CmmUtil.nvl(request.getParameter("nickName"));
         String email = CmmUtil.nvl(request.getParameter("email"));
 
         log.info("userId : " + userId);
-        log.info("userName : " + userName);
+        log.info("nickName : " + nickName);
         log.info("email : " + email);
 
-        int res = userInfoService.searchPassword(userId, userName, email);
+        int res = userInfoService.searchPassword(userId, nickName, email);
 
-        log.info("res : " + res);
+        if (res == 1){
+            msg = "사용자를 찾았습니다. 비밀번호를 재설정하세요.";
+            //세션 저장
+            session.setAttribute("userId", userId);
+            session.setAttribute("Check", "Ok");
+        } else {
+            msg = "비밀번호를 찾을 수 없습니다. 입력 정보를 다시 확인해주세요.";
+        }
+
+        MsgDTO rmsg = MsgDTO.builder()
+                .res(res)
+                .msg(msg)
+                .build();
+
 
         log.info(this.getClass().getName() + "비밀번호 찾기 종료");
 
-        return res;
+        return rmsg;
     }
 
     /**
@@ -360,23 +421,63 @@ public class UserInfoController {
      */
     @ResponseBody
     @PostMapping("newPassword")
-    public int newPassword(HttpServletRequest request) throws Exception {
+    public MsgDTO newPassword(HttpServletRequest request, HttpSession session) throws Exception {
 
         log.info(this.getClass().getName() + "비밀번호 재설정 실행");
 
+        int res = 0;
+        String msg = "";
+        MsgDTO rmsg;
 
-        String userId = request.getParameter("userId");
+        // 세션에서 값 불러오기
+        String userId = (String) session.getAttribute("userId");
+
+        // 세션 값 삭제
+        session.removeAttribute("userId");
+
+        // 유저가 입력한 비밀번호 받아오기
         String newpassword = CmmUtil.nvl(EncryptUtil.encHashSHA256(request.getParameter("password")));
 
         log.info("userID : " + userId);
         log.info("newpassword : " + newpassword);
 
-        int res = userInfoService.newPassword(userId, newpassword);
+        if (userId == null){
+            log.info("userId : " + userId);
 
-        log.info("res : " + res);
+            res = 2;
+            msg = "세션이 만료되었습니다. 비밀번호 찾기를 다시 진행해주세요.";
+
+
+            rmsg = MsgDTO.builder()
+                    .res(res)
+                    .msg(msg)
+                    .build();
+
+            return rmsg;
+        }
+
+        res = userInfoService.newPassword(userId, newpassword);
+
+        if(res == 1) {
+            msg = "비밀번호가 성공적으로 재설정되었습니다.";
+
+             rmsg = MsgDTO.builder()
+                    .res(res)
+                    .msg(msg)
+                    .build();
+        } else {
+            msg = "해당 사용자가 존재하지 않습니다. 다시 확인해주세요.";
+
+             rmsg = MsgDTO.builder()
+                    .res(res)
+                    .msg(msg)
+                    .build();
+        }
+
 
         log.info(this.getClass().getName() + "비밀번호 재설정 종료");
-        return res;
+
+        return rmsg;
     }
 
     /**
@@ -387,7 +488,6 @@ public class UserInfoController {
     public int logout(HttpSession session) {
         try {
             // 특정 세션 속성만 제거
-            session.removeAttribute("SS_USER_ID");
             session.removeAttribute("SS_USER_NAME");
             return 1;  // 로그아웃 성공 응답
         } catch (Exception e) {

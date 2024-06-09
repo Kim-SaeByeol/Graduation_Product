@@ -80,19 +80,6 @@
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <div class="login__box">
-                            <i class='bx bx-user login__icon'></i>
-                            <input type="text" style="border: none;" class="form-control login__input" name="name" placeholder="이름" required>
-                            <br>
-                            <div class="invalid-feedback">
-                                이름을 입력해주세요.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <div class="login__box">
                             <i class='bx bx-lock login__icon'></i>
                             <input type="password" style="border: none;" class="form-control login__input" name="password" placeholder="비밀번호" required>
                             <div class="invalid-feedback">
@@ -202,10 +189,10 @@
                 dataType: "JSON",
                 data: {userId: userId},
                 success: function (json) {
-                    if (json.existsIdYn === "Y") {
-                        alert("이미 가입된 아이디가 존재합니다.");
+                    if (json.res === 1) {
+                        alert(json.msg);
                     } else {
-                        alert("가입 가능한 아이디입니다.");
+                        alert(json.msg);
                         userIdCheck = "N";
                     }
                 }
@@ -226,10 +213,10 @@
                 dataType: "JSON",
                 data: {nick: nick},
                 success: function (json) {
-                    if (json.existsIdYn === "Y") {
-                        alert("이미 가입된 별명이 존재합니다.");
+                    if (json.res === 1) {
+                        alert(json.msg);
                     } else {
-                        alert("가입 가능한 별명입니다.");
+                        alert(json.msg);
                         userNickCheck = "N";
                     }
                 }
@@ -250,7 +237,7 @@
                 dataType: "JSON",
                 data: {email: email},
                 success: function (json) {
-                    if (json.existsYn === "Y") {
+                    if (json.existsEmailYn === "Y") {
                         alert("이미 가입된 이메일 주소가 존재합니다.");
                     } else {
                         alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하세요.");
@@ -268,11 +255,11 @@
                 return;
             }
 
-            if (userIdCheck !== "N") {
+            if (userIdCheck === "N") {
                 alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입해주세요.");
                 return;
             }
-            if (userNickCheck !== "N") {
+            if (userNickCheck === "N") {
                 alert("별명 중복 체크 및 중복되지 않은 별명으로 가입해주세요.");
                 return;
             }

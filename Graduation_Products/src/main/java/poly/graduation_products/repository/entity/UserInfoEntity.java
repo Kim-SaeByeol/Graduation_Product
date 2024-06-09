@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Builder
 @Getter
@@ -15,28 +16,36 @@ import java.io.Serializable;
 public class UserInfoEntity extends BaseTimeEntity implements Serializable {
 
     @Id
-    @Column(name = "USER_ID")
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_SEQ")
+    private Long userSEQ;      //pk 순번
 
-    @NonNull
+    @Column(name = "USER_ID")
+    private String userId;      // 유저 아이디
+
     @Column(name = "PASSWORD")
-    private String password;
+    private String password;    // 비밀번호
 
     @NonNull
     @Column(name = "EMAIL", nullable = false, unique = true)
-    private String email;
-
-    @NonNull
-    @Column(name = "USER_NAME", nullable = false)
-    private String userName;
+    private String email;       // 대표 이메일
 
     @NonNull
     @Column(name = "NICKNAME", nullable = false, unique = true)
-    private String nickname;
+    private String nickname;    // 별명
+
+    @NonNull
+    @Column(name = "PROFILE_PATH", nullable = false, unique = true)
+    private String profilePath;    // 프로필
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE", nullable = false)
-    private Role role;
+    private Role role;          // 권한
 
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<SocialInfoEntity> socialInfos; // 소셜 정보 리스트
+
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TagInfoEntity> tagInfos; // 태그 정보 리스트
 
 }

@@ -3,7 +3,11 @@ package poly.graduation_products.service.impl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -11,6 +15,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import poly.graduation_products.repository.SocialRepository;
+import poly.graduation_products.repository.entity.Provider;
 import poly.graduation_products.util.EncryptUtil;
 
 import java.util.Collections;
@@ -38,28 +44,26 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .getUserInfoEndpoint().getUserNameAttributeName();
 
         // 액세스 토큰
-        String accessToken = userRequest.getAccessToken().getTokenValue();
+        // String accessToken = userRequest.getAccessToken().getTokenValue();  //이번에는 인증토큰을 사용하지 않음.
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String provider = registrationId.toUpperCase();
 
         // 사용자 정보 초기화
-        String userName = null;
         String nickname = null;
         String email = null;
-//        String picture = null;        이번 프로젝트에서는 프로필을 사용하지 않을 것임.
+        String picture = null;
         Map<String, Object> userAttributes = null;
 
         // 제공자별로 사용자 정보를 처리
         try {
             // 액세스 토큰 암호화
-            accessToken = EncryptUtil.encHashSHA256(accessToken);
+            // accessToken = EncryptUtil.encHashSHA256(accessToken);  //이번에는 인증토큰을 사용하지 않음.
             switch (provider) {
                 case "GOOGLE":
-                    userName = (String) attributes.get("name");
                     nickname = (String) attributes.get("nickname");
                     email = (String) attributes.get("email");
-//                    picture = (String) attributes.get("picture"); 이번 프로젝트에서는 프로필을 사용하지 않을 것임.
+                    picture = (String) attributes.get("picture");
                     userAttributes = attributes;
                     break;
                 case "NAVER":
@@ -70,19 +74,17 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                         throw new IllegalArgumentException("attributes 객체에 response 키가 없음");
                     }
                     Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-                    userName = (String) response.get("name");
                     nickname = (String) response.get("nickname");
                     email = (String) response.get("email");
-//                    picture = (String) response.get("profile_image"); 이번 프로젝트에서는 프로필을 사용하지 않을 것임.
+                    picture = (String) response.get("profile_image");
                     userAttributes = response;
                     break;
                 case "KAKAO":
                     Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
                     Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
-                    userName = (String) profile.get("nickname");
-                    nickname = (String) profile.get("nickname");
+                    nickname = (String) profile.get("name");
                     email = (String) kakaoAccount.get("email");
-//                    picture = (String) profile.get("thumbnail_image_url"); 이번 프로젝트에서는 프로필을 사용하지 않을 것임.
+                    picture = (String) profile.get("thumbnail_image_url");
                     userAttributes = attributes;
                     break;
                 default:
@@ -92,18 +94,18 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             throw new RuntimeException(e);
         }
 
-        log.info("userName: " + userName);
         log.info("nickname: " + nickname);
         log.info("email: " + email);
         log.info("provider: " + provider);
-        log.info("accessToken: " + accessToken);
+        log.info("picture: " + picture);
+        // log.info("accessToken: " + accessToken);  //이번에는 인증토큰을 사용하지 않음.
 
         // 세션에 사용자 정보 저장
-        httpSession.setAttribute("userName", userName);
         httpSession.setAttribute("nickname", nickname);
         httpSession.setAttribute("email", email);
         httpSession.setAttribute("provider", provider);
-        httpSession.setAttribute("accessToken", accessToken);
+        httpSession.setAttribute("picture", picture);
+//        httpSession.setAttribute("accessToken", accessToken); //이번에는 인증토큰을 사용하지 않음.
 
         log.info(this.getClass().getName() + ".loadUser 완료");
 

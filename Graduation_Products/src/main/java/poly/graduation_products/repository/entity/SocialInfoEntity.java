@@ -16,22 +16,18 @@ public class SocialInfoEntity extends BaseTimeEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SOCIAL_ID")
-    private Long socialId;
+    @Column(name = "SOCIAL_SEQ")
+    private Long socialSEQ;      //pk 순번
 
     @NonNull
     @Column(name = "SOCIAL_EMAIL", nullable = false)
-    private String email;
-
-    @NonNull
-    @Column(name = "ACCESS_TOKEN", nullable = false)
-    private String accessToken;
+    private String socialEmail;       // 플랫폼 이메일
 
     @Enumerated(EnumType.STRING)
     @Column(name = "PROVIDER", nullable = false)
-    private Provider provider;
+    private Provider provider;      // 플랫폼 명
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private UserInfoEntity userInfo;
+    @JoinColumn(name = "USER_SEQ", nullable = false)
+    private UserInfoEntity userInfo;    // 조인
 }

@@ -29,11 +29,11 @@ $(document).ready(function () {
                 password: $("#password").val()
             },
             success: function (json) {
-                if (json  === 1) {
-                    alert("로그인 되셨습니다.");
+                if (json.res  === 1) {
+                    alert(json.msg);
                     location.href = "/index/index";
                 } else {
-                    alert("로그인에 실패하셨습니다.")
+                    alert(json.msg);
                     $("#userId").focus();
                 }
             },

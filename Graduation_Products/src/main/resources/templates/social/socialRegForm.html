@@ -14,7 +14,6 @@
 
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <script src="/js/jquery-3.6.0.min.js"></script>
-<!--    <script type="text/javascript" th:src="@{/js/signup.js}"></script>-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/sigup.css}">
     <link rel="stylesheet" href="/css/setting.css">
     <link rel="stylesheet" href="/css/plugin.css">
@@ -40,16 +39,6 @@
         .gender-label {
             display: flex;
             align-items: center;
-        }
-
-        .gender-label .form-check-input {
-            margin-right: 5px;
-        }
-
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
         }
 
         .custom-control.custom-checkbox {
@@ -81,19 +70,6 @@
                     <div class="col-md-12 mb-3">
                         <div class="login__box">
                             <i class='bx bx-user login__icon'></i>
-                            <input type="text" style="border: none;" class="form-control login__input" name="name" placeholder="이름" required>
-                            <br>
-                            <div class="invalid-feedback">
-                                이름을 입력해주세요.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <div class="login__box">
-                            <i class='bx bx-user login__icon'></i>
                             <input type="text" name="nick" style="width:60%; border: none;" class="login__input form-control" placeholder="별명" required>
                             <button id="btnNick" type="button" class="check">중복체크</button>
                         </div>
@@ -104,7 +80,7 @@
                     <div class="col-md-12 mb-3">
                         <div class="login__box">
                             <i class='bx bx-at login__icon'></i>
-                            <input type="text" name="email" style="width:60%; border: none;" class="login__input form-control" placeholder="이메일" required>
+                            <input type="text" name="email" style="width:60%; border: none;" class="login__input form-control" placeholder="대표 이메일" required>
                             <button id="btnEmail" type="button" class="check">인증번호 전송</button>
                         </div>
                     </div>
@@ -124,74 +100,7 @@
                     </div>
                 </div>
 
-
-
-                <hr class="mb-4">
-                <!--체크박스 -->
-                <div class="form-group">
-                    <label id="medicalConditions">관심태그(선택사항) :</label>
-                    <div class="checkbox-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="hypertension" name="medicalConditions" value="HYPERTENSION">
-                            <label class="custom-control-label" for="hypertension">고혈압</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="diabetes" name="medicalConditions" value="DIABETES">
-                            <label class="custom-control-label" for="diabetes">당뇨병</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="hyperlipidemia" name="medicalConditions" value="HYPERLIPIDEMIA">
-                            <label class="custom-control-label" for="hyperlipidemia">고지혈증</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="angina" name="medicalConditions" value="ANGINA">
-                            <label class="custom-control-label" for="angina">협심증</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="myocardialInfarction" name="medicalConditions" value="MYOCARDIAL_INFARCTION">
-                            <label class="custom-control-label" for="myocardialInfarction">심근경색</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="heartFailure" name="medicalConditions" value="HEART_FAILURE">
-                            <label class="custom-control-label" for="heartFailure">심부전</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="stroke" name="medicalConditions" value="STROKE">
-                            <label class="custom-control-label" for="stroke">뇌졸중</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="cerebralInfarction" name="medicalConditions" value="CEREBRAL_INFARCTION">
-                            <label class="custom-control-label" for="cerebralInfarction">뇌경색</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="copd" name="medicalConditions" value="COPD">
-                            <label class="custom-control-label" for="copd">만성 폐쇄성 폐질환</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="asthma" name="medicalConditions" value="ASTHMA">
-                            <label class="custom-control-label" for="asthma">천식</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chronicKidneyDisease" name="medicalConditions" value="CHRONIC_KIDNEY_DISEASE">
-                            <label class="custom-control-label" for="chronicKidneyDisease">만성 신장 질환</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="chronicHepatitis" name="medicalConditions" value="CHRONIC_HEPATITIS">
-                            <label class="custom-control-label" for="chronicHepatitis">만성 간염</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="liverCirrhosis" name="medicalConditions" value="LIVER_CIRRHOSIS">
-                            <label class="custom-control-label" for="liverCirrhosis">간경변</label>
-                        </div>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="cancer" name="medicalConditions" value="CANCER">
-                            <label class="custom-control-label" for="cancer">암</label>
-                        </div>
-                    </div>
-                </div>
-
                     <hr class="mb-4">
-
 
                     <div class="custom-control custom-checkbox agreement-checkbox">
                     <input type="checkbox" class="custom-control-input" id="agreement" required>
@@ -211,6 +120,8 @@
 <script>
     $(document).ready(function () {
 
+
+
         $("#btnEmail").on("click", function () {
             useremailAuthNumber();
         });
@@ -226,7 +137,6 @@
             });
         });
 
-        let userIdCheck = "Y";
         let emailAuthNumber = "";
         let userNickCheck = "Y";
 
@@ -269,7 +179,7 @@
                 dataType: "JSON",
                 data: {email: email},
                 success: function (json) {
-                    if (json.existsYn === "Y") {
+                    if (json.existsEmailYn === "Y") {
                         alert("이미 가입된 이메일 주소가 존재합니다.");
                     } else {
                         alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하세요.");
@@ -287,10 +197,6 @@
                 return;
             }
 
-            if (userIdCheck !== "N") {
-                alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입해주세요.");
-                return;
-            }
             if (userNickCheck !== "N") {
                 alert("별명 중복 체크 및 중복되지 않은 별명으로 가입해주세요.");
                 return;
@@ -308,17 +214,13 @@
 
             // 이메일 인증이 성공한 경우에만 회원가입 요청을 서버에 보냄
             $.ajax({
-                url: "/user/insertSocialInfo",
+                url: "/social/socialRegForm",
                 type: "post",
                 dataType: "JSON",
                 data: $("#registration-form").serialize(),
                 success: function (json) {
-                    if (json.res === 1) {
-                        alert(json.msg);
-                        location.href = "/user/login";
-                    } else {
-                        alert(json.msg);
-                    }
+                  alert(json.msg);
+                  location.href = "/index/index";
                 }
             });
         }

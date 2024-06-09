@@ -18,5 +18,5 @@ public abstract  class BaseTimeEntity {
     private LocalDateTime CREATE_DATE;  //생성일자
 
     @LastModifiedDate
-    private LocalDateTime MODIFIED_DATE; //수정일자
+    private LocalDateTime  MODIFIED_DATE; //수정일자
 }
